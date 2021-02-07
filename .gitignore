@@ -35,7 +35,7 @@ MANIFEST
 
 #folders
 
-dataMining/data/databases/MP/MP_FLAGBIGFILE.csv
+dataMining/data/databases/initialDataMP/MP/MP_FLAGBIGFILE.csv
 dataMining/data/databases/OQMD/OQMD_FLAGBIGFILE.csv
 
 # Installer logs

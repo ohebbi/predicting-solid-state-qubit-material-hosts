@@ -1,0 +1,1 @@
+prototype,spacegroup_orig,spacegroup_relax,Egap,Egap_fit,compound
