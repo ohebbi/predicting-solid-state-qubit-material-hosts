@@ -19,7 +19,7 @@ def applyOxidFeaturizers(entries, fileName):
     designMatrix = cf.ElementFraction().featurize_dataframe(designMatrix, "composition")
     print(len(designMatrix.columns))
 
-    tempDf = pd.DataFrame({})
+    featurizedEntries = pd.DataFrame({})
     last_iteration=0
 
 
@@ -30,7 +30,7 @@ def applyOxidFeaturizers(entries, fileName):
         print(designMatrix[["full_formula","pretty_formula","composition"]].iloc[last_iteration:rows])
         portion = cf.ElectronegativityDiff().featurize_dataframe(portion, "composition_oxid",ignore_errors=True)
 
-        tempDf = pd.concat([tempDf,portion]).reset_index(drop=True)
+        featurizedEntries = pd.concat([featurizedEntries,portion]).reset_index(drop=True)
         last_iteration = rows
 
         t = time.localtime()
@@ -38,13 +38,13 @@ def applyOxidFeaturizers(entries, fileName):
         print(current_time)
 
         if (fileName) and (rows % 50 == 0):
-            tempDf.to_csv(fileName, sep=",", index = False)
+            featurizedEntries.to_csv(fileName, sep=",", index = False)
 
     portion = CompositionToOxidComposition().featurize_dataframe(designMatrix.iloc[last_iteration:len(entries)], "composition",ignore_errors=True)
     portion = cf.ElectronegativityDiff().featurize_dataframe(portion, "composition_oxid",ignore_errors=True)
-    tempDf = pd.concat([tempDf,portion]).reset_index(drop=True)
-    print(tempDf)
-    tempDf.to_csv(fileName, sep=",", index = False)
+    featurizedEntries = pd.concat([featurizedEntries,portion]).reset_index(drop=True)
+    print(featurizedEntries)
+    featurizedEntries.to_csv(fileName, sep=",", index = False)
 
 def queueOxidFeaturizers():
     directory = "data/databases/initialDataMP"
@@ -64,7 +64,9 @@ def reQueueOxidFeaturizers():
     #reading entries from MP
     MP_entries = pd.read_csv(directory+"/MP/MP_FLAGBIGFILE.csv", sep=",")
     print(MP_entries.iloc[24671])
-    MP_entries = MP_entries.drop([24671]) # avoid index
+    print(MP_entries[MP_entries["material_id"]=="mp-1203403"].index)
+    if MP_entries[MP_entries["material_id"]=="mp-1203403"].index[0]:
+        MP_entries = MP_entries.drop(MP_entries[MP_entries["material_id"]=="mp-1203403"].index) # avoid index 24671
 
     #print(MP_entries[MP_entries["full_formula"]=="Ta8Ag4O22"])
 
@@ -72,8 +74,8 @@ def reQueueOxidFeaturizers():
 
     howFar = MP_entries[MP_entries["material_id"] == previous_MP_featurizer["material_id"].iloc[-1]].index.values
     print(howFar)
-    print(previous_MP_featurizer.iloc[howFar])
-    print(MP_entries.iloc[howFar])
+    #print(previous_MP_featurizer.iloc[howFar])
+    #print(MP_entries.iloc[howFar])
 
     #previous_MP_featurizer.to_csv(directory+"/MP/MP_oxidationFeaturized_" + str(howFar[0]) + ".csv", sep=",", index=False)
 

@@ -30,7 +30,7 @@ mp-567594,Cs4Hg2I8,"[195509, 9361]",2.066,"{'symprec': 0.1, 'source': 'spglib', 
 mp-706611,Li4Be4H16N4F16,[9433],6.5775,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pca2_1', 'number': 29, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2ac'}",LiBeH4NF4
 mp-560008,P2N2F4,[9684],5.6193,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",PNF2
 mp-558134,Tl2F2,[9873],3.0179000000000005,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Aem2', 'number': 39, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'A 2 -2c'}",TlF
-mp-555463,Rb2Th6F26,"[9915, 262187]",6.4571999999999985,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pmc2_1', 'number': 26, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2'}",RbTh3F13
+mp-555463,Rb2Th6F26,"[9915, 262187]",6.457199999999999,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pmc2_1', 'number': 26, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2'}",RbTh3F13
 mp-19744,In1Sb1,"[10021, 659843, 57396]",0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pmm2', 'number': 25, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2 -2'}",InSb
 mp-27344,Be8B16H64,"[10315, 161366]",6.1876,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'I4_1cd', 'number': 110, 'point_group': '4mm', 'crystal_system': 'tetragonal', 'hall': 'I 4bw -2c'}",Be(BH4)2
 mp-680327,K12Ta16F60,[10430],0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pmn2_1', 'number': 31, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2ac -2'}",K3Ta4F15
@@ -75,7 +75,7 @@ mp-804,Ga2N2,"[153890, 54698, 153891, 191773, 153889, 67769, 157512, 25676, 1904
 mp-22205,In2N2,"[184927, 162684, 157515, 67768, 181366, 41999, 640026, 191774, 41544, 190428, 25677, 109463]",0.4777000000000005,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3mc', 'number': 186, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2c'}",InN
 mp-27934,Cd2Br4,[25782],2.9397,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3mc', 'number': 186, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2c'}",CdBr2
 mp-27786,Sb2As4Cl26,[26088],1.1842,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",SbAs2Cl13
-mp-402,Cd4P8,"[26199, 620214, 42732]",1.5290000000000001,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pna2_1', 'number': 33, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2n'}",CdP2
+mp-402,Cd4P8,"[26199, 620214, 42732]",1.529,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pna2_1', 'number': 33, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2n'}",CdP2
 mp-558769,Na6Li8Th12F62,"[26207, 26208]",6.3094,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P3c1', 'number': 158, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'P 3 -2""c'}",Na3Li4Th6F31
 mp-672346,Rb6V6I18,"[26455, 26456]",0.6301000000000001,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3cm', 'number': 185, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2'}",RbVI3
 mp-569512,Sb4I4Cl32,[26509],1.5838,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P4_1', 'number': 76, 'point_group': '4', 'crystal_system': 'tetragonal', 'hall': 'P 4w'}",SbICl8
@@ -83,7 +83,7 @@ mp-27935,Al2I2Cl12,[26510],2.2907,"{'symprec': 0.1, 'source': 'spglib', 'symbol'
 mp-1105105,I10N4,[26520],0.1619,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3mc', 'number': 186, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2c'}",I5N2
 mp-27821,Ag3P11,[26563],1.0961,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cm', 'number': 8, 'point_group': 'm', 'crystal_system': 'monoclinic', 'hall': 'C -2y'}",Ag3P11
 mp-632326,H2Cl2,[27037],5.9709,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",HCl
-mp-632229,H2Br2,"[27055, 74307, 74306]",4.9445999999999986,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",HBr
+mp-632229,H2Br2,"[27055, 74307, 74306]",4.944599999999999,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",HBr
 mp-334,La6F18,"[35673, 27089, 246323]",6.0222,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3cm', 'number': 185, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2'}",LaF3
 mp-1202587,K4Ho8F28,[27196],6.9263,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cm', 'number': 8, 'point_group': 'm', 'crystal_system': 'monoclinic', 'hall': 'C -2y'}",KHo2F7
 mp-669326,Cd9I18,"[27269, 42175, 42219]",2.3857,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P3m1', 'number': 156, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'P 3 -2""'}",CdI2
@@ -100,12 +100,12 @@ mp-570136,Cu6I6,[30363],1.4615,"{'symprec': 0.1, 'source': 'spglib', 'symbol': '
 mp-647489,Cd7I14,[30813],2.384,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P3m1', 'number': 156, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'P 3 -2""'}",CdI2
 mp-560275,P12N12F24,[31124],5.8161000000000005,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pna2_1', 'number': 33, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2n'}",PNF2
 mp-661,Al2N2,"[608626, 608627, 602460, 190420, 44107, 54697, 161881, 82790, 602459, 191772, 183638, 185441, 42001, 34475, 44106, 608624, 41480, 163953, 31169, 181362, 34236, 41482, 67767, 41542]",4.0536,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3mc', 'number': 186, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2c'}",AlN
-mp-23297,Br2F6,"[39441, 31689]",2.3409999999999997,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",BrF3
+mp-23297,Br2F6,"[39441, 31689]",2.341,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",BrF3
 mp-27987,Br2F10,[31690],3.4572,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",BrF5
 mp-1184928,I2F14,[31691],1.8034,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Aea2', 'number': 41, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'A 2 -2ac'}",IF7
 mp-1196526,Nb24I44,"[32737, 32735, 32734]",0.1690999999999998,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pna2_1', 'number': 33, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2n'}",Nb6I11
 mp-568804,Hg36Bi8As16Br48,[33700],1.1979000000000002,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P4_3', 'number': 78, 'point_group': '4', 'crystal_system': 'tetragonal', 'hall': 'P 4cw'}",Hg9Bi2(AsBr3)4
-mp-556020,Li12Al4F24,[34672],7.915100000000002,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pna2_1', 'number': 33, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2n'}",Li3AlF6
+mp-556020,Li12Al4F24,[34672],7.9151000000000025,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pna2_1', 'number': 33, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2n'}",Li3AlF6
 mp-28027,As4F12,[35132],5.4005,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pna2_1', 'number': 33, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2n'}",AsF3
 mp-571592,Cd8I16,[35258],2.4394,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P3m1', 'number': 156, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'P 3 -2""'}",CdI2
 mp-571654,Cd12I24,[35259],2.3876,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P3m1', 'number': 156, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'P 3 -2""'}",CdI2
@@ -144,7 +144,7 @@ mp-722623,Li66Be24H35,[40616],0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol'
 mp-29611,B40H64,[40980],5.4263,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pna2_1', 'number': 33, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2n'}",B5H8
 mp-30535,Li12Be6H24,[41147],0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P1', 'number': 1, 'point_group': '1', 'crystal_system': 'triclinic', 'hall': 'P 1'}",Li2BeH4
 mp-697087,Sb2H4N6F12,[41354],0.11569999999999993,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pmc2_1', 'number': 26, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2'}",SbH2(NF2)3
-mp-2653,B2N2,"[614869, 614873, 162873, 236994, 41486, 236993, 183257]",5.3629999999999995,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3mc', 'number': 186, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2c'}",BN
+mp-2653,B2N2,"[614869, 614873, 162873, 236994, 41486, 236993, 183257]",5.363,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3mc', 'number': 186, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2c'}",BN
 mp-2804,La8P16,"[653819, 42015]",0.6304999999999996,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cc', 'number': 9, 'point_group': 'm', 'crystal_system': 'monoclinic', 'hall': 'C -2yc'}",LaP2
 mp-571559,Cd10I20,"[42171, 42222]",2.3719,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P3m1', 'number': 156, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'P 3 -2""'}",CdI2
 mp-571583,Cd10I20,[42172],2.377,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P3m1', 'number': 156, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'P 3 -2""'}",CdI2
@@ -262,7 +262,7 @@ mp-28896,Cu4B4Ir4,[75029],0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'F
 mp-556103,Cs18Ga12F54,[75365],5.8609,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3cm', 'number': 185, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2'}",Cs3Ga2F9
 mp-16316,Co30As12,[77965],0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3cm', 'number': 185, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2'}",Co5As2
 mp-655,Na18As6,"[81565, 81563, 81566, 81564, 182164, 79586]",0.06400000000000006,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3cm', 'number': 185, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2'}",Na3As
-mp-29033,P3Br1Cl14,[80214],1.602,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'I4', 'number': 79, 'point_group': '4', 'crystal_system': 'tetragonal', 'hall': 'I 4'}",P3BrCl14
+mp-29033,P3Br1Cl14,[80214],1.6019999999999999,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'I4', 'number': 79, 'point_group': '4', 'crystal_system': 'tetragonal', 'hall': 'I 4'}",P3BrCl14
 mp-9339,Nb2P2,"[645171, 645167, 81493]",0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'I4_1md', 'number': 109, 'point_group': '4mm', 'crystal_system': 'tetragonal', 'hall': 'I 4bw -2'}",NbP
 mp-571242,Rb8Co4Cl16,[87517],0.7313999999999999,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pna2_1', 'number': 33, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2n'}",Rb2CoCl4
 mp-29783,B40H72,[88519],5.9612,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P4_1', 'number': 76, 'point_group': '4', 'crystal_system': 'tetragonal', 'hall': 'P 4w'}",B5H9
@@ -274,7 +274,7 @@ mp-569525,Na1Li5N2,[92314],0.3468,"{'symprec': 0.1, 'source': 'spglib', 'symbol'
 mp-568700,Na5Li1N2,[92315],0.01730000000000009,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'C2', 'number': 5, 'point_group': '2', 'crystal_system': 'monoclinic', 'hall': 'C 2y'}",Na5LiN2
 mp-30159,Au2Br2F12,[93481],1.9743,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P2_1', 'number': 4, 'point_group': '2', 'crystal_system': 'monoclinic', 'hall': 'P 2yb'}",AuBrF6
 mp-10956,La2As2Rh2,"[193888, 95191]",0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'I4_1md', 'number': 109, 'point_group': '4mm', 'crystal_system': 'tetragonal', 'hall': 'I 4bw -2'}",LaAsRh
-mp-644223,Li2B2H8,"[95208, 245569]",6.7570999999999986,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3mc', 'number': 186, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2c'}",LiBH4
+mp-644223,Li2B2H8,"[95208, 245569]",6.757099999999999,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3mc', 'number': 186, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2c'}",LiBH4
 mp-1954,P3N5,"[95782, 411857]",2.6467,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Imm2', 'number': 44, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'I 2 -2'}",P3N5
 mp-1071868,K2N4,[95794],0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",KN2
 mp-1202807,Al2H24N6F12,[96591],5.886,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Aea2', 'number': 41, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'A 2 -2ac'}",AlH12(NF2)3
@@ -293,7 +293,7 @@ mp-570882,Cd6I12,[108917],2.4174,"{'symprec': 0.1, 'source': 'spglib', 'symbol':
 mp-570939,Cd6I12,"[108918, 108927]",2.4618,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P3m1', 'number': 156, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'P 3 -2""'}",CdI2
 mp-570127,Cd8I16,[108919],2.4167,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P3m1', 'number': 156, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'P 3 -2""'}",CdI2
 mp-684029,Cd14I28,[108920],2.3629,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P3m1', 'number': 156, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'P 3 -2""'}",CdI2
-mp-570172,Hg2I2Br2,[109010],2.619,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",HgIBr
+mp-570172,Hg2I2Br2,[109010],2.6189999999999998,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",HgIBr
 mp-1107,Th14Rh6,"[650458, 150667, 650463]",0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3mc', 'number': 186, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2c'}",Th7Rh3
 mp-571094,Th14Ir6,"[150670, 641096]",0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3mc', 'number': 186, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2c'}",Th7Ir3
 mp-570557,Nb6Co18,[150944],0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P6_3mc', 'number': 186, 'point_group': '6mm', 'crystal_system': 'hexagonal', 'hall': 'P 6c -2c'}",NbCo3
@@ -311,7 +311,7 @@ mp-1599,B4N4,"[162877, 162878, 162879]",1.6009000000000002,"{'symprec': 0.1, 'so
 mp-344,B4N4,"[162880, 162881, 162882]",3.5021000000000004,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cc', 'number': 9, 'point_group': 'm', 'crystal_system': 'monoclinic', 'hall': 'C -2yc'}",BN
 mp-571414,K1Na1B2H8,[163376],6.187,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'P3m1', 'number': 156, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'P 3 -2""'}",KNa(BH4)2
 mp-568439,K1Na1B2H8,[163379],6.394,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'R3', 'number': 146, 'point_group': '3', 'crystal_system': 'trigonal', 'hall': 'R 3'}",KNa(BH4)2
-mp-4360,Na2Cd2F6,"[163866, 163867]",3.4819999999999998,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'R3c', 'number': 161, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'R 3 -2""c'}",NaCdF3
+mp-4360,Na2Cd2F6,"[163866, 163867]",3.482,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'R3c', 'number': 161, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'R 3 -2""c'}",NaCdF3
 mp-966740,Cs5Tl11Cd2,[165200],0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Amm2', 'number': 38, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'A 2 -2'}",Cs5Tl11Cd2
 mp-974790,Rb5Tl11Cd2,[165201],0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Amm2', 'number': 38, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'A 2 -2'}",Rb5Tl11Cd2
 mp-1102924,Na2Al2H8,[165838],1.9487,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",NaAlH4
@@ -446,7 +446,7 @@ mp-567916,Nd46Cd8Rh14,[420066],0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol
 mp-1200814,B4H48N16F12,[420965],5.218299999999998,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pna2_1', 'number': 33, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2n'}",BH12N4F3
 mp-1102129,Na4Yb2Cd2Sb4,[422274],0.3256999999999999,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pmc2_1', 'number': 26, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2'}",Na2YbCdSb2
 mp-1203560,La30Cd4Rh10,[422833],0.0,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'R3m', 'number': 160, 'point_group': '3m', 'crystal_system': 'trigonal', 'hall': 'R 3 -2""'}",La15Cd2Rh5
-mp-1204824,Li4B4H32N8,[423631],5.533,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cc', 'number': 9, 'point_group': 'm', 'crystal_system': 'monoclinic', 'hall': 'C -2yc'}",LiB(H4N)2
+mp-1204824,Li4B4H32N8,[423631],5.5329999999999995,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cc', 'number': 9, 'point_group': 'm', 'crystal_system': 'monoclinic', 'hall': 'C -2yc'}",LiB(H4N)2
 mp-1201648,Li4B4H48N16,[423632],5.2734000000000005,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Pca2_1', 'number': 29, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'P 2c -2ac'}",LiB(H3N)4
 mp-1198478,Br8N24,[423741],2.011,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'I4_1cd', 'number': 110, 'point_group': '4mm', 'crystal_system': 'tetragonal', 'hall': 'I 4bw -2c'}",BrN3
 mp-1095181,N6Cl2,[424502],2.3592,"{'symprec': 0.1, 'source': 'spglib', 'symbol': 'Cmc2_1', 'number': 36, 'point_group': 'mm2', 'crystal_system': 'orthorhombic', 'hall': 'C 2c -2'}",N3Cl

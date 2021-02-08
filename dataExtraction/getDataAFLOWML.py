@@ -124,13 +124,13 @@ def reQueueAllMPCompounds():
 
     howFar = MP_entries[MP_entries["material_id"] == previous_AFLOWML_entries["material_id"].iloc[-1]].index.values
     print(howFar)
-    #previous_AFLOWML_entries.to_csv(directory+"/AFLOWML/AFLOWML_data_" + str(howFar[0]) + ".csv", sep=",", index=False)
+    previous_AFLOWML_entries.to_csv(directory+"/AFLOWML/AFLOWML_data_" + str(howFar[0]) + ".csv", sep=",", index=False)
 
-    #AFLOW_ML = get_dataframe_AFLOWML(entries=MP_entries.iloc[howFar[0]+1:], fileName=directory+"/AFLOWML/AFLOWML_data.csv")
+    AFLOW_ML = get_dataframe_AFLOWML(entries=MP_entries.iloc[howFar[0]+1:], fileName=directory+"/AFLOWML/AFLOWML_data.csv")
 
 
 if __name__ == '__main__':
     #dataMiningProcess()
-    allMPCompounds()
-    #reQueueAllMPCompounds()
+    #allMPCompounds()
+    reQueueAllMPCompounds()
     #getOrderAgain()
