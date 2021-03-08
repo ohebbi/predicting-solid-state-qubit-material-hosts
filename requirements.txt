@@ -199,7 +199,7 @@ sniffio==1.2.0
 soupsieve==2.1
 spglib==1.16.0
 Sphinx==1.8.5
--e git+https://github.com/ohebbi/PredictingSolidStateQubitCandidates.git@a2f06f0df9de4290ddc4c9e62191c23854145033#egg=src
+-e git+https://github.com/ohebbi/predicting-solid-state-qubit-candidates.git@9bb37b1d1eeb6f0e1b70416a85ca7af47ce254e7#egg=src
 ssh-import-id==5.10
 stevedore==3.3.0
 sympy==1.7.1
