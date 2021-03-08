@@ -99,7 +99,6 @@ class FeaturizeAll(featurizer.MPFeaturizer):
         MaximumPackingEfficiency(),
         ChemicalOrdering(),
         XRDPowderPattern(),
-        #BagofBonds(),
     )
     site_featurizers = (
         AGNIFingerprints(),

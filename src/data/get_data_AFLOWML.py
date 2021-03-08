@@ -28,16 +28,8 @@ class data_AFLOWML(get_data_base.data_base):
         self.raw_data_path = self.data_dir / "raw" / "AFLOWML" / "AFLOWML.pkl"
         self.interim_data_path = self.data_dir / "interim" / "AFLOWML" / "AFLOWML.pkl"
         self.df = None
-    """
-    def _does_file_exist(self)-> bool:
-        if os.path.exists(self.raw_data_path):
-            print("Data for AFLOW-ML detected. Reading now...")
-            return True
-        else:
-            print("Data for AFLOW-ML not detected. Applying query now...")
-            return False
-    """
-    def _apply_query(self)-> pd.DataFrame:
+
+    def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
 
         # Get data from Materials Project
         try:
@@ -53,15 +45,7 @@ class data_AFLOWML(get_data_base.data_base):
         self.df.to_pickle(self.data_dir / "raw"  / "AFLOWML" / "new_AFLOWML.pkl")
 
         return self.df;
-    """
-    def get_dataframe(self)-> pd.DataFrame:
-        if self._does_file_exist():
-            self.df = pd.read_pickle(self.raw_data_path)
-        else:
-            self.df = self._apply_query()
-        print("Done")
-        return self.df
-    """
+
     def get_data_AFLOWML(entries: pd.DataFrame)-> Dict:
         """
         A function used to initialise AFLOW-ML with appropiate inputs.

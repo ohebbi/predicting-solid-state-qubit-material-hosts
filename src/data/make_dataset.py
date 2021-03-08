@@ -13,7 +13,7 @@ from matminer.data_retrieval.retrieve_Citrine import CitrineDataRetrieval
 #    continue
 
 
-
+"""
 def get_data_OQMD(filename):
     mdf = MDFDataRetrieval (anonymous = True)
     df = mdf.get_dataframe({
@@ -22,7 +22,7 @@ def get_data_OQMD(filename):
                 unwind_arrays=False)
     df.to_pickle(filename)
     return df
-
+"""
 
 """
 def main(input_filepath, output_filepath):

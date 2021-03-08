@@ -15,15 +15,7 @@ class data_MP(get_data_base.data_base):
         self.API_KEY = API_KEY
         self.raw_data_path = Path.cwd().parent / "data" / "raw" / "MP" / "MP.pkl"
         self.df = None
-    """
-    def _does_file_exist(self)-> bool:
-        if os.path.exists(self.raw_data_path):
-            print("Data path {} detected. Reading now...".format(self.raw_data_path))
-            return True
-        else:
-            print("Data for MP not detected. Applying query now...")
-            return False #self.get_data()
-    """
+
     def _apply_query(self, sorted: Optional[bool] = True)-> pd.DataFrame:
         with MPRester(self.API_KEY) as mpr:
 
@@ -33,7 +25,9 @@ class data_MP(get_data_base.data_base):
                         }
 
             # Features
-            props = ["material_id","full_formula","icsd_ids", "spacegroup.number","band_gap","run_type","cif", "elements", "structure","pretty_formula"]
+            props = ["material_id","full_formula","icsd_ids",
+                    "spacegroup.number","band_gap","run_type",
+                    "cif", "elements", "structure","pretty_formula"]
 
             # Query
             self.df = pd.DataFrame(mpr.query(criteria=criteria, properties=props))
@@ -48,16 +42,7 @@ class data_MP(get_data_base.data_base):
         print("Writing to raw data...")
         self.df.to_pickle(self.raw_data_path)
         return self.df;
-    """
-    def get_dataframe(self, sorted: Optional[bool] = True)-> pd.DataFrame:
 
-        if self._does_file_exist():
-            self.df = pd.read_pickle(self.raw_data_path)
-        else:
-            self.df = self._apply_query(sorted=sorted)
-        print("Done")
-        return(self.df)
-    """
     def sort_with_MP(self, entries: pd.DataFrame)-> np.array:
 
         return self.df["full_formula"]

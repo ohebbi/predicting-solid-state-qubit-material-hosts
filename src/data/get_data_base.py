@@ -18,7 +18,7 @@ class data_base(abc.ABC):
             return True
         else:
             print("Data for MP not detected. Applying query now...")
-            return False #self.get_data()
+            return False
 
     def get_dataframe(self, sorted: Optional[bool] = True)-> pd.DataFrame:
 
@@ -28,3 +28,15 @@ class data_base(abc.ABC):
             self.df = self._apply_query(sorted=sorted)
         print("Done")
         return(self.df)
+
+    ## For child-classes, the following functions needs to be implemented.
+
+    """
+    def sort_with_MP(self, entries: pd.DataFrame)-> pd.DataFrame:
+
+    def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
+
+    def _sort(self, entries: pd.DataFrame)-> pd.DataFrame:
+
+    def sort_with_MP(self, entries: pd.DataFrame)-> np.array:
+    """

@@ -18,22 +18,14 @@ class data_OQMD(get_data_base.data_base):
         self.raw_data_path= self.data_dir / "raw" / "OQMD" / "OQMD.pkl"
         self.interim_data_path = self.data_dir / "interim" / "OQMD" / "OQMD.pkl"
         self.df = None
-    """
-    def _does_file_exist(self)-> bool:
-        if os.path.exists(self.raw_data_path):
-            print("Data for OQMD detected. Reading now...")
-            return True
-        else:
-            print("Data for OQMD not detected. Applying query now...")
-            return False
-    """
-    def _apply_query(self)-> pd.DataFrame:
+
+    def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
 
         # Query
         mdf = MDFDataRetrieval (anonymous = True)
         self.df = mdf.get_dataframe({
-                    "source_names": ['oqmd']
-                    },
+                    "source_names": ['oqmd'],
+                    "match_fields": {"oqmd.converged": True}                    },
                     unwind_arrays=False)
 
         # Applying filters for unneccessary data
@@ -48,23 +40,14 @@ class data_OQMD(get_data_base.data_base):
         self.df.to_pickle(self.raw_data_path)
 
         return self.df;
-    """
-    def get_dataframe(self)-> pd.DataFrame:
 
-        if self._does_file_exist():
-            self.df = pd.read_pickle(self.raw_data_path)
-        else:
-            self.df = self._apply_query()
-        print("Done")
-        return self.df
-    """
     def _sort(self, entries: pd.DataFrame)-> pd.DataFrame:
 
-        bandgap = np.empty(len(entries))
-        bandgap[:] = np.nan
+        bandgaps = np.empty(len(entries))
+        bandgaps[:] = np.nan
 
-        spacegroup = np.copy(bandgap)
-        ICSDs       = np.copy(bandgap)
+        spacegroups = np.copy(bandgaps)
+        ICSDs       = np.copy(bandgaps)
 
         print("total iterations: {}".format(len(entries)))
         for i, icsd_list in tqdm(enumerate(entries["icsd_ids"])):
@@ -75,8 +58,8 @@ class data_OQMD(get_data_base.data_base):
                         bandgaps[i] = self.df["oqmd.band_gap.value"].iloc[j]
                         ICSDs[i] = int(oqmd_icsd)
 
-        sorted_df = pd.DataFrame({"oqmd_bg":   bandgap,
-                                  "oqmd_sg":   spacegroup,
+        sorted_df = pd.DataFrame({"oqmd_bg":   bandgaps,
+                                  "oqmd_sg":   spacegroups,
                                   "oqmd_icsd": ICSDs})
 
         sorted_df.to_pickle(self.interim_data_path)

@@ -21,16 +21,8 @@ class data_AFLOW(get_data_base.data_base):
         self.raw_data_path = self.data_dir / "raw" / "AFLOW" / "AFLOW.pkl"
         self.interim_data_path = self.data_dir / "interim" / "AFLOW" / "AFLOW.pkl"
         self.df = None
-    """
-    def _does_file_exist(self)-> bool:
-        if os.path.exists(self.raw_data_path):
-            print("Data for AFLOW detected. Reading now...")
-            return True
-        else:
-            print("Data for AFLOW not detected. Applying query now...")
-            return False
-    """
-    def _apply_query(self)-> pd.DataFrame:
+
+    def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
 
         #reading entries from MP
         #entries = pd.read_pickle(Path.cwd().parent / "data" /"raw" /"MP" / "MP.pkl" )
@@ -51,15 +43,7 @@ class data_AFLOW(get_data_base.data_base):
         self.df.to_pickle(self.data_dir / "raw"  / "AFLOW" / "new_AFLOW.pkl")
 
         return self.df;
-    """
-    def get_dataframe(self)-> pd.DataFrame:
-        if self._does_file_exist():
-            self.df = pd.read_pickle(self.raw_data_path)
-        else:
-            self.df = self._apply_query()
-        print("Done")
-        return self.df
-    """
+
     def get_data_AFLOW(self, compound_list: list, keys: list, batch_size: int, catalog: str = "icsd")-> Dict :
         """
         A function used to make a query to AFLOW.
