@@ -5,8 +5,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 
+from typing import Optional
+
 from tqdm import tqdm
 import numpy as np
+import pandas as pd
 
 from sklearn.model_selection import GridSearchCV, RepeatedStratifiedKFold
 from sklearn.metrics import f1_score, accuracy_score,precision_score, recall_score, make_scorer
@@ -17,7 +20,7 @@ from imblearn.under_sampling import RandomUnderSampler
 from imblearn.pipeline import Pipeline
 
 
-def chooseSampler(sampleMethod):
+def chooseSampler(sampleMethod: Optional[str]):
     if sampleMethod == "under":
         return ("underSampler", RandomUnderSampler(sampling_strategy="majority"))
 
@@ -31,7 +34,7 @@ def chooseSampler(sampleMethod):
     else:
         return None
 
-def getPipe(model, sampleMethod):
+def getPipe(model, sampleMethod: Optional[str]):
     sampler = chooseSampler(sampleMethod)
     if not (sampler):
         return Pipeline([
@@ -63,47 +66,49 @@ def findParamGrid(model):
                 "model__criterion" :['gini', 'entropy'],
                 }
     elif typeModel == type(GradientBoostingClassifier()):
-        return {"model__loss":["deviance"],
-                "model__learning_rate": [0.01, 0.025, 0.05, 0.075, 0.1, 0.15, 0.2],
-                "model__min_samples_split": np.linspace(0.1, 0.5, 3),
-                "model__min_samples_leaf": np.linspace(0.1, 0.5, 3),
-                "model__max_depth":[1,3,5,8],
+        return {"model__loss":["deviance", "exponential"],
+                #"model__learning_rate": [0.01, 0.025, 0.1, 0.2],
+                "model__max_features": ['auto', 'sqrt', 'log2'],
+                "model__max_depth":[2,4,6,8],
                 "model__max_features":["log2","sqrt"],
-                "model__criterion": ["friedman_mse",  "mae", "mse"],
-                "model__subsample":[0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-                "model__n_estimators":[5,10,15,20]
+                "model__criterion": ["friedman_mse", "mse"],
+                #"model__subsample":[0.5, 0.75, 1],
+                "model__n_estimators":[50,100,150,200]
                 }
     else:
         raise TypeError("No model has been specified: type(model):{}".format(typeModel))
 
 
-def applyGridSearch(X, y, model, cv, sampleMethod="under"):
+def applyGridSearch(X: pd.DataFrame, y, model, cv, sampleMethod="under"):
     param_grid = findParamGrid(model)
 
     ## TODO: Insert these somehow in gridsearch (scoring=scoring,refit=False)
     scoring = {'accuracy':  make_scorer(accuracy_score),
                'precision': make_scorer(precision_score),
                'recall':    make_scorer(recall_score),
-               'f1':        make_scorer(f1_score),}
+               'f1':        make_scorer(f1_score)}
 
     # Making a pipeline
     pipe = getPipe(model, sampleMethod)
-
     # Do a gridSearch
     grid = GridSearchCV(pipe, param_grid, scoring=scoring, refit="f1",
                         cv=cv,verbose=2,return_train_score=True, n_jobs=-1)
-
     grid.fit(X, y)
+    print(grid.best_estimator_)
 
     return grid.best_estimator_, grid
 
 
 
-def runSupervisedModel(classifier, X, y, k, n,
-                       featureImportance = False,
-                       random_state = 481123480,
-                       applyResampling = False,
-                       resamplingMethod="under"):
+def runSupervisedModel(classifier,
+                       X: pd.DataFrame,
+                       y,
+                       k: int,
+                       n: int,
+                       featureImportance: Optional[bool] = False,
+                       random_state: Optional[int] = 1,
+                       applyResampling: Optional[bool] = False,
+                       resamplingMethod: Optional[str] = "None"):
 
     def resampling(X, y, method = None, strategy = None):
 
