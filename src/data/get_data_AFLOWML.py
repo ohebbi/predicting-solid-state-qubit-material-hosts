@@ -28,6 +28,7 @@ class data_AFLOWML(get_data_base.data_base):
         self.raw_data_path = self.data_dir / "raw" / "AFLOWML" / "AFLOWML.pkl"
         self.interim_data_path = self.data_dir / "interim" / "AFLOWML" / "AFLOWML.pkl"
         self.df = None
+        super().__init__()
 
     def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
 

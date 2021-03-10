@@ -5,10 +5,13 @@ from pathlib import Path
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
-from . import utils
-from . import get_data_base
-
-from jarvis.db.figshare import data
+from src.data import utils
+from src.data import get_data_base
+import zipfile
+import requests
+#from jarvis.db.figshare import data
+#from jarvis.db.jsonutils import loadjson
+import json
 
 class data_JARVIS(get_data_base.data_base):
     def __init__(self, API_KEY: Optional[str] = None):
@@ -19,11 +22,35 @@ class data_JARVIS(get_data_base.data_base):
         self.raw_data_path= self.data_dir / "raw" / "JARVIS" / "JARVIS.pkl"
         self.interim_data_path = self.data_dir / "interim" / "JARVIS" / "JARVIS.pkl"
         self.df = None
+        super().__init__()
 
     def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
 
+
+        url = "https://ndownloader.figshare.com/files/22471022"
+        js_tag = "jdft_3d-4-26-2020.json"
+
+        path = str(os.path.join(os.path.dirname(__file__), js_tag))
+        if not os.path.isfile(path):
+            zfile = str(os.path.join(os.path.dirname(__file__), "tmp.zip"))
+            r = requests.get(url)
+            f = open(zfile, "wb")
+            f.write(r.content)
+            f.close()
+
+            with zipfile.ZipFile(zfile, "r") as zipObj:
+                # zipObj.extract(path)
+                zipObj.extractall(os.path.join(os.path.dirname(__file__)))
+            os.remove(zfile)
+
+        f = open(path, "r")
+        data = json.load(f)
+        f.close()
+        #data = loadjson(d)
+
         # Query
-        self.df = pd.DataFrame(data('dft_3d'))\
+        #self.df = pd.DataFrame(data('dft_3d'))\
+        self.df = pd.DataFrame(data)\
                                .replace("na", np.nan)\
                                .replace("None", np.nan)\
                                .fillna(value=np.nan)\

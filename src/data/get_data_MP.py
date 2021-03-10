@@ -6,8 +6,8 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from tqdm import tqdm
-from . import utils
-from . import get_data_base
+from src.data import utils
+from src.data import get_data_base
 
 class data_MP(get_data_base.data_base):
     def __init__(self, API_KEY: str):
@@ -15,6 +15,7 @@ class data_MP(get_data_base.data_base):
         self.API_KEY = API_KEY
         self.raw_data_path = Path.cwd().parent / "data" / "raw" / "MP" / "MP.pkl"
         self.df = None
+        super().__init__()
 
     def _apply_query(self, sorted: Optional[bool] = True)-> pd.DataFrame:
         with MPRester(self.API_KEY) as mpr:

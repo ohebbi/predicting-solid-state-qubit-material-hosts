@@ -1,4 +1,3 @@
-import numpy as np
 from pymatgen.core.periodic_table import Element
 from pymatgen.analysis.local_env import VoronoiNN
 import pandas as pd

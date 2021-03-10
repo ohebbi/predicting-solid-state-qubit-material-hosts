@@ -1,6 +1,6 @@
 typing
 pandas
-dotenv
+python-dotenv
 click
 logging
 pymatgen
@@ -8,12 +8,14 @@ matminer
 pathlib
 tqdm
 numpy
-jarvis.db.figshare
+jarvis
 aflow
 matplotlib
 plotly
 sklearn
 seaborn
-abc
 datetime
 imblearn
+setuptools
+virtualenvwrapper
+virtualenv

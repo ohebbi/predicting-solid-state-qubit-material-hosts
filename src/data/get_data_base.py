@@ -2,7 +2,8 @@ import abc
 import pandas as pd
 from typing import Optional, Iterable, Tuple, Dict
 import os
-__all__ = ("data_base", )
+from pathlib import Path
+#__all__ = ("data_base", )
 
 class data_base(abc.ABC):
 
@@ -11,6 +12,13 @@ class data_base(abc.ABC):
     interim_data_path : Optional[str] = None
 
     df :       Optional[pd.DataFrame] = None
+    def __init__(self):
+
+        if self.raw_data_path:
+            Path(self.raw_data_path.parent).mkdir(parents=True, exist_ok=True)
+        if self.interim_data_path:
+            Path(self.interim_data_path.parent).mkdir(parents=True, exist_ok=True)
+
 
     def _does_file_exist(self)-> bool:
         if os.path.exists(self.raw_data_path):
@@ -29,9 +37,12 @@ class data_base(abc.ABC):
         print("Done")
         return(self.df)
 
-    ## For child-classes, the following functions needs to be implemented.
+
 
     """
+     For child-classes, the following functions needs to be implemented.
+
+
     def sort_with_MP(self, entries: pd.DataFrame)-> pd.DataFrame:
 
     def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:

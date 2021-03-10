@@ -6,8 +6,8 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from tqdm import tqdm
-from . import utils
-from . import get_data_base
+from src.data import utils
+from src.data import get_data_base
 
 class data_Citrine(get_data_base.data_base):
     def __init__(self, API_KEY: str):
@@ -17,6 +17,7 @@ class data_Citrine(get_data_base.data_base):
         self.raw_data_path = self.data_dir/ "raw" / "Citrine" / "Citrine.pkl"
         self.interim_data_path = self.data_dir / "interim" / "Citrine" / "Citrine.pkl"
         self.df = None
+        super().__init__()
 
     def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
         cdr = CitrineDataRetrieval(api_key=self.API_KEY)

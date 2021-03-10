@@ -9,7 +9,7 @@ from src.data import utils
 from aflow import *
 
 from src.data.get_data_MP import data_MP
-from . import get_data_base
+from src.data import get_data_base
 
 
 class data_AFLOW(get_data_base.data_base):
@@ -21,6 +21,7 @@ class data_AFLOW(get_data_base.data_base):
         self.raw_data_path = self.data_dir / "raw" / "AFLOW" / "AFLOW.pkl"
         self.interim_data_path = self.data_dir / "interim" / "AFLOW" / "AFLOW.pkl"
         self.df = None
+        super().__init__()
 
     def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
 
@@ -30,8 +31,9 @@ class data_AFLOW(get_data_base.data_base):
         try:
             MP = data_MP(API_KEY = self.MAPI_KEY)
         except:
-            raise ValueError("AFLOW-ML is dependent on MP data. Add MAPI_KEY argument\
+            raise ValueError("AFLOW is dependent on MP data. Add MAPI_KEY argument\
             to class constructor.")
+
         entries = MP.get_dataframe()
         compound_list = list(entries["full_formula"])
         #choosing keys used in AFLOW. We will here use all features in AFLOW.

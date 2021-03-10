@@ -6,8 +6,8 @@ from pathlib import Path
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
-from . import utils
-from . import get_data_base
+from src.data import utils
+from src.data import get_data_base
 
 class data_OQMD(get_data_base.data_base):
     def __init__(self, API_KEY: Optional[str] = None):
@@ -18,6 +18,7 @@ class data_OQMD(get_data_base.data_base):
         self.raw_data_path= self.data_dir / "raw" / "OQMD" / "OQMD.pkl"
         self.interim_data_path = self.data_dir / "interim" / "OQMD" / "OQMD.pkl"
         self.df = None
+        super().__init__()
 
     def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
 
