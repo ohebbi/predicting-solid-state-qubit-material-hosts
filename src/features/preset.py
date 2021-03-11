@@ -10,7 +10,7 @@ from .utils.utils import clean_df
 from datetime import datetime
 from tqdm import tqdm
 
-class FeaturizeAll(featurizer.MPFeaturizer):
+class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
 
     from matminer.featurizers.composition import (
         AtomicOrbitals,
@@ -317,7 +317,7 @@ def main():
     print(howFar)
     #OVERRIDE
     #howFar=[15200]
-    mod = FeaturizeAll()
+    mod = PRESET_HEBNES_2021()
     df = mod.featurize(entries.iloc[howFar[0]+1:], howFar)
 
     #df.to_pickle("../dataMining/data/databases/MP/dummy.pkl")
@@ -329,7 +329,7 @@ def lastEntries():
     print(entries)
     entries = removeEntries(entries)
     print(entries)
-    mod = FeaturizeAll(MAPI_KEY="b7RtVfJTsUg6TK8E")
+    mod = PRESET_HEBNES_2021(MAPI_KEY="b7RtVfJTsUg6TK8E")
     df = mod.featurize(entries, 0)
     df.to_pickle("data/5more.pkl")
 
@@ -351,7 +351,7 @@ def testDOSFeatures():
             entries = sortByMPID(entries)
             entries.to_pickle("data/MP.pkl")
 
-    featurizerObject = FeaturizeAll()
+    featurizerObject = PRESET_HEBNES_2021()
     df = featurize_by_material_id(entries.iloc[:2], featurizerObject, "b7RtVfJTsUg6TK8E")
     #df = mod.featurize(entries, 0)
     #df = mod.featurize(entries.iloc[:4],0)

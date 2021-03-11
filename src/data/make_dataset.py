@@ -6,7 +6,6 @@ import numpy as np
 from pathlib import Path
 import dotenv
 
-from pymatgen import MPRester
 import pandas as pd
 from src.data import (
     get_data_AFLOW,

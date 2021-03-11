@@ -12,7 +12,7 @@ from matminer.data_retrieval.retrieve_MP import MPDataRetrieval
 from tqdm import tqdm
 import numpy as np
 
-class MPFeaturizer(abc.ABC):
+class extendedMODFeaturizer(abc.ABC):
     """ Base class for multiple featurization across
     structure, composition and sites.
     Child classes must provide iterables of matminer featurizer objects
@@ -34,7 +34,7 @@ class MPFeaturizer(abc.ABC):
         bandstructure_featurizers: Optional iterable of featurizers to apply
             to the "bandstructure" column. This, however, will not be generated
             if missing.
-        site_stats: Iterable of string statistic names to be used by the
+        site_stats: Optional Iterable of string statistic names to be used by the
             "SiteStatsFingerprint" objects.
     """
 
@@ -48,7 +48,7 @@ class MPFeaturizer(abc.ABC):
     site_stats: Tuple[str] = ("mean", "std_dev")
 
     def __init__(self, n_jobs=None):
-        """ Initialise the MPFeaturizer object with a requested
+        """ Initialise the extendedMODFeaturizer object with a requested
         number of threads to use during featurization.
         Arguments:
             n_jobs: The number of threads to use. If "None", matminer
@@ -122,7 +122,7 @@ class MPFeaturizer(abc.ABC):
 
     def featurize_composition(self, df: pd.DataFrame) -> pd.DataFrame:
         """ Decorate input "pandas.DataFrame" of structures with composition
-        features from matminer, specified by the MPFeaturizer preset.
+        features from matminer, specified by the extendedMODFeaturizer preset.
         Currently applies the set of all matminer composition features.
         Arguments:
             df: the input dataframe with a ""structure"" column
@@ -158,7 +158,7 @@ class MPFeaturizer(abc.ABC):
 
     def featurize_structure(self, df: pd.DataFrame) -> pd.DataFrame:
         """ Decorate input "pandas.DataFrame" of structures with structural
-        features from matminer, specified by the MPFeaturizer preset.
+        features from matminer, specified by the extendedMODFeaturizer preset.
         Currently applies the set of all matminer structure features.
         Arguments:
             df: the input dataframe with a ""structure"" column
@@ -179,7 +179,7 @@ class MPFeaturizer(abc.ABC):
 
     def featurize_dos(self, df: pd.DataFrame) -> pd.DataFrame:
         """ Decorate input "pandas.DataFrame" of structures with density of state
-        features from matminer, specified by the MPFeaturizer preset.
+        features from matminer, specified by the extendedMODFeaturizer preset.
         Arguments:
             df: the input dataframe with a "dos" column
                 containing "pymatgen.dos" objects.
@@ -205,7 +205,7 @@ class MPFeaturizer(abc.ABC):
         return df
     def featurize_bandstructure(self, df:pd.DataFrame) -> pd.DataFrame:
         """ Decorate input "pandas.DataFrame" of structures with bandstructure
-        features from matminer, specified by the MPFeaturizer preset.
+        features from matminer, specified by the extendedMODFeaturizer preset.
         Arguments:
             df: the input dataframe with a "bandstructure" column
                 containing "pymatgen.electronic_structure.bandstructure" objects.
@@ -230,7 +230,7 @@ class MPFeaturizer(abc.ABC):
         return df
     def featurize_site(self, df: pd.DataFrame, aliases: Optional[Dict[str, str]] = None) -> pd.DataFrame:
         """ Decorate input "pandas.DataFrame" of structures with site
-        features, specified by the MPFeaturizer preset.
+        features, specified by the extendedMODFeaturizer preset.
         Arguments:
             df: the input dataframe with a ""structure"" column
                 containing "pymatgen.Structure" objects.

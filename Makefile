@@ -7,7 +7,7 @@
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
 PROFILE = default
-PROJECT_NAME = predicting-solid-state-qubit-candidates-v2
+PROJECT_NAME = predicting-solid-state-qubit-candidates
 PYTHON_INTERPRETER = python3
 
 ifeq (,$(shell which conda))
@@ -27,7 +27,8 @@ requirements: test_environment
 
 ## Make Dataset
 data: requirements
-	$(PYTHON_INTERPRETER) src/data/make_dataset.py data
+	$(PYTHON_INTERPRETER) src/data/make_dataset.py 
+	$(PYTHON_INTERPRETER) src/features/build_features.py
 
 ## Delete all compiled Python files
 clean:
