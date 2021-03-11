@@ -2,8 +2,14 @@
 ==============================
 
 This is the main repository behind predicting solid state qubit candidates
+## Install
 
-Project Organization
+run "pip install -e ."
+
+and you are good to go. Further use with make is under development.  
+
+
+## Project Organization
 ------------
 
     ├── LICENSE

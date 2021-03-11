@@ -13,7 +13,7 @@ class data_MP(get_data_base.data_base):
     def __init__(self, API_KEY: str):
 
         self.API_KEY = API_KEY
-        self.raw_data_path = Path.cwd().parent / "data" / "raw" / "MP" / "MP.pkl"
+        self.raw_data_path = Path(__file__).resolve().parents[2] / "data" / "raw" / "MP" / "MP.pkl"
         self.df = None
         super().__init__()
 

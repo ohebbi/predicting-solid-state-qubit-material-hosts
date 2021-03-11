@@ -14,7 +14,7 @@ class data_OQMD(get_data_base.data_base):
 
         # Consistency - no need for API key for OQMD
         self.API_KEY = API_KEY
-        self.data_dir = Path.cwd().parent / "data"
+        self.data_dir = Path(__file__).resolve().parents[2] / "data"
         self.raw_data_path= self.data_dir / "raw" / "OQMD" / "OQMD.pkl"
         self.interim_data_path = self.data_dir / "interim" / "OQMD" / "OQMD.pkl"
         self.df = None

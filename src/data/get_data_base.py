@@ -3,7 +3,6 @@ import pandas as pd
 from typing import Optional, Iterable, Tuple, Dict
 import os
 from pathlib import Path
-#__all__ = ("data_base", )
 
 class data_base(abc.ABC):
 
@@ -25,7 +24,7 @@ class data_base(abc.ABC):
             print("Data path {} detected. Reading now...".format(self.raw_data_path))
             return True
         else:
-            print("Data for MP not detected. Applying query now...")
+            print("Data path {} not detected. Applying query now...".format(self.raw_data_path))
             return False
 
     def get_dataframe(self, sorted: Optional[bool] = True)-> pd.DataFrame:

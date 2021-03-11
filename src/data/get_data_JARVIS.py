@@ -18,7 +18,7 @@ class data_JARVIS(get_data_base.data_base):
 
         # Consistency - no need for API key for JARVIS
         self.API_KEY = API_KEY
-        self.data_dir = Path.cwd().parent / "data"
+        self.data_dir = Path(__file__).resolve().parents[2] / "data"
         self.raw_data_path= self.data_dir / "raw" / "JARVIS" / "JARVIS.pkl"
         self.interim_data_path = self.data_dir / "interim" / "JARVIS" / "JARVIS.pkl"
         self.df = None
@@ -39,14 +39,15 @@ class data_JARVIS(get_data_base.data_base):
             f.close()
 
             with zipfile.ZipFile(zfile, "r") as zipObj:
-                # zipObj.extract(path)
                 zipObj.extractall(os.path.join(os.path.dirname(__file__)))
             os.remove(zfile)
 
         f = open(path, "r")
         data = json.load(f)
         f.close()
-        #data = loadjson(d)
+
+        if os.path.exists(path):
+            os.remove(path)
 
         # Query
         #self.df = pd.DataFrame(data('dft_3d'))\

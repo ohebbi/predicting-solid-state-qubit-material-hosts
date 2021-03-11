@@ -2,10 +2,11 @@ from typing import Optional, Iterable, Dict
 import os
 import pandas as pd
 import numpy as np
+import pickle
+import wget
 from pathlib import Path
 from tqdm import tqdm
 from src.data import utils
-
 # ML library and structural library
 try:
     from src.data.aflowml.client import AFLOWmlAPI
@@ -17,14 +18,14 @@ from pymatgen.io.vasp.inputs import Poscar
 from pymatgen.io.cif import CifParser
 
 from src.data.get_data_MP import data_MP
-from . import get_data_base
+from src.data import get_data_base
 
 class data_AFLOWML(get_data_base.data_base):
     def __init__(self, API_KEY: Optional[str] = None, MAPI_KEY: Optional[str] = None):
 
         self.API_KEY = API_KEY
         self.MAPI_KEY = MAPI_KEY
-        self.data_dir = Path.cwd().parent / "data"
+        self.data_dir = Path(__file__).resolve().parents[2] / "data"
         self.raw_data_path = self.data_dir / "raw" / "AFLOWML" / "AFLOWML.pkl"
         self.interim_data_path = self.data_dir / "interim" / "AFLOWML" / "AFLOWML.pkl"
         self.df = None
@@ -32,6 +33,17 @@ class data_AFLOWML(get_data_base.data_base):
 
     def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
 
+        # Add unique url id for figshare endpoint
+        url = "https://ndownloader.figshare.com/files/26777714"
+        file = wget.download(url)
+
+        # Read and load pkl
+        with open(file, 'rb') as f:
+            self.df = pickle.load(f)
+            os.remove(file)
+
+        # TODO : Add option to make new queries to AFLOWML
+        """
         # Get data from Materials Project
         try:
             MP = data_MP(API_KEY = self.MAPI_KEY)
@@ -40,10 +52,13 @@ class data_AFLOWML(get_data_base.data_base):
             to class constructor.")
         entries = MP.get_dataframe()
 
-        self.df = get_dataframe_AFLOW(entries=entries)
+        newEntries = False
+        if newEntries:
+            self.df = get_dataframe_AFLOWML(entries=entries)
+        """
 
         print("Writing to raw data...")
-        self.df.to_pickle(self.data_dir / "raw"  / "AFLOWML" / "new_AFLOWML.pkl")
+        self.df.to_pickle(self.data_dir / "raw"  / "AFLOWML" / "AFLOWML.pkl")
 
         return self.df;
 

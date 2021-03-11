@@ -13,7 +13,7 @@ class data_Citrine(get_data_base.data_base):
     def __init__(self, API_KEY: str):
 
         self.API_KEY = API_KEY
-        self.data_dir = Path.cwd().parent / "data"
+        self.data_dir = Path(__file__).resolve().parents[2] / "data"
         self.raw_data_path = self.data_dir/ "raw" / "Citrine" / "Citrine.pkl"
         self.interim_data_path = self.data_dir / "interim" / "Citrine" / "Citrine.pkl"
         self.df = None

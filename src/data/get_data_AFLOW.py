@@ -3,6 +3,9 @@ from typing import Optional, Iterable, Dict
 import os
 import pandas as pd
 import numpy as np
+import wget
+import pickle
+
 from pathlib import Path
 from tqdm import tqdm
 from src.data import utils
@@ -17,7 +20,7 @@ class data_AFLOW(get_data_base.data_base):
 
         self.API_KEY = API_KEY
         self.MAPI_KEY = API_KEY
-        self.data_dir = Path.cwd().parent / "data"
+        self.data_dir = Path(__file__).resolve().parents[2] / "data"
         self.raw_data_path = self.data_dir / "raw" / "AFLOW" / "AFLOW.pkl"
         self.interim_data_path = self.data_dir / "interim" / "AFLOW" / "AFLOW.pkl"
         self.df = None
@@ -25,9 +28,17 @@ class data_AFLOW(get_data_base.data_base):
 
     def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
 
-        #reading entries from MP
-        #entries = pd.read_pickle(Path.cwd().parent / "data" /"raw" /"MP" / "MP.pkl" )
-        #compound_list = list(entries["full_formula"])
+        # Add unique url id for figshare endpoint
+        url = "https://ndownloader.figshare.com/files/26777717"
+        file = wget.download(url)
+
+        # Read and load pkl data
+        with open(file, 'rb') as f:
+            self.df = pickle.load(f)
+            os.remove(file)
+
+        # TODO : Add option to make new queries to AFLOWML
+        """
         try:
             MP = data_MP(API_KEY = self.MAPI_KEY)
         except:
@@ -35,14 +46,17 @@ class data_AFLOW(get_data_base.data_base):
             to class constructor.")
 
         entries = MP.get_dataframe()
+
         compound_list = list(entries["full_formula"])
         #choosing keys used in AFLOW. We will here use all features in AFLOW.
         keys = list(pd.read_pickle(Path.cwd().parent / "data" / "raw" / "AFLOW" / "AFLOW_keywords.pkl").columns)
 
+
         self.df = get_dataframe_AFLOW(compound_list=compound_list, keys=keys, batch_size = 1000, catalog="icsd")
+        """
 
         print("Writing to raw data...")
-        self.df.to_pickle(self.data_dir / "raw"  / "AFLOW" / "new_AFLOW.pkl")
+        self.df.to_pickle(self.data_dir / "raw"  / "AFLOW" / "AFLOW.pkl")
 
         return self.df;
 
