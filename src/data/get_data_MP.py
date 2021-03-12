@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from tqdm import tqdm
-from src.data import utils
+from src.data.utils import filterIDs, sortByMPID, LOG
 from src.data import get_data_base
 
 class data_MP(get_data_base.data_base):
@@ -34,13 +34,13 @@ class data_MP(get_data_base.data_base):
             self.df = pd.DataFrame(mpr.query(criteria=criteria, properties=props))
 
         # Remove unsupported MPIDs
-        self.df = utils.filterIDs(self.df)
+        self.df = filterIDs(self.df)
 
         # Sort by ascending MPID order
         if (sorted):
-            self.df = utils.sortByMPID(self.df)
+            self.df = sortByMPID(self.df)
 
-        print("Writing to raw data...")
+        LOG.info("Writing to raw data...")
         self.df.to_pickle(self.raw_data_path)
         return self.df;
 

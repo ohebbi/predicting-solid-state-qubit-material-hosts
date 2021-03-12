@@ -1,5 +1,6 @@
 import numpy as np
-
+import logging
+import sys
 def clean_df(df):
     """Cleans dataframe by dropping missing values, replacing NaN's and infinities
     and selecting only columns containing numerical data.
@@ -14,3 +15,10 @@ def clean_df(df):
     df = df.select_dtypes(include="number")
 
     return df
+
+LOG = logging.getLogger("predicting-solid-state-qubit-candidates")
+LOG.setLevel(logging.INFO)
+handler = logging.StreamHandler(sys.stdout)
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+LOG.addHandler(handler)

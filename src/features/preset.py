@@ -5,8 +5,8 @@ import numpy as np
 from typing import Optional, Iterable, Tuple, Dict
 from matminer.data_retrieval.retrieve_MP import MPDataRetrieval
 
-from . import featurizer
-from .utils.utils import clean_df
+from src.features import featurizer
+from src.features.utils.utils import clean_df
 from datetime import datetime
 from tqdm import tqdm
 

@@ -6,6 +6,7 @@ import wget
 
 from src.features import preset
 from src.features import featurizer
+from src.features.utils.utils import LOG
 from matminer.data_retrieval.retrieve_MP import MPDataRetrieval
 from tqdm import tqdm
 from pathlib import Path
@@ -50,17 +51,15 @@ def does_file_exist(filepath:Path)-> bool:
     Checks if file path exists.
 
     """
-    logger = logging.getLogger(__name__)
 
     if os.path.exists(filepath):
-        logger.info("Data path detected:\n{}\.".format(filepath))
+        LOG.info("Data path detected:\n{}\.".format(filepath))
         return True
     else:
-        logger.info("Data path\n{}\nnot detected. Downloading now...".format(filepath))
+        LOG.info("Data path\n{}\nnot detected. Downloading now...".format(filepath))
         return False
 
 def get_featurized_data():
-    logger = logging.getLogger(__name__)
 
     featurized_data_path = Path(__file__).resolve().parents[2] / \
                             "data" / "interim"  / "featurized" \
@@ -77,19 +76,20 @@ def get_featurized_data():
             df.to_pickle(featurized_data_path)
             os.remove(file)
     else:
-        logger.info("Reading data..")
+        LOG.info("Reading data..")
         df = pd.read_pickle(featurized_data_path)
     return df
 
 def main():
+    """
     # Initialise logger
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     logging.basicConfig(level=logging.INFO, format=log_fmt)
     logger = logging.getLogger(__name__)
-
+    """
     get_featurized_data()
 
-    logger.info("Done")
+    LOG.info("Done")
 
 if __name__ == '__main__':
     main()

@@ -6,7 +6,7 @@ import pickle
 import wget
 from pathlib import Path
 from tqdm import tqdm
-from src.data import utils
+from src.data.utils import countSimilarEntriesWithMP, LOG
 # ML library and structural library
 try:
     from src.data.aflowml.client import AFLOWmlAPI
@@ -57,7 +57,7 @@ class data_AFLOWML(get_data_base.data_base):
             self.df = get_dataframe_AFLOWML(entries=entries)
         """
 
-        print("Writing to raw data...")
+        LOG.info("Writing to raw data...")
         self.df.to_pickle(self.data_dir / "raw"  / "AFLOWML" / "AFLOWML.pkl")
 
         return self.df;
@@ -151,5 +151,5 @@ class data_AFLOWML(get_data_base.data_base):
             sorted_df = pd.read_pickle(self.interim_data_path)
         else:
             sorted_df = self._sort(entries)
-        utils.countSimilarEntriesWithMP(sorted_df["aflowml_bg"], "AFLOW-ML")
+        countSimilarEntriesWithMP(sorted_df["aflowml_bg"], "AFLOW-ML")
         return sorted_df

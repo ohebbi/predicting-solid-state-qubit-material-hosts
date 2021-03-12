@@ -6,7 +6,7 @@ from pathlib import Path
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
-from src.data import utils
+from src.data.utils import countSimilarEntriesWithMP, LOG
 from src.data import get_data_base
 
 class data_OQMD(get_data_base.data_base):
@@ -37,7 +37,7 @@ class data_OQMD(get_data_base.data_base):
         self.df["crystal_structure.cross_reference.icsd"] = self.df["crystal_structure.cross_reference.icsd"].astype(int)
         self.df = self.df.reset_index(drop=True)
 
-        print("Writing to raw data...")
+        LOG.info("Writing to raw data...")
         self.df.to_pickle(self.raw_data_path)
 
         return self.df;
@@ -50,7 +50,7 @@ class data_OQMD(get_data_base.data_base):
         spacegroups = np.copy(bandgaps)
         ICSDs       = np.copy(bandgaps)
 
-        print("total iterations: {}".format(len(entries)))
+        LOG.info("total iterations: {}".format(len(entries)))
         for i, icsd_list in tqdm(enumerate(entries["icsd_ids"])):
             for j, oqmd_icsd in enumerate(self.df["crystal_structure.cross_reference.icsd"]):
                 for icsd in eval(str(icsd_list)):
@@ -72,5 +72,5 @@ class data_OQMD(get_data_base.data_base):
             sorted_df = pd.read_pickle(self.interim_data_path)
         else:
             sorted_df = self._sort(entries)
-        utils.countSimilarEntriesWithMP(sorted_df["oqmd_bg"], "OQMD")
+        countSimilarEntriesWithMP(sorted_df["oqmd_bg"], "OQMD")
         return sorted_df

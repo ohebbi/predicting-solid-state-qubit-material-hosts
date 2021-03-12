@@ -3,6 +3,7 @@ import pandas as pd
 from typing import Optional, Iterable, Tuple, Dict
 import os
 from pathlib import Path
+from src.data.utils import LOG
 
 class data_base(abc.ABC):
 
@@ -21,10 +22,10 @@ class data_base(abc.ABC):
 
     def _does_file_exist(self)-> bool:
         if os.path.exists(self.raw_data_path):
-            print("Data path {} detected. Reading now...".format(self.raw_data_path))
+            LOG.info("Data path {} detected. Reading now...".format(self.raw_data_path))
             return True
         else:
-            print("Data path {} not detected. Applying query now...".format(self.raw_data_path))
+            LOG.info("Data path {} not detected. Applying query now...".format(self.raw_data_path))
             return False
 
     def get_dataframe(self, sorted: Optional[bool] = True)-> pd.DataFrame:
@@ -33,7 +34,7 @@ class data_base(abc.ABC):
             self.df = pd.read_pickle(self.raw_data_path)
         else:
             self.df = self._apply_query(sorted=sorted)
-        print("Done")
+        LOG.info("Done")
         return(self.df)
 
 

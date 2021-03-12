@@ -8,7 +8,7 @@ import pickle
 
 from pathlib import Path
 from tqdm import tqdm
-from src.data import utils
+from src.data.utils import countSimilarEntriesWithMP, LOG
 from aflow import *
 
 from src.data.get_data_MP import data_MP
@@ -55,7 +55,7 @@ class data_AFLOW(get_data_base.data_base):
         self.df = get_dataframe_AFLOW(compound_list=compound_list, keys=keys, batch_size = 1000, catalog="icsd")
         """
 
-        print("Writing to raw data...")
+        LOG.info("Writing to raw data...")
         self.df.to_pickle(self.data_dir / "raw"  / "AFLOW" / "AFLOW.pkl")
 
         return self.df;
@@ -85,7 +85,7 @@ class data_AFLOW(get_data_base.data_base):
         index = 0
         aflow_dict = {k: [] for k in keys}
         for compound in tqdm(compound_list):
-            print("Current query: {}".format(compound))
+            LOG.info("Current query: {}".format(compound))
 
             results = search(catalog=catalog, batch_size=batch_size)\
                 .filter(K.compound==compound)
@@ -102,7 +102,7 @@ class data_AFLOW(get_data_base.data_base):
 
                     index += 1
             else:
-                print("No compound is matching the search")
+                LOG.info("No compound is matching the search")
                 continue
 
         return aflow_dict
@@ -133,7 +133,7 @@ class data_AFLOW(get_data_base.data_base):
         spacegroup_relax  = np.copy(bandgap)
         ICSDs    = np.copy(bandgap)
 
-        print("total iterations: {}".format(len(entries)))
+        LOG.info("total iterations: {}".format(len(entries)))
         for i, icsd_list in tqdm(enumerate(entries["icsd_ids"])):
             for j, aflow_icsd in enumerate(self.df["prototype"]):
                 for icsd in eval(str(icsd_list)):
@@ -160,6 +160,6 @@ class data_AFLOW(get_data_base.data_base):
             sorted_df = pd.read_pickle(self.interim_data_path)
         else:
             sorted_df = self._sort(entries)
-        utils.countSimilarEntriesWithMP(sorted_df["aflow_bg"], "AFLOW")
-        utils.countSimilarEntriesWithMP(sorted_df["aflow_bg_fit"], "AFLOW Fit")
+        countSimilarEntriesWithMP(sorted_df["aflow_bg"], "AFLOW")
+        countSimilarEntriesWithMP(sorted_df["aflow_bg_fit"], "AFLOW Fit")
         return sorted_df
