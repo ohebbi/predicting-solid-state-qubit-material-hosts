@@ -9,7 +9,8 @@ from src.features import featurizer
 from matminer.data_retrieval.retrieve_MP import MPDataRetrieval
 from tqdm import tqdm
 from pathlib import Path
-
+from src.data.get_data_MP import data_MP
+import dotenv
 
 def featurize_by_material_id(material_ids: np.array, featurizerObject: featurizer.extendedMODFeaturizer, MAPI_KEY: str) -> pd.DataFrame:
     """ Run all of the preset featurizers on the input dataframe.
@@ -39,10 +40,13 @@ def featurize_by_material_id(material_ids: np.array, featurizerObject: featurize
             criteria = {"task_id":{"$in":list(material_ids[i:i+steps])}}
             df_portion = apply_featurizers(criteria, properties, mpdr, featurizerObject)
             df = pd.concat([df,df_portion])
+            df.to_pickle(Path(__file__).resolve().parents[2] / "data" / "raw" / "featurizer" / "raw.pkl")
     if (leftover):
         criteria = {"task_id":{"$in":list(material_ids[i:i+leftover])}}
         df_portion = apply_featurizers(criteria, properties, mpdr, featurizerObject)
         df = pd.concat([df,df_portion])
+        df.to_pickle(Path(__file__).resolve().parents[2] / "data" / "raw" / "featurizer" / "raw.pkl")
+
     return df
 
 def does_file_exist(filepath:Path)-> bool:
@@ -59,7 +63,7 @@ def does_file_exist(filepath:Path)-> bool:
         logger.info("Data path\n{}\nnot detected. Downloading now...".format(filepath))
         return False
 
-def get_featurized_data():
+def get_featurized_data() -> pd.DataFrame:
     logger = logging.getLogger(__name__)
 
     featurized_data_path = Path(__file__).resolve().parents[2] / \
@@ -90,6 +94,21 @@ def main():
     get_featurized_data()
 
     logger.info("Done")
+def run_featurizer():
+
+    # not used in this stub but often useful for finding various files
+    project_dir = Path(__file__).resolve().parents[2]
+    data_dir = project_dir / "data"
+
+    dotenv.load_dotenv(project_dir / ".env")
+
+    MAPI_KEY = os.getenv("MAPI_KEY")
+    MP = data_MP(API_KEY=MAPI_KEY)
+    entries = MP.get_dataframe()
+
+    featurizerObject = preset.PRESET_HEBNES_2021()
+    df = featurize_by_material_id(entries["material_id"].values, featurizerObject, MAPI_KEY)
 
 if __name__ == '__main__':
-    main()
+    #main()
+    run_featurizer()
