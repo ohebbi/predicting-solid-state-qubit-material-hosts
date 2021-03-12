@@ -1,5 +1,6 @@
 import pandas as pd
-
+import logging
+import sys
 def sortByMPID(df):
     mpid_num = []
     for i in df["material_id"]:
@@ -40,11 +41,12 @@ def countSimilarEntriesWithMP(listOfEntries, nameOfDatabase):
         if i>=0:
             similarEntries += 1
 
-    print("The amount of similar entries between MP and {} is {},".format(nameOfDatabase, similarEntries))
-    print("which is {} percent".format(similarEntries/len(listOfEntries)))
+    LOG.info("The amount of similar entries between MP and {} is {},".format(nameOfDatabase, similarEntries))
+    LOG.info("which is {} percent".format(similarEntries/len(listOfEntries)))
 
-def main():
-    print("main")
-
-if __name__ == '__main__':
-    main()
+LOG = logging.getLogger(__name__)
+LOG.setLevel(logging.INFO)
+handler = logging.StreamHandler(sys.stdout)
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+LOG.addHandler(handler)

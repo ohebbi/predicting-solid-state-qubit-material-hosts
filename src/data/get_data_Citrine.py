@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from tqdm import tqdm
-from src.data import utils
+from src.data.utils import countSimilarEntriesWithMP, LOG
 from src.data import get_data_base
 
 class data_Citrine(get_data_base.data_base):
@@ -29,7 +29,7 @@ class data_Citrine(get_data_base.data_base):
                            properties = properties,
                            common_fields = common_fields)
 
-        print("Writing to raw data...")
+        LOG.info("Writing to raw data...")
         self.df.to_pickle(self.raw_data_path)
         return self.df;
 
@@ -54,5 +54,5 @@ class data_Citrine(get_data_base.data_base):
             sorted_df = pd.read_pickle(self.interim_data_path)
         else:
             sorted_df = self._sort(entries)
-        utils.countSimilarEntriesWithMP(sorted_df["citrine_bg"], "Citrine")
+        countSimilarEntriesWithMP(sorted_df["citrine_bg"], "Citrine")
         return sorted_df
