@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import logging
 import wget
+from src.features.utils.utils import LOG
 
 from src.features import preset
 from src.features import featurizer
@@ -22,10 +23,10 @@ def featurize_by_material_id(material_ids: np.array, featurizerObject: featurize
         The featurized DataFrame.
     """
     def apply_featurizers(criterion, properties, mpdr, featurizerObject):
-        print("Downloading dos and bandstructure objects..")
+        LOG.info("Downloading dos and bandstructure objects..")
         df_portion = mpdr.get_dataframe(criteria=criterion, properties=properties)
-        print(df_portion)
-        df_portion = featurizerObject.featurize(df_portion)#BandFeaturizer().featurize_dataframe(df, col_id="bandstructure",ignore_errors=True)
+        LOG.info(df_portion)
+        df_portion = featurizerObject.featurize(df_portion)
         return df_portion
 
     properties = ["material_id","full_formula", "bandstructure", "dos", "structure"]
@@ -36,11 +37,18 @@ def featurize_by_material_id(material_ids: np.array, featurizerObject: featurize
     leftover = len(material_ids)%steps
     df = pd.DataFrame({})
     for i in tqdm(range(0,len(material_ids),steps)):
+        portionReturned = True
         if not (i+steps > len(material_ids)):
-            print(list(material_ids[i:i+steps]))
+            LOG.info(list(material_ids[i:i+steps]))
             criteria = {"task_id":{"$in":list(material_ids[i:i+steps])}}
-            df_portion = apply_featurizers(criteria, properties, mpdr, featurizerObject)
+            while (portionReturned):
+                try:
+                    df_portion = apply_featurizers(criteria, properties, mpdr, featurizerObject)
+                    portionReturned = False
+                except:
+                    LOG.info("Except - try again.")
             df = pd.concat([df,df_portion])
+            LOG.info("CURRENT SHAPE:{}".format(df.shape))
             df.to_pickle(Path(__file__).resolve().parents[2] / "data" / "raw" / "featurizer" / "raw.pkl")
     if (leftover):
         criteria = {"task_id":{"$in":list(material_ids[i:i+leftover])}}
@@ -49,6 +57,25 @@ def featurize_by_material_id(material_ids: np.array, featurizerObject: featurize
         df.to_pickle(Path(__file__).resolve().parents[2] / "data" / "raw" / "featurizer" / "raw.pkl")
 
     return df
+
+
+def run_featurizer():
+
+    # not used in this stub but often useful for finding various files
+    project_dir = Path(__file__).resolve().parents[2]
+    data_dir = project_dir / "data"
+
+    dotenv.load_dotenv(project_dir / ".env")
+
+    MAPI_KEY = os.getenv("MAPI_KEY")
+    MP = data_MP(API_KEY=MAPI_KEY)
+    entries = MP.get_dataframe()
+    entries = entries["material_id"].values
+
+    featurizerObject = preset.PRESET_HEBNES_2021()
+    df = featurize_by_material_id(entries, featurizerObject, MAPI_KEY)
+
+
 
 def does_file_exist(filepath:Path)-> bool:
     """
@@ -87,22 +114,7 @@ def get_featurized_data():
 def main():
     get_featurized_data()
 
-    logger.info("Done")
-def run_featurizer():
-
-    # not used in this stub but often useful for finding various files
-    project_dir = Path(__file__).resolve().parents[2]
-    data_dir = project_dir / "data"
-
-    dotenv.load_dotenv(project_dir / ".env")
-
-    MAPI_KEY = os.getenv("MAPI_KEY")
-    MP = data_MP(API_KEY=MAPI_KEY)
-    entries = MP.get_dataframe()
-
-    featurizerObject = preset.PRESET_HEBNES_2021()
-    df = featurize_by_material_id(entries["material_id"].values, featurizerObject, MAPI_KEY)
-
+    LOG.info("Done")
 if __name__ == '__main__':
     #main()
     run_featurizer()

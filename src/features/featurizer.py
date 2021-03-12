@@ -3,6 +3,7 @@ from typing import Optional, Iterable, Tuple, Dict
 
 import pandas as pd
 from datetime import datetime
+from src.features.utils.utils import LOG
 
 from matminer.featurizers.base import MultipleFeaturizer, BaseFeaturizer
 from matminer.featurizers.structure import SiteStatsFingerprint
@@ -74,13 +75,18 @@ class extendedMODFeaturizer(abc.ABC):
             The featurized DataFrame.
         """
         df_composition    = self.featurize_composition(df)
+    #    df_composition.to_csv("df_composition.csv")
         df_structure      = self.featurize_structure(df)
+        #df_structure.to_csv("df_structure.csv")
         df_site           = self.featurize_site(df)
+        #df_site.to_csv("df_site.csv")
         df_dos            = self.featurize_dos(df)
-        df_band_structure = self.featurize_bandstructure(df)
+        #df_dos.to_csv("df_dos.csv")
+        df_bandstructure = self.featurize_bandstructure(df)
+        #df_band_structure.to_csv("df_band_structure.csv")
         #df_dos.to_csv("df_dos.csv")
         #df_band_structure.to_csv("df_band_structure.csv")
-        return df_dos.join(df_band_structure
+        return df_dos.join(df_bandstructure
                      .join(df_composition
                      .join(df_structure
                      .join(df_site,
@@ -107,7 +113,9 @@ class extendedMODFeaturizer(abc.ABC):
         Returns:
             pandas.DataFrame: the decorated DataFrame.
         """
-        print(f"Applying featurizers {featurizers} to column {column!r}.")
+        #LOG.info("Applying featurizers {} to column {}".format(featurizers, column))
+        #LOG.info(featurizers)
+        #LOG.info(column)
         if fit_to_df:
             _featurizers = MultipleFeaturizer([feat.fit(df[column]) for feat in featurizers])
         else:
@@ -139,16 +147,16 @@ class extendedMODFeaturizer(abc.ABC):
 
         if self.composition_featurizers:
 
-            print("Applying composition featurizers...")
+            LOG.info("Applying composition featurizers...")
             df['composition'] = df['structure'].apply(lambda s: s.composition)
 
             df = self._fit_apply_featurizers(df, self.composition_featurizers, "composition")
-            df = df.replace([np.inf, -np.inf, np.nan], 0)
+            #df = df.replace([np.inf, -np.inf, np.nan], 0)
             df = df.rename(columns={'Input Data': ''})
             df.columns = df.columns.map('|'.join).str.strip('|')
 
         if self.oxid_composition_featurizers:
-            print("Applying oxidation state featurizers...")
+            LOG.info("Applying oxidation state featurizers...")
             df = CompositionToOxidComposition().featurize_dataframe(df, "composition")
             df = self._fit_apply_featurizers(df, self.oxid_composition_featurizers, "composition_oxid")
             df = df.rename(columns={'Input Data': ''})
@@ -170,7 +178,7 @@ class extendedMODFeaturizer(abc.ABC):
         if not self.structure_featurizers:
             return pd.DataFrame([])
 
-        print("Applying structure featurizers...")
+        LOG.info("Applying structure featurizers...")
         df = df.copy()
         df = self._fit_apply_featurizers(df, self.structure_featurizers, "structure")
         df.columns = df.columns.map('|'.join).str.strip('|')
@@ -189,16 +197,17 @@ class extendedMODFeaturizer(abc.ABC):
         if not (self.dos_featurizers):
             return pd.DataFrame([])
 
-        print("Applying dos featurizers...")
+        LOG.info("Applying dos featurizers...")
         df = df.copy()
 
         try:
             df = self._fit_apply_featurizers(df, self.dos_featurizers, "dos")
         except:
             df = self.dos_featurizers.featurize_dataframe(
-                df, "dos", multiindex=True, ignore_errors=True
+                df, "dos", multiindex=True, ignore_errors=True,
+                fit_to_df=True
             )
-        df = df.replace([np.inf, -np.inf, np.nan], 0)
+        #df = df.replace([np.inf, -np.inf, np.nan], 0)
         df = df.rename(columns={'Input Data': ''})
         df.columns = df.columns.map('|'.join).str.strip('|')
 
@@ -215,7 +224,7 @@ class extendedMODFeaturizer(abc.ABC):
         if not (self.band_featurizers):
             return pd.DataFrame([])
 
-        print("Applying bandstructure featurizers...")
+        LOG.info("Applying bandstructure featurizers...")
         df = df.copy()
         try:
             df = self._fit_apply_featurizers(df, self.band_featurizers, "bandstructure")
@@ -223,7 +232,6 @@ class extendedMODFeaturizer(abc.ABC):
             df = self.band_featurizers.featurize_dataframe(
                 df=df, col_id="bandstructure", multiindex=True, ignore_errors=True
             )
-        df = df.replace([np.inf, -np.inf, np.nan], 0)
         df = df.rename(columns={'Input Data': ''})
         df.columns = df.columns.map('|'.join).str.strip('|')
 
@@ -244,7 +252,7 @@ class extendedMODFeaturizer(abc.ABC):
         if not self.site_featurizers:
             return pd.DataFrame([])
 
-        print("Applying site featurizers...")
+        LOG.info("Applying site featurizers...")
 
         df = df.copy()
         df.columns = ["Input data|" + x for x in df.columns]

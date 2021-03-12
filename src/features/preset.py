@@ -6,7 +6,7 @@ from typing import Optional, Iterable, Tuple, Dict
 from matminer.data_retrieval.retrieve_MP import MPDataRetrieval
 
 from src.features import featurizer
-from src.features.utils.utils import clean_df
+from src.features.utils.utils import clean_df, LOG
 from datetime import datetime
 from tqdm import tqdm
 
@@ -60,10 +60,14 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
         VoronoiFingerprint,
     )
     from matminer.featurizers.dos import (
-        DOSFeaturizer
+        DOSFeaturizer,
+        SiteDOS,
+        Hybridization,
+        DosAsymmetry,
     )
     from matminer.featurizers.bandstructure import (
-        BandFeaturizer
+        BandFeaturizer,
+        BranchPointEnergy
     )
 
     composition_featurizers = (
@@ -115,11 +119,15 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
     )
 
     dos_featurizers = (
-        DOSFeaturizer()
+        DOSFeaturizer(),
+        SiteDOS(),
+        Hybridization(),
+        #DosAsymmetry(),
     )
 
     band_featurizers = (
-        BandFeaturizer()
+        BandFeaturizer(),
+        BranchPointEnergy()
     )
     def __init__(self, n_jobs=None):
             self._n_jobs = n_jobs
@@ -199,6 +207,7 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
         """
 
         df = super().featurize_dos(df)
+        df.to_csv("df_dos.csv")
 
         hotencodeColumns = ["DOSFeaturizer|vbm_specie_1","DOSFeaturizer|cbm_specie_1"]
 
@@ -227,7 +236,7 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
             except:
                 continue
         df = df.drop(splitColumns, axis=1)
-
+        df = df.drop(["dos"], axis=1)
         return clean_df(df)
 
     def featurize_bandstructure(self, df):
@@ -236,6 +245,7 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
         """
 
         df = super().featurize_bandstructure(df)
+        df.to_csv("df_band_structure.csv")
 
         def _int_map(x):
             if str(x) == "False":
@@ -248,6 +258,7 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
         ].map(_int_map)
 
         df.to_csv("df_band_structure.csv")
+        df = df.drop(["bandstructure"], axis=1)
 
         return clean_df(df)
 
