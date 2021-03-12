@@ -20,3 +20,4 @@ setuptools
 virtualenvwrapper
 virtualenv
 wget
+python-dotenv

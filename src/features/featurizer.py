@@ -73,9 +73,9 @@ class extendedMODFeaturizer(abc.ABC):
         Returns:
             The featurized DataFrame.
         """
-        #df_composition    = self.featurize_composition(df)
-        #df_structure      = self.featurize_structure(df)
-        #df_site           = self.featurize_site(df)
+        df_composition    = self.featurize_composition(df)
+        df_structure      = self.featurize_structure(df)
+        df_site           = self.featurize_site(df)
         df_dos            = self.featurize_dos(df)
         df_band_structure = self.featurize_bandstructure(df)
         #df_dos.to_csv("df_dos.csv")
