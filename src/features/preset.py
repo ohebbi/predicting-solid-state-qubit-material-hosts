@@ -121,8 +121,7 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
     dos_featurizers = (
         DOSFeaturizer(),
         SiteDOS(),
-        Hybridization(),
-        #DosAsymmetry(),
+        Hybridization()
     )
 
     band_featurizers = (

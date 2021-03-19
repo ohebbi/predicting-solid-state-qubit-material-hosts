@@ -75,17 +75,15 @@ class extendedMODFeaturizer(abc.ABC):
             The featurized DataFrame.
         """
         df_composition    = self.featurize_composition(df)
-    #    df_composition.to_csv("df_composition.csv")
+
         df_structure      = self.featurize_structure(df)
-        #df_structure.to_csv("df_structure.csv")
+
         df_site           = self.featurize_site(df)
-        #df_site.to_csv("df_site.csv")
+
         df_dos            = self.featurize_dos(df)
-        #df_dos.to_csv("df_dos.csv")
+
         df_bandstructure = self.featurize_bandstructure(df)
-        #df_band_structure.to_csv("df_band_structure.csv")
-        #df_dos.to_csv("df_dos.csv")
-        #df_band_structure.to_csv("df_band_structure.csv")
+
         return df_dos.join(df_bandstructure
                      .join(df_composition
                      .join(df_structure

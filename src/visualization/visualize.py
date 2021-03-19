@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+
 import seaborn as sns
 from tqdm import tqdm
 from sklearn.metrics import auc, average_precision_score, roc_curve, precision_recall_curve
@@ -107,6 +109,86 @@ def plotBandGaps(x, y, full_formulas, xlabel, ylabel, title=None, addOLS = True)
 
     return fig
 
+def plot_eigenvectors_principal_components(PCAcomponents, chosenNComponents:int = 10, NFeatures: int = 10):
+    # plot
+    fig, ax = plt.subplots()
+    w = 5.85
+    fig.set_size_inches(w=w*1.0,h= 6.0)
+
+    c = range(0,chosenNComponents)
+
+    cmap = plt.cm.get_cmap("cool", len(c))
+    norm = mpl.colors.SymLogNorm(linthresh=2**(-4),vmin=c[-1], vmax=c[0])
+
+    sm = mpl.cm.ScalarMappable(norm=norm, cmap=cmap)
+    sm.set_array([])
+
+    for i in range(chosenNComponents-1,0,-1):
+        ax.plot(abs(PCAcomponents.iloc[i]).nlargest(NFeatures).values,"-", color=cmap(c[i]))
+
+    ax.set_title("Sorted highest eigenvector for components")
+    ax.set_xlabel("Top {} features".format(NFeatures))
+    ax.set_ylabel("Eigenvectors")
+    coloriarobaro=fig.colorbar(sm, ax=(ax), ticks=[0, c[-1]], shrink=1.0, fraction=0.05, format='%.0f')
+
+    fig.show()
+
+    # plot
+    fig, ax = plt.subplots()
+    fig.set_size_inches(w=w*1.0,h= 6.0)
+
+    # Plot all eigenvectors
+    #######################
+    for i in range(chosenNComponents-1,0,-1):
+        ax.plot(abs(PCAcomponents.iloc[i].values), ",",color=cmap(c[i]))
+
+    # Plot first eigenvector
+    #ax.plot(abs(PCAcomponents.iloc[0].values), "o", color=cmap(c[i]))
+
+    ax.set_title("Principal component eigenvector per feature")
+    ax.set_xlabel("Index of eigenvectors / Original feature number")
+    ax.set_ylabel("Eigenvectors")
+    coloriarobaro=fig.colorbar(sm, ax=(ax), ticks=[0, c[-1]], shrink=1.0, fraction=0.05, format='%.0f')
+
+    fig.show()
+
+def top_eigenvector_vs_features(PCAcomponents, whichComponent:int = 0, NFeatures: int = 10):
+
+    # New figure
+    fig, ax = plt.subplots()
+    w = 5.85
+    fig.set_size_inches(w=w*1.0,h= 6.0)
+
+    #color
+    c = range(0,NFeatures)
+    cmap = plt.cm.get_cmap("cool", len(c))
+
+    # Plot first pc
+    ax.plot(abs(PCAcomponents.iloc[whichComponent].values), "o", color=cmap(c[0]))
+
+    ax.set_title("Principal component eigenvector per feature")
+    ax.set_xlabel("Index of eigenvectors / Original feature number")
+    ax.set_ylabel("Eigenvectors")
+    #coloriarobaro=fig.colorbar(sm, ax=(ax), ticks=[0, c[-1]], shrink=1.0, fraction=0.05, format='%.0f')
+
+    fig.show()
+
+    # Plot top features in first pc
+    topFeaturesOfFirstComponent = abs(PCAcomponents.iloc[whichComponent]).nlargest(NFeatures).values.round(3)
+    indices = abs(PCAcomponents.iloc[whichComponent]).nlargest(NFeatures).index
+
+    fig = go.Figure(
+            layout = go.Layout (
+                title=go.layout.Title(text="Top {} features of PC[{}]".format(NFeatures, whichComponent)),
+                yaxis=dict(title='Value of eigenvector',range=[0,topFeaturesOfFirstComponent[whichComponent]+topFeaturesOfFirstComponent[whichComponent]*0.5])
+                #barmode='group'
+            )
+        )
+    fig.add_traces(go.Scatter(x=indices.values, y=topFeaturesOfFirstComponent))
+
+    fig.show()
+
+
 
 def plot_accuracy(models, names):
     fig = go.Figure()
@@ -138,6 +220,7 @@ def plot_accuracy(models, names):
                    yaxis_title='f1 score')
     fig.show()
 
+    """
     fig = go.Figure()
     for i, model in enumerate(models):
         fig.add_trace(go.Scatter(y=model['numPredPero'],
@@ -147,7 +230,7 @@ def plot_accuracy(models, names):
                    xaxis_title='Cross validation folds',
                    yaxis_title='Counted candidates')
     fig.show()
-
+    """
 
 def plot_important_features(models, names,X, k, n):
     """
@@ -219,9 +302,12 @@ def plot_important_features_restricted_domain(models, names, trainingSet, k, n):
 
 
 def plot_confusion_metrics(models, names, data,  k, n, abbreviations=[]):
+    """
+    Plot false positives and false negatives for a given dataset.
+    """
     fig = go.Figure(
             layout = go.Layout (
-                title=go.layout.Title(text="False positives (Nruns = {})".format(numberRuns*numberSplits)),
+                title=go.layout.Title(text="False positives (Nruns = {})".format(n*k)),
                 yaxis=dict(title='Counts'),
                 barmode='group'
             )
@@ -237,7 +323,7 @@ def plot_confusion_metrics(models, names, data,  k, n, abbreviations=[]):
 
     fig = go.Figure(
             layout = go.Layout (
-                title=go.layout.Title(text="False negatives (Nruns = {})".format(numberRuns*numberSplits)),
+                title=go.layout.Title(text="False negatives (Nruns = {})".format(n*k)),
                 yaxis=dict(title='Counts'),
                 barmode='group'
             )
@@ -306,7 +392,7 @@ def draw_cv_roc_curve(classifier,
                        k: int,
                        n: int,
                        cv,
-                       title='ROC Curve'):
+                       title: str):
     """
     Draw a Cross Validated ROC Curve.
     Keyword Args:
@@ -314,7 +400,7 @@ def draw_cv_roc_curve(classifier,
         cv: StratifiedKFold Object:
         X: Feature Pandas DataFrame
         y: Response Pandas Series
-    Example largely taken from http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html#sphx-glr-auto-examples-model-selection-plot-roc-crossval-py
+    Example adapted from http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html#sphx-glr-auto-examples-model-selection-plot-roc-crossval-py
     """
     # Creating ROC Curve with Cross Validation
     tprs = []
@@ -323,9 +409,9 @@ def draw_cv_roc_curve(classifier,
 
     i = 0
     for train, test in tqdm(cv.split(X, y)):
-        probas_ = classifier.fit(X.iloc[train], y.iloc[train]).predict_proba(X.iloc[test])
+        probas_ = classifier.fit(X.iloc[train], y[train]).predict_proba(X.iloc[test])
         # Compute ROC curve and area the curve
-        fpr, tpr, thresholds = roc_curve(y.iloc[test], probas_[:, 1])
+        fpr, tpr, thresholds = roc_curve(y[test], probas_[:, 1])
         tprs.append(np.interp(mean_fpr, fpr, tpr))
 
         tprs[-1][0] = 0.0
@@ -336,7 +422,7 @@ def draw_cv_roc_curve(classifier,
 
         i += 1
     plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r',
-             label='Luck', alpha=.8)
+             label='Random', alpha=.8)
 
     mean_tpr = np.mean(tprs, axis=0)
     mean_tpr[-1] = 1.0
@@ -354,9 +440,9 @@ def draw_cv_roc_curve(classifier,
 
     plt.xlim([-0.05, 1.05])
     plt.ylim([-0.05, 1.05])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('ROC Curve' + str(title))
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.title("CV-ROC Curve " + str(title))
     plt.legend(loc="lower right")
     plt.show()
 
@@ -376,22 +462,22 @@ def draw_cv_pr_curve(classifier,
         X: Feature Pandas DataFrame
         y: Response Pandas Series
 
-    Largely taken from: https://stackoverflow.com/questions/29656550/how-to-plot-pr-curve-over-10-folds-of-cross-validation-in-scikit-learn
+    Example adapted from: https://stackoverflow.com/questions/29656550/how-to-plot-pr-curve-over-10-folds-of-cross-validation-in-scikit-learn
     """
     y_real = []
     y_proba = []
 
     i = 0
     for train, test in tqdm(cv.split(X, y)):
-        probas_ = classifier.fit(X.iloc[train], y.iloc[train]).predict_proba(X.iloc[test])
+        probas_ = classifier.fit(X.iloc[train], y[train]).predict_proba(X.iloc[test])
         # Compute ROC curve and area the curve
-        precision, recall, _ = precision_recall_curve(y.iloc[test], probas_[:, 1])
+        precision, recall, _ = precision_recall_curve(y[test], probas_[:, 1])
 
         # Plotting each individual PR Curve
         plt.plot(recall, precision, lw=1, alpha=0.3, color='grey')
                  #label='PR fold %d (AUC = %0.2f)' % (i, average_precision_score(y.iloc[test], probas_[:, 1])))
 
-        y_real.append(y.iloc[test])
+        y_real.append(y[test])
         y_proba.append(probas_[:, 1])
 
         i += 1
@@ -407,8 +493,8 @@ def draw_cv_pr_curve(classifier,
 
     plt.xlim([-0.05, 1.05])
     plt.ylim([-0.05, 1.05])
-    plt.xlabel('Recall')
-    plt.ylabel('Precision')
-    plt.title('PR Curve' + str(title))
+    plt.xlabel("Recall")
+    plt.ylabel("Precision")
+    plt.title("CV-PR Curve " + str(title))
     plt.legend(loc="lower right")
     plt.show()
