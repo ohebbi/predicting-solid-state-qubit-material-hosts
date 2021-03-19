@@ -32,6 +32,9 @@ data: requirements
 features: requirements
 	$(PYTHON_INTERPRETER) src/features/build_features.py
 
+features: requirements
+	$(PYTHON_INTERPRETER) src/features/build_features.py
+
 ## Delete all compiled Python files
 clean:
 	find . -type f -name "*.py[co]" -delete

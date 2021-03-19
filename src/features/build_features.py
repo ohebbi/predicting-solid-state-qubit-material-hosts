@@ -5,6 +5,7 @@ import logging
 import wget
 import time
 from src.features.utils.utils import LOG
+import pickle
 
 from src.features import preset
 from src.features import featurizer
@@ -158,6 +159,8 @@ def get_featurized_data():
         # Read and load pkl
         with open(file, 'rb') as f:
             df = pickle.load(f)
+            # Make directory if not present
+            Path(featurized_data_path).mkdir(parents=True,exist_ok=True)
             df.to_pickle(featurized_data_path)
             os.remove(file)
     else:
@@ -170,5 +173,5 @@ def main():
 
     LOG.info("Done")
 if __name__ == '__main__':
-    #main()
-    run_featurizer()
+    main()
+    #run_featurizer()
