@@ -1,8 +1,9 @@
 import abc
+import time
+
 from typing import Optional, Iterable, Tuple, Dict
 
 import pandas as pd
-from datetime import datetime
 from src.features.utils.utils import LOG
 
 from matminer.featurizers.base import MultipleFeaturizer, BaseFeaturizer
@@ -74,23 +75,40 @@ class extendedMODFeaturizer(abc.ABC):
         Returns:
             The featurized DataFrame.
         """
+        time0 = time.time()
         df_composition    = self.featurize_composition(df)
-    #    df_composition.to_csv("df_composition.csv")
+        time1 = time.time()
+        #df_composition.to_csv("df_composition.csv")
         df_structure      = self.featurize_structure(df)
+        time2 = time.time()
         #df_structure.to_csv("df_structure.csv")
         df_site           = self.featurize_site(df)
+        time3 = time.time()
         #df_site.to_csv("df_site.csv")
         df_dos            = self.featurize_dos(df)
+        time4 = time.time()
         #df_dos.to_csv("df_dos.csv")
         df_bandstructure = self.featurize_bandstructure(df)
-        #df_band_structure.to_csv("df_band_structure.csv")
-        #df_dos.to_csv("df_dos.csv")
-        #df_band_structure.to_csv("df_band_structure.csv")
-        return df_dos.join(df_bandstructure
+        time5 = time.time()
+        #df_bandstructure.to_csv("df_bandstructure.csv")
+
+        df_featurized = df_dos.join(df_bandstructure
                      .join(df_composition
                      .join(df_structure
                      .join(df_site,
-                     lsuffix="l"), rsuffix="r"), lsuffix="L"), rsuffix="r")
+                     lsuffix="l"), rsuffix="r"), lsuffix="l"), rsuffix="r")
+
+        df_time = pd.DataFrame({})
+        df_time["composition"]   = [time1-time0]
+        df_time["structure"]     = [time2-time1]
+        df_time["site"]          = [time3-time2]
+        df_time["dos"]           = [time4-time3]
+        df_time["bandstructure"] = [time5-time4]
+        df_time["all"]           = [time5-time0]
+        df_time["df.rows"]       = [df_featurized.shape[0]]
+        df_time["df.features"]   = [df_featurized.shape[1]]
+
+        return df_time, df_featurized
 
     def _fit_apply_featurizers(
         self,
