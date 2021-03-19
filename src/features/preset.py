@@ -94,7 +94,7 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
         GlobalSymmetryFeatures(),
         RadialDistributionFunction(),
         CoulombMatrix(),
-        PartialRadialDistributionFunction(),
+        #PartialRadialDistributionFunction(),
         SineCoulombMatrix(),
         EwaldEnergy(),
         BondFractions(),
@@ -206,7 +206,7 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
         """
 
         df = super().featurize_dos(df)
-        df.to_csv("df_dos.csv")
+
 
         hotencodeColumns = ["DOSFeaturizer|vbm_specie_1","DOSFeaturizer|cbm_specie_1"]
 
@@ -244,7 +244,6 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
         """
 
         df = super().featurize_bandstructure(df)
-        df.to_csv("df_band_structure.csv")
 
         def _int_map(x):
             if str(x) == "False":
@@ -256,7 +255,7 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
             "BandFeaturizer|is_gap_direct"
         ].map(_int_map)
 
-        df.to_csv("df_band_structure.csv")
+
         df = df.drop(["bandstructure"], axis=1)
 
         return clean_df(df)
@@ -267,7 +266,6 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
         renames some fields and cleans the output dataframe.
         """
 
-        # rename some features for backwards compatibility with pretrained models
         aliases = {
             "GeneralizedRadialDistributionFunction": "GeneralizedRDF",
             "AGNIFingerprints": "AGNIFingerPrint",

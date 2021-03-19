@@ -35,7 +35,7 @@ class data_MP(get_data_base.data_base):
 
         # Remove unsupported MPIDs
         self.df = filterIDs(self.df)
-
+        LOG.info("Current shape of dataframe after filter applied: {}".format(self.df.shape))
         # Sort by ascending MPID order
         if (sorted):
             self.df = sortByMPID(self.df)

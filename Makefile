@@ -1,4 +1,4 @@
-.PHONY: clean data lint requirements sync_data_to_s3 sync_data_from_s3
+.PHONY: clean data features lint requirements sync_data_to_s3 sync_data_from_s3
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -27,7 +27,9 @@ requirements: test_environment
 
 ## Make Dataset
 data: requirements
-	$(PYTHON_INTERPRETER) src/data/make_dataset.py 
+	$(PYTHON_INTERPRETER) src/data/make_dataset.py
+
+features: requirements
 	$(PYTHON_INTERPRETER) src/features/build_features.py
 
 features: requirements
