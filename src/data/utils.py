@@ -19,6 +19,9 @@ def filterIDs(df: pd.DataFrame) -> pd.DataFrame:
                         "mp-28979",  #Ba6C120
                         "mp-29281",  #Th24P132
                         "mp-555563", #PH6C2S2NCl2O4 #DOI: 10.17188/1268877
+                        "mp-560718", #Te4H48Au4C16S12N4
+                        "mp-568028", #C120
+                        "mp-568259", #Ta4Si8P4H72C24N8Cl24
                         "mp-583476", #Nb7S2I19      #DOI: 10.17188/1277059
                         "mp-600205", #H10C5SeS2N3Cl          #DOI: -
                         "mp-600217", #H80C40Se8S16Br8N24     #DOI: -
