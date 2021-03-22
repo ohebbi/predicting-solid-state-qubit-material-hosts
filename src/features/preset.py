@@ -222,7 +222,6 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
            "DOSFeaturizer|cbm_character_1"
            ].map(_orbitals)
 
-
         # Splitting one feature into several floating features
         # e.g. number;number;number into three columns
         splitColumns = ["DOSFeaturizer|cbm_location_1", "DOSFeaturizer|vbm_location_1"]

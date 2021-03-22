@@ -28,7 +28,8 @@ class data_MP(get_data_base.data_base):
             # Features
             props = ["material_id","full_formula","icsd_ids",
                     "spacegroup.number","spacegroup.point_group", "band_gap","run_type",
-                    "cif", "elements", "structure","pretty_formula"]
+                    "cif", "elements", "structure","pretty_formula","total_magnetization",
+                    "nelements", "efermi", "oxide_type"]
 
             # Query
             self.df = pd.DataFrame(mpr.query(criteria=criteria, properties=props))

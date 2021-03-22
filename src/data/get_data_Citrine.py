@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Iterable, Optional
+from typing import Optional
 import os
 from matminer.data_retrieval.retrieve_Citrine import CitrineDataRetrieval
 import pandas as pd

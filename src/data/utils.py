@@ -1,7 +1,10 @@
 import pandas as pd
 import logging
 import sys
-def sortByMPID(df):
+from pymatgen.symmetry.groups import SYMM_DATA, sg_symbol_from_int_number
+
+
+def sortByMPID(df: pd.DataFrame) -> pd.DataFrame:
     mpid_num = []
     for i in df["material_id"]:
         mpid_num.append(int(i[3:]))
@@ -10,7 +13,7 @@ def sortByMPID(df):
     df = df.drop(columns=["mpid_num"])
     return df
 
-def filterIDs(df):
+def filterIDs(df: pd.DataFrame) -> pd.DataFrame:
     unsupportedMPIDs = ["mp-28709",  #C120S32
                         "mp-28905",  #Sr6C120
                         "mp-28979",  #Ba6C120
@@ -47,6 +50,48 @@ def countSimilarEntriesWithMP(listOfEntries, nameOfDatabase):
 
     LOG.info("The amount of similar entries between MP and {} is {},".format(nameOfDatabase, similarEntries))
     LOG.info("which is {} percent".format(similarEntries/len(listOfEntries)))
+
+def polarGroupUsedInMP():
+    """
+    Materials Project has more space groups than normal convention. This function finds
+    all the polar groups for materials project extended list of space groups.
+    """
+    # This is a list of the point groups as noted in pymatgen
+    point_groups = []
+    for i in range(1,231):
+        symbol = sg_symbol_from_int_number(i)
+        point_groups.append(SYMM_DATA['space_group_encoding'][symbol]['point_group'])
+
+    # Note that there are 40 of them, rather than 32.
+    print("Number of point groups denoted in pymatgen: {}".format(len(set(point_groups))))
+
+    # This is because multiple conventions are used for the same point group.
+    # This dictionary can be used to convert between them.
+    point_group_conv = {'321' :'32', '312': '32', '3m1' :'3m', '31m': '3m',
+                        '-3m1' : '-3m', '-31m': '-3m', '-4m2': '-42m', '-62m': '-6m2' }
+
+    # Using this dictionary we can correct to the standard point group notation.
+    corrected_point_groups = [point_group_conv.get(pg, pg) for pg in point_groups]
+    # Which produces the correct number of point groups. 32.
+    print("Number of point groups in conventional notation: {}".format(len(set(corrected_point_groups))))
+
+    # There are 10 polar point groups
+    polar_point_groups = ['1', '2', 'm', 'mm2', '4', '4mm', '3', '3m', '6', '6mm']
+
+    # Polar spacegroups have polar point groups.
+    polar_spacegroups = []
+
+    # There are 230 spacegroups
+    for i in range(1,231):
+        symbol = sg_symbol_from_int_number(i)
+        pg = SYMM_DATA['space_group_encoding'][symbol]['point_group']
+        if point_group_conv.get(pg, pg) in polar_point_groups:
+            polar_spacegroups.append(i)
+
+    # 68 of the 230 spacegroups are polar.
+    print("Number of polar spacegroups: {}".format(len(polar_spacegroups)))
+
+    return polar_spacegroups
 
 LOG = logging.getLogger(__name__)
 LOG.setLevel(logging.INFO)

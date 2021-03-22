@@ -1,5 +1,8 @@
 # plotting
 import plotly.graph_objs as go
+import plotly.express as px
+from plotly.graph_objs import *
+
 import numpy as np
 import pandas as pd
 from sklearn.metrics import confusion_matrix
@@ -9,6 +12,60 @@ import matplotlib as mpl
 import seaborn as sns
 from tqdm import tqdm
 from sklearn.metrics import auc, average_precision_score, roc_curve, precision_recall_curve
+from pathlib import Path
+
+# textwidth in LateX
+width = 411.14224
+
+height = ((5**.5 - 1) / 2 )*width
+
+width_plotly = 548.1896533333334 #pt to px
+height_plotly = ((5**.5 - 0.75) / 2 )*width_plotly
+tex_fonts = {
+    "text.usetex": True,
+    "font.family": "Palatino",
+    "axes.labelsize":12,
+    "font.size": 12,
+    "legend.fontsize": 10,
+    "xtick.labelsize": 10,
+    "ytick.labelsize":10
+}
+plt.rcParams.update(tex_fonts)
+
+
+def set_size(width, fraction=1, subplots=(1,1)):
+    """ Set fgure dimensions to avoid scaling in LateX.
+
+    Args
+    ---------
+    width : float
+            Document textwidth or columnwidth in pts
+    fraction : float, optional
+            Fraction of the width which you wish the figure to occupy
+    subplots: array-like, optional
+            The number of rows and column of subplots
+    Returns
+    ---------
+    fig_dim: tuple
+            Dimensions of figure in inches
+    """
+    # Width of figure (in pts)
+    fig_width_pt = width * fraction
+
+    # Convert from pt to inches
+    inches_per_pt = 1/72.27
+
+    # Golden ratio to set aeshetic figure height
+    # https://disq.us/p/2940ij3
+    golden_ratio = (5**.5 - 1) / 2
+
+    # Figure width in inches
+    fig_width_in = fig_width_pt * inches_per_pt
+    # Figure height in inches
+    fig_height_in = fig_width_in * golden_ratio * (subplots[0] / subplots[1])
+
+    return (fig_width_in, fig_height_in)
+
 
 # Linear Regression for bandgaps
 from sklearn.linear_model import LinearRegression
@@ -48,13 +105,70 @@ def plotSimilarities(x, y, full_formulas, xlabel, ylabel, title=None):
                                 showlegend=False),
                 layout = go.Layout (
                     autosize=False,
-                    width=500,
-                    height=500,
+                    width=width,
+                    height=height,
                     title=go.layout.Title(text=title),
                     xaxis=dict(title=xlabel),
                     yaxis=dict(title=ylabel, scaleanchor="x", scaleratio=1)))
-
+    fig.update_layout({"plot_bgcolor": "rgba(0, 0, 0, 0)",
+                   "paper_bgcolor": "rgba(0, 0, 0, 0)"})
     return fig
+
+def matplotBandGaps(x, y, xlabel, ylabel, filename, title=None, addOLS = True):
+    """
+    A function used to plot band gaps.
+    ...
+    Args
+    ----------
+    x : list (dim:N)
+        A list containing numeric values with np.nan as non-entries
+    y : list (dim:N)
+        A list containing numeric values with np.nan as non-entries
+    df : pd.DataFrame(dim: NxN)
+
+    xlabel: string
+    ylabel: string
+    title: string, default None
+    addOLS: boolean, default True
+        if True - fits an ordinary least square approximations to x and y,
+        and adds the following model to the plot.
+
+    Returns
+    -------
+    pd.DataFrame (dim:MxN)
+        A DataFrame containing the resulting matching queries. This can result
+        in several matching compounds
+    """
+    x = np.array(x)
+
+    fig, ax = plt.subplots(1,1, figsize=(set_size(width, 0.6)[0], set_size(width, 0.6)[0]))
+
+    ax.plot(x[(x>0)&(y>0)], y[(x>0)&(y>0)], "o")
+    ax.set(xlim=(0, 10), ylim=(0, 10))
+
+    ax.set_title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+
+    if addOLS:
+        reg = LinearRegression().fit(x[(x>0)&(y>0)].reshape(-1,1),y[(x>0)&(y>0)])
+
+        linreg_y = [reg.intercept_,reg.intercept_+max(x)*reg.coef_[0]]
+        linreg_x = [0,max(x)]
+
+        ax.plot(linreg_x, linreg_y, color="red", label="")
+
+        #some confidence interval
+        ci = 1.96 * np.std(linreg_y)/np.mean(linreg_y)
+        ax.fill_between(linreg_x, (linreg_y-ci), (linreg_y+ci), color='b', alpha=.1)
+
+        print("label: {}. line = {:0.2f}x+{:0.2f}".format(ylabel,reg.coef_[0], reg.intercept_))
+        print("CI: {:0.2f}".format(ci))
+    fig.savefig(Path(__file__).resolve().parents[2] / \
+                            "reports" / "figures"  / "bandgaps" \
+                            / filename, format="pdf", bbox_inches="tight")
+    return fig
+
 
 def plotBandGaps(x, y, full_formulas, xlabel, ylabel, title=None, addOLS = True):
     """
@@ -86,6 +200,7 @@ def plotBandGaps(x, y, full_formulas, xlabel, ylabel, title=None, addOLS = True)
     x[x<lowerBandGapLimit] = np.nan
     y[y<lowerBandGapLimit] = np.nan
 
+
     fig = go.Figure(data=go.Scattergl(x=x[(x>0)&(y>0)],
                                 y=y[(x>0)&(y>0)],
                                 mode='markers',
@@ -95,25 +210,28 @@ def plotBandGaps(x, y, full_formulas, xlabel, ylabel, title=None, addOLS = True)
                                 showlegend=False),
                 layout = go.Layout (
                     autosize=False,
-                    width=500,
-                    height=500,
+                    width=width,
+                    height=height,
                     title=go.layout.Title(text=title),
                     xaxis=dict(title=xlabel, range=[-0.1,8]),
                     yaxis=dict(title=ylabel, range=[-0.1,8], scaleanchor="x", scaleratio=1)))
+
+    fig, ax = plt.subplots(figsize=set_size(width, 0.4))
+
+    ax.plot(abs(PCAcomponents.iloc[whichComponent].values), "o", color=cmap(c[0]))
+
 
     if addOLS:
         reg = LinearRegression().fit(x[(x>0)&(y>0)].reshape(-1,1),y[(x>0)&(y>0)])
 
         print("{}x+{}".format(reg.intercept_,reg.coef_))
         fig.add_trace(go.Scatter(y=[reg.intercept_,reg.intercept_+8*reg.coef_[0]], x=[0,8], mode="lines",showlegend=False))
-
+    fig.update_layout({"paper_bgcolor": "rgba(0, 0, 0, 0)"})
     return fig
 
 def plot_eigenvectors_principal_components(PCAcomponents, chosenNComponents:int = 10, NFeatures: int = 10):
     # plot
-    fig, ax = plt.subplots()
-    w = 5.85
-    fig.set_size_inches(w=w*1.0,h= 6.0)
+    fig, ax = plt.subplots(1,1,figsize=set_size(width, 0.4))
 
     c = range(0,chosenNComponents)
 
@@ -130,12 +248,10 @@ def plot_eigenvectors_principal_components(PCAcomponents, chosenNComponents:int 
     ax.set_xlabel("Top {} features".format(NFeatures))
     ax.set_ylabel("Eigenvectors")
     coloriarobaro=fig.colorbar(sm, ax=(ax), ticks=[0, c[-1]], shrink=1.0, fraction=0.05, format='%.0f')
-
     fig.show()
 
     # plot
-    fig, ax = plt.subplots()
-    fig.set_size_inches(w=w*1.0,h= 6.0)
+    fig, ax = plt.subplots(set_size(width, 0.4))
 
     # Plot all eigenvectors
     #######################
@@ -155,9 +271,7 @@ def plot_eigenvectors_principal_components(PCAcomponents, chosenNComponents:int 
 def top_eigenvector_vs_features(PCAcomponents, whichComponent:int = 0, NFeatures: int = 10):
 
     # New figure
-    fig, ax = plt.subplots()
-    w = 5.85
-    fig.set_size_inches(w=w*1.0,h= 6.0)
+    fig, ax = plt.subplots(set_size(width, 0.4))
 
     #color
     c = range(0,NFeatures)
@@ -179,6 +293,9 @@ def top_eigenvector_vs_features(PCAcomponents, whichComponent:int = 0, NFeatures
 
     fig = go.Figure(
             layout = go.Layout (
+                autosize=False,
+                width=width,
+                height=height,
                 title=go.layout.Title(text="Top {} features of PC[{}]".format(NFeatures, whichComponent)),
                 yaxis=dict(title='Value of eigenvector',range=[0,topFeaturesOfFirstComponent[whichComponent]+topFeaturesOfFirstComponent[whichComponent]*0.5])
                 #barmode='group'
@@ -196,7 +313,10 @@ def plot_accuracy(models, names):
         fig.add_trace(go.Scatter(y=model['trainAccuracy'],
                     mode='lines',
                     name=names[i]))
-    fig.update_layout(title='Train accuracy',
+    fig.update_layout(autosize=False,
+                    width=width,
+                    height=height,
+                   title='Train accuracy',
                    xaxis_title='Cross validation folds',
                    yaxis_title='Accuracy')
     fig.show()
@@ -206,7 +326,11 @@ def plot_accuracy(models, names):
         fig.add_trace(go.Scatter(y=model['testAccuracy'],
                     mode='lines',
                     name=names[i]))
-    fig.update_layout(title='Test accuracy',
+    fig.update_layout(
+                    autosize=False,
+                    width=width,
+                    height=height,
+                    title='Test accuracy',
                    xaxis_title='Cross validation folds',
                    yaxis_title='Accuracy')
     fig.show()
@@ -215,7 +339,11 @@ def plot_accuracy(models, names):
         fig.add_trace(go.Scatter(y=model['f1_score'],
                     mode='lines',
                     name=names[i]))
-    fig.update_layout(title='f1 score on test set',
+    fig.update_layout(
+                  autosize=False,
+                  width=width,
+                  height=height,
+                  title='f1 score on test set',
                    xaxis_title='Cross validation folds',
                    yaxis_title='f1 score')
     fig.show()
@@ -252,6 +380,9 @@ def plot_important_features(models, names,X, k, n):
     """
     fig = go.Figure(
             layout = go.Layout (
+                autosize=False,
+                width=width,
+                height=height,
                 title=go.layout.Title(text="Feature Importance for the 100th iteration".format(k*n)),
                 yaxis=dict(title='Relative importance'),
                 barmode='group'
@@ -285,6 +416,9 @@ def plot_important_features_restricted_domain(models, names, trainingSet, k, n):
     fig.show()
     fig = go.Figure(
             layout = go.Layout (
+                autosize=False,
+                width=width*0.8,
+                height=height*0.8,
                 title=go.layout.Title(text="Feature Importance for the 100th iteration".format(n*k)),
                 yaxis=dict(title="Relative importance"),
                 barmode="group"
@@ -323,6 +457,9 @@ def plot_confusion_metrics(models, names, data,  k, n, abbreviations=[]):
 
     fig = go.Figure(
             layout = go.Layout (
+                autosize=False,
+                width=width*0.8,
+                height=height*0.8,
                 title=go.layout.Title(text="False negatives (Nruns = {})".format(n*k)),
                 yaxis=dict(title='Counts'),
                 barmode='group'
@@ -384,6 +521,7 @@ def confusion_matrixQT(models, y, names):
         plt.xlabel('true label')
         plt.ylabel('predicted label');
         plt.title("Confusion matrix {}".format(names[i]))
+        plt.figure(figsize=set_size(width, 0.4))
         plt.show()
 
 def draw_cv_roc_curve(classifier,
@@ -437,6 +575,7 @@ def draw_cv_roc_curve(classifier,
     tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
     plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2,
                      label=r'$\pm$ 1 std. dev.')
+    plt.figure(figsize=set_size(width, 0.4))
 
     plt.xlim([-0.05, 1.05])
     plt.ylim([-0.05, 1.05])
@@ -487,6 +626,7 @@ def draw_cv_pr_curve(classifier,
 
     precision, recall, _ = precision_recall_curve(y_real, y_proba)
 
+    plt.figure(figsize=set_size(width, 0.4))
     plt.plot(recall, precision, color='b',
              label=r'Precision-Recall (AUC = %0.2f)' % (average_precision_score(y_real, y_proba)),
              lw=2, alpha=.8)
@@ -498,3 +638,81 @@ def draw_cv_pr_curve(classifier,
     plt.title("CV-PR Curve " + str(title))
     plt.legend(loc="lower right")
     plt.show()
+
+def plot_parallel_coordinates(data, dimensions, color):
+    fig = px.parallel_categories(data, dimensions=dimensions,
+                                 color=color, color_continuous_scale=px.colors.sequential.Inferno)
+    fig.update_layout(
+                    {"plot_bgcolor": "rgba(0, 0, 0, 0)",
+                       "paper_bgcolor": "rgba(0, 0, 0, 0)",
+                      },
+                      font=dict(
+                        family="Palatino",
+                        size=12),
+                      autosize=False,
+                      width=width_plotly,
+                      height=height_plotly,
+                     )
+    fig.update_layout(
+    font_family="Palatino",
+    font_color="black",
+    font_size=12
+    )
+
+
+    fig.show()
+
+def plot_histogram_bg_nelements(entries):
+    _nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quaternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
+    fig = px.histogram(entries[entries["MP|band_gap"]<9], x="MP|band_gap", color="MP|nelements", nbins=20,
+                       title='Band gaps and material phases in dataset',
+                       labels={"MP|band_gap": "MP BG [ev]", 'MP|nelements':'Material phase'},
+                       category_orders={"MP|nelements": list(_nelements.values())})
+
+    fig.update_layout(
+                    {"plot_bgcolor": "rgba(0, 0, 0, 0)",
+                       "paper_bgcolor": "rgba(0, 0, 0, 0)",
+                      },
+                      font=dict(
+                        family="Palatino",
+                        color="Black",
+                        size=12),
+                      autosize=False,
+                      width=width_plotly,
+                      height=height_plotly,
+                     )
+    fig.write_image(str(Path(__file__).resolve().parents[2] / \
+                                "reports" / "figures"  / "buildingFeatures"\
+                                / "histogram_bg_nelements.pdf"))
+    fig.show()
+
+def plot_histogram_oxid_nelements(entries):
+    _oxideType = {"None": 0, "Oxide":1, "Peroxide":2, "Hydroxide":3, "Superoxide":4, "Ozonide":5}
+    _nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quaternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
+
+    fig = px.histogram(entries, x="MP|nelements", color="MP|oxide_type", nbins=7,
+                   title='Oxid types and material phases in dataset',
+                   labels={'MP|nelements':'Material phase', "MP|oxide_type": "Oxid type"},
+                   category_orders={"MP|nelements": list(_nelements.values()),
+                                    "MP|oxide_type":list(_oxideType.keys())})
+    fig.update_layout(
+                    {"plot_bgcolor": "rgba(0, 0, 0, 0)",
+                       "paper_bgcolor": "rgba(0, 0, 0, 0)",
+                      },
+                      font=dict(
+                        family="Palatino",
+                        color="Black",
+                        size=12),
+                      autosize=False,
+                      width=width_plotly,
+                      height=height_plotly,
+                     )
+    fig.update_layout(
+    font_family="Palatino",
+    font_color="black",
+    font_size=12
+    )
+    fig.write_image(str(Path(__file__).resolve().parents[2] / \
+                                    "reports" / "figures"  / "buildingFeatures" \
+                                    / "histogram_oxid_nelements.pdf"))
+    fig.show()

@@ -131,7 +131,7 @@ class data_AFLOW(get_data_base.data_base):
         bandgap_fitted    = np.copy(bandgap)
         spacegroup_orig   = np.copy(bandgap)
         spacegroup_relax  = np.copy(bandgap)
-        ICSDs    = np.copy(bandgap)
+        ICSDs             = np.copy(bandgap)
 
         LOG.info("total iterations: {}".format(len(entries)))
         for i, icsd_list in tqdm(enumerate(entries["icsd_ids"])):
