@@ -173,5 +173,5 @@ def main():
 
     LOG.info("Done")
 if __name__ == '__main__':
-    main()
-    #run_featurizer()
+    #main()
+    run_featurizer()
