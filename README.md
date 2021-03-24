@@ -1,4 +1,4 @@
-# Predicting solid state qubit candidates
+# Predicting solid state qubit candidates [![DOI](https://zenodo.org/badge/335907184.svg)](https://zenodo.org/badge/latestdoi/335907184)
 ==============================
 
 This is the main repository behind predicting solid state qubit candidates
