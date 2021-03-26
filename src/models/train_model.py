@@ -65,23 +65,23 @@ def findParamGrid(model):
     typeModel = type(model)
     if typeModel == type(RandomForestClassifier()):
         return {#"model__n_estimators": [10, 100, 1000],
-                #"model__max_features": ['auto', 'sqrt', 'log2'],
+                "model__max_features": [25,50, 75, 100], #['auto', 'sqrt', 'log2'],
                 "model__max_depth" : [2]#,4,6,8],
                 #"model__criterion" :['gini', 'entropy'],
                 }
     elif typeModel == type(GradientBoostingClassifier()):
         return {#"model__loss":["deviance", "exponential"],
                 #"model__learning_rate": [0.01, 0.025, 0.1, 0.2],
-                #"model__max_features": ['auto', 'sqrt', 'log2'],
-                "model__max_depth":[2]#,4],6,8],
-                #"model__max_features":["log2","sqrt"],
+                "model__max_depth":[2],#,4],6,8],
+                "model__max_features":[25,50, 75, 100], #['auto', 'sqrt', 'log2'],
                 #"model__criterion": ["friedman_mse", "mse"],
                 #"model__subsample":[0.5, 0.75, 1],
                 #"model__n_estimators":[10,100,1000]
                 }
     elif typeModel == type(LogisticRegression()):#penalty{‘l1’, ‘l2’, ‘elasticnet’, ‘none’}
-        return {"model__penalty":["l2"]#, "l2", "elasticnet", "none"],
+        return {"model__penalty":["l2"],# "l2", "elasticnet", "none"],
                 #"model__learning_C": [0.001,0.01,0.1,1,10,100,1000],
+                "model__max_iter":[200]
                 }
     else:
         raise TypeError("No model has been specified: type(model):{}".format(typeModel))
@@ -105,107 +105,6 @@ def applyGridSearch(X: pd.DataFrame, y, model, cv, sampleMethod="under"):
     print(grid.best_estimator_)
 
     return grid.best_estimator_, grid
-
-
-
-def runSupervisedModel(classifier,
-                       X: pd.DataFrame,
-                       y,
-                       k: int,
-                       n: int,
-                       cv,
-                       featureImportance: Optional[bool] = False,
-                       resamplingMethod: Optional[str] = "None"):
-
-    def resampling(X, y, method = None, strategy = None):
-
-        if method == "under":
-            if strategy:
-                underSample = RandomUnderSampler(sampling_strategy=strategy)
-            else:
-                underSample = RandomUnderSampler(sampling_strategy="majority")
-
-            return underSample.fit_resample(X, y)
-
-        elif method == "over":
-            if strategy:
-                overSample = RandomOverSampler(sampling_strategy=strategy)
-            else:
-                overSample = RandomOverSampler(sampling_strategy="minority")
-            return overSample.fit_resample(X, y)
-
-        elif method == "both":
-            X, y = resampling(X, y, method = "over", strategy = 0.5)
-            return resampling(X, y, method = "under", strategy = 1)
-        else:
-            #print("No resampling applied.")
-            return X, y
-
-    modelResults = {
-        'trainAccuracy':   np.zeros(n*k),
-        'testAccuracy':    np.zeros(n*k),
-        'f1_score':        np.zeros(n*k),
-        'std':             np.zeros(n*k),
-        'importantKeys':   np.zeros(len(X.columns.values)),
-        'numPredPero':     np.zeros(n*k),
-        'confusionMatrix': np.zeros((len(y), len(y))),
-        'falsePositives':  np.zeros(len(y)),
-        'falseNegatives':  np.zeros(len(y)),
-        'relativeImportance': np.zeros(len(X.columns.values))
-        }
-
-    # splitting into 50%/50% training and test data if n_splits = 2, or 90%/10% if n_splits=10
-    #rskf = RepeatedStratifiedKFold(n_splits=k, n_repeats=n, random_state=random_state)
-
-    if (featureImportance) and (type(classifier["model"]) != type(LogisticRegression())):
-        sel_classifier = SelectFromModel(classifier.named_steps["model"])
-
-    for i, (train_index, test_index) in tqdm(enumerate(cv.split(X, y))):
-
-        #partition the data
-        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-        y_train, y_test = y[train_index], y[test_index]
-
-        # ApplyResampling
-
-        X_train, y_train = resampling(X_train, y_train,
-                                method=resamplingMethod)
-
-        #fit the model
-        classifier.fit(X_train, y_train)
-        if (featureImportance) and (type(classifier["model"]) != type(LogisticRegression())):
-            sel_classifier.fit(X_train, y_train)
-
-        #predict on test set
-        y_pred      = classifier.predict(X_test)
-
-        #Finding predicted labels on all data based on training data.
-        y_pred_full = classifier.predict(X)
-
-        falsePositives = np.nonzero(y_pred_full.reshape((-1,)) > y)
-        falseNegatives = np.nonzero(y_pred_full.reshape((-1,)) < y)
-
-        #claim the scores
-        modelResults['trainAccuracy'][i] = classifier.score(X_train, y_train)
-        modelResults['testAccuracy'][i]  = classifier.score(X_test, y_test)
-        modelResults['f1_score'][i]      = f1_score(y_test, y_pred)
-        modelResults['std'][i]           = np.std(modelResults['testAccuracy'][0:i+1])
-        modelResults['numPredPero'][i]   = np.sum(y_pred_full)
-        modelResults['confusionMatrix']  = confusion_matrix(y_test, y_pred)
-        modelResults['falsePositives'][falsePositives] += 1
-        modelResults['falseNegatives'][falseNegatives] += 1
-
-        if (featureImportance) and (type(classifier["model"]) != type(LogisticRegression())):
-            modelResults['importantKeys'][sel_classifier.get_support()] += 1
-
-    if (featureImportance) and (type(classifier["model"]) != type(LogisticRegression())):
-        modelResults['relativeImportance'] = classifier.named_steps["model"].feature_importances_
-
-    print ("Mean accuracy:{}".format(np.mean(modelResults['testAccuracy'])))
-    print ("Standard deviation:{}".format(modelResults['std'][-1]))
-
-    return modelResults
-
 
 
 def fitAlgorithm(classifier, trainingData, trainingTarget):

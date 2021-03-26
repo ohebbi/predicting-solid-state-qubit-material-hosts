@@ -6,7 +6,8 @@ from typing import Optional, Iterable, Tuple, Dict
 from matminer.data_retrieval.retrieve_MP import MPDataRetrieval
 
 from src.features import featurizer
-from src.features.utils.utils import clean_df, LOG
+from src.data.utils import LOG
+from src.features.utils.utils import clean_df
 from datetime import datetime
 from tqdm import tqdm
 
@@ -275,7 +276,7 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
         df = df.loc[:, (df != 0).any(axis=0)]
 
         return clean_df(df)
-
+"""
 
 def sortByMPID(df):
     mpid_num = []
@@ -288,7 +289,7 @@ def sortByMPID(df):
     return df
 
 
-"""
+
 
 def main():
     ## When done, run through all the local functions in this file for nice formatting.

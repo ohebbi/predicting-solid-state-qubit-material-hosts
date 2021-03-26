@@ -23,7 +23,6 @@ class data_AFLOW(get_data_base.data_base):
         self.data_dir = Path(__file__).resolve().parents[2] / "data"
         self.raw_data_path = self.data_dir / "raw" / "AFLOW" / "AFLOW.pkl"
         self.interim_data_path = self.data_dir / "interim" / "AFLOW" / "AFLOW.pkl"
-        self.df = None
         super().__init__()
 
     def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
@@ -34,10 +33,10 @@ class data_AFLOW(get_data_base.data_base):
 
         # Read and load pkl data
         with open(file, 'rb') as f:
-            self.df = pickle.load(f)
+            df = pickle.load(f)
             os.remove(file)
 
-        # TODO : Add option to make new queries to AFLOWML
+        # TODO : Add option to make new queries to AFLOW
         """
         try:
             MP = data_MP(API_KEY = self.MAPI_KEY)
@@ -52,13 +51,13 @@ class data_AFLOW(get_data_base.data_base):
         keys = list(pd.read_pickle(Path.cwd().parent / "data" / "raw" / "AFLOW" / "AFLOW_keywords.pkl").columns)
 
 
-        self.df = get_dataframe_AFLOW(compound_list=compound_list, keys=keys, batch_size = 1000, catalog="icsd")
+        df = get_dataframe_AFLOW(compound_list=compound_list, keys=keys, batch_size = 1000, catalog="icsd")
         """
 
         LOG.info("Writing to raw data...")
-        self.df.to_pickle(self.data_dir / "raw"  / "AFLOW" / "AFLOW.pkl")
+        df.to_pickle(self.data_dir / "raw"  / "AFLOW" / "AFLOW.pkl")
 
-        return self.df;
+        return df;
 
     def get_data_AFLOW(self, compound_list: list, keys: list, batch_size: int, catalog: str = "icsd")-> Dict :
         """
@@ -123,7 +122,7 @@ class data_AFLOW(get_data_base.data_base):
         """
         return pd.DataFrame.from_dict(get_data_AFLOW(compound_list, keys, batch_size, catalog, fileName))
 
-    def _sort(self, entries: pd.DataFrame)-> pd.DataFrame:
+    def _sort(self, df: pd.DataFrame, entries: pd.DataFrame)-> pd.DataFrame:
 
         bandgap    = np.empty(len(entries))
         bandgap[:] = np.nan
@@ -135,31 +134,32 @@ class data_AFLOW(get_data_base.data_base):
 
         LOG.info("total iterations: {}".format(len(entries)))
         for i, icsd_list in tqdm(enumerate(entries["icsd_ids"])):
-            for j, aflow_icsd in enumerate(self.df["prototype"]):
+            for j, aflow_icsd in enumerate(df["prototype"]):
                 for icsd in eval(str(icsd_list)):
                     if icsd == int(aflow_icsd.split("_")[-1][:-1]):
 
-                        spacegroup_orig[i]  = int(self.df["spacegroup_orig"] .iloc[j])
-                        spacegroup_relax[i] = int(self.df["spacegroup_relax"].iloc[j])
+                        spacegroup_orig[i]  = int(df["spacegroup_orig"] .iloc[j])
+                        spacegroup_relax[i] = int(df["spacegroup_relax"].iloc[j])
                         ICSDs[i]             = int(aflow_icsd.split("_")[-1][:-1])
-                        bandgap[i]        = self.df["Egap"]     .iloc[j]
-                        bandgap_fitted[i] = self.df["Egap_fit"] .iloc[j]
+                        bandgap[i]        = df["Egap"]     .iloc[j]
+                        bandgap_fitted[i] = df["Egap_fit"] .iloc[j]
 
         sorted_df = pd.DataFrame({"aflow_bg":     bandgap,
                                  "aflow_bg_fit":  bandgap_fitted,
                                  "aflow_sg_orig": spacegroup_orig,
                                  "aflow_sg_relax":spacegroup_relax,
-                                 "aflow_icsd":    ICSDs})
+                                 "aflow_icsd":    ICSDs,
+                                 "material_id":  entries["material_id"]})
 
         sorted_df.to_pickle(self.data_dir / "interim" / "AFLOW" / "AFLOW.pkl")
         return sorted_df
 
-    def sort_with_MP(self, entries: pd.DataFrame)-> pd.DataFrame:
+    def sort_with_MP(self, df: pd.DataFrame, entries: pd.DataFrame)-> pd.DataFrame:
 
         if os.path.exists(self.interim_data_path):
             sorted_df = pd.read_pickle(self.interim_data_path)
         else:
-            sorted_df = self._sort(entries)
+            sorted_df = self._sort(df, entries)
         countSimilarEntriesWithMP(sorted_df["aflow_bg"], "AFLOW")
         countSimilarEntriesWithMP(sorted_df["aflow_bg_fit"], "AFLOW Fit")
         return sorted_df

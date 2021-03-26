@@ -14,7 +14,6 @@ class data_MP(get_data_base.data_base):
 
         self.API_KEY = API_KEY
         self.raw_data_path = Path(__file__).resolve().parents[2] / "data" / "raw" / "MP" / "MP.pkl"
-        self.df = None
         super().__init__()
 
     def _apply_query(self, sorted: Optional[bool] = True)-> pd.DataFrame:
@@ -28,23 +27,23 @@ class data_MP(get_data_base.data_base):
             # Features
             props = ["material_id","full_formula","icsd_ids",
                     "spacegroup.number","spacegroup.point_group", "band_gap","run_type",
-                    "cif", "elements", "structure","pretty_formula","total_magnetization",
+                    "cif", "structure","pretty_formula","total_magnetization",
                     "nelements", "efermi", "oxide_type"]
 
             # Query
-            self.df = pd.DataFrame(mpr.query(criteria=criteria, properties=props))
+            df = pd.DataFrame(mpr.query(criteria=criteria, properties=props))
 
         # Remove unsupported MPIDs
-        self.df = filterIDs(self.df)
-        LOG.info("Current shape of dataframe after filter applied: {}".format(self.df.shape))
+        df = filterIDs(df)
+        LOG.info("Current shape of dataframe after filter applied: {}".format(df.shape))
         # Sort by ascending MPID order
         if (sorted):
-            self.df = sortByMPID(self.df)
+            df = sortByMPID(df)
 
         LOG.info("Writing to raw data...")
-        self.df.to_pickle(self.raw_data_path)
-        return self.df;
+        df.to_pickle(self.raw_data_path)
+        return df;
 
     def sort_with_MP(self, entries: pd.DataFrame)-> np.array:
 
-        return self.df["full_formula"]
+        return entries["full_formula"].values

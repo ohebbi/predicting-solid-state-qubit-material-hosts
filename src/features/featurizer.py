@@ -4,7 +4,7 @@ import time
 from typing import Optional, Iterable, Tuple, Dict
 
 import pandas as pd
-from src.features.utils.utils import LOG
+from src.data.utils import LOG
 
 from matminer.featurizers.base import MultipleFeaturizer, BaseFeaturizer
 from matminer.featurizers.structure import SiteStatsFingerprint

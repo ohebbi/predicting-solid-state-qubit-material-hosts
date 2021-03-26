@@ -31,11 +31,11 @@ class data_base(abc.ABC):
     def get_dataframe(self, sorted: Optional[bool] = True)-> pd.DataFrame:
 
         if self._does_file_exist():
-            self.df = pd.read_pickle(self.raw_data_path)
+            df = pd.read_pickle(self.raw_data_path)
         else:
-            self.df = self._apply_query(sorted=sorted)
+            df = self._apply_query(sorted=sorted)
         LOG.info("Done")
-        return(self.df)
+        return(df)
 
 
 

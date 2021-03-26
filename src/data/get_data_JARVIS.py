@@ -19,7 +19,6 @@ class data_JARVIS(get_data_base.data_base):
         self.data_dir = Path(__file__).resolve().parents[2] / "data"
         self.raw_data_path= self.data_dir / "raw" / "JARVIS" / "JARVIS.pkl"
         self.interim_data_path = self.data_dir / "interim" / "JARVIS" / "JARVIS.pkl"
-        self.df = None
         super().__init__()
 
     def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
@@ -48,8 +47,8 @@ class data_JARVIS(get_data_base.data_base):
             os.remove(path)
 
         # Query
-        #self.df = pd.DataFrame(data('dft_3d'))\
-        self.df = pd.DataFrame(data)\
+        #df = pd.DataFrame(data('dft_3d'))\
+        df = pd.DataFrame(data)\
                                .replace("na", np.nan)\
                                .replace("None", np.nan)\
                                .fillna(value=np.nan)\
@@ -58,7 +57,7 @@ class data_JARVIS(get_data_base.data_base):
         icsd_list = []
 
         # ICSD-column is not consequent in notation, therefore we present a fix
-        for icsd_jarvis in self.df["icsd"]:
+        for icsd_jarvis in df["icsd"]:
             if isinstance(icsd_jarvis, str):
 
                 if isinstance(eval(icsd_jarvis), int):
@@ -70,15 +69,15 @@ class data_JARVIS(get_data_base.data_base):
             elif isinstance(icsd_jarvis, float):
                 icsd_list.append([icsd_jarvis])
 
-        self.df["icsd"] = icsd_list
-        self.df = self.df[self.df["optb88vdw_bandgap"]>0].reset_index(drop=True)
+        df["icsd"] = icsd_list
+        df = df[df["optb88vdw_bandgap"]>0].reset_index(drop=True)
 
         LOG.info("Writing to raw data...")
-        self.df.to_pickle(self.raw_data_path)
+        df.to_pickle(self.raw_data_path)
 
-        return self.df;
+        return df;
 
-    def _sort(self, entries: pd.DataFrame)-> pd.DataFrame:
+    def _sort(self, df:pd.DataFrame, entries: pd.DataFrame)-> pd.DataFrame:
 
         bandgaps_tbmbj = np.empty(len(entries))
         bandgaps_tbmbj[:] = np.nan
@@ -88,30 +87,28 @@ class data_JARVIS(get_data_base.data_base):
 
         LOG.info("total iterations: {}".format(len(entries)))
         for i, mp_icsd_list in tqdm(enumerate(entries["icsd_ids"])):
-            #LOG.info("her", mp_icsd_list)
-            for j, jarvis_icsd_list in enumerate(self.df["icsd"]):
-                #LOG.info(mp_icsd_list)
+            for j, jarvis_icsd_list in enumerate(df["icsd"]):
                 for icsd_mp in (mp_icsd_list):
-                    #LOG.info(jarvis_icsd_list)
                     for icsd_jarvis in (jarvis_icsd_list):
                         if icsd_mp == int(icsd_jarvis):
-                            bandgaps_tbmbj[i] = float(self.df["mbj_bandgap"].iloc[j])
-                            bandgaps_opt[i]   = float(self.df["optb88vdw_bandgap"].iloc[j])
-                            spillage[i]      = float(self.df["spillage"].iloc[j])
+                            bandgaps_tbmbj[i] = float(df["mbj_bandgap"].iloc[j])
+                            bandgaps_opt[i]   = float(df["optb88vdw_bandgap"].iloc[j])
+                            spillage[i]      = float(df["spillage"].iloc[j])
 
         sorted_df = pd.DataFrame({"jarvis_bg_tbmbj": bandgaps_tbmbj,
                                   "jarvis_bg_opt":   bandgaps_opt,
-                                  "jarvis_spillage": spillage})
+                                  "jarvis_spillage": spillage,
+                                  "material_id": entries["material_id"]})
 
         sorted_df.to_pickle(self.interim_data_path)
         return sorted_df
 
-    def sort_with_MP(self, entries: pd.DataFrame)-> pd.DataFrame:
+    def sort_with_MP(self, df: pd.DataFrame, entries: pd.DataFrame)-> pd.DataFrame:
 
         if os.path.exists(self.interim_data_path):
             sorted_df = pd.read_pickle(self.interim_data_path)
         else:
-            sorted_df = self._sort(entries)
+            sorted_df = self._sort(df, entries)
         countSimilarEntriesWithMP(sorted_df["jarvis_bg_tbmbj"], "JARVIS tbmbj")
         countSimilarEntriesWithMP(sorted_df["jarvis_bg_opt"],   "JARVIS opt")
         countSimilarEntriesWithMP(sorted_df["jarvis_spillage"], "JARVIS spillage")

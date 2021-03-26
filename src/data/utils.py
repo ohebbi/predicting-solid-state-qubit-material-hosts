@@ -22,9 +22,14 @@ def filterIDs(df: pd.DataFrame) -> pd.DataFrame:
                         "mp-560718", #Te4H48Au4C16S12N4
                         "mp-568028", #C120
                         "mp-568259", #Ta4Si8P4H72C24N8Cl24
+                        "mp-574148", #K16Zn8N96
                         "mp-583476", #Nb7S2I19      #DOI: 10.17188/1277059
+                        "mp-600172", #Cu8H96C40S32N8
                         "mp-600205", #H10C5SeS2N3Cl          #DOI: -
                         "mp-600217", #H80C40Se8S16Br8N24     #DOI: -
+                        "mp-603254", #P8H72Au8C24S24Cl8
+                        "mp-645279", #C136O2F40
+                        "mp-645316", #C140F60
                         "mp-1195290", #Ga3Si5P10H36C12N4Cl11 #DOI: -
                         "mp-1196358", #P4H120Pt8C40I8N4Cl8   #DOI: -
                         "mp-1196439", #Sn8P4H128C44N12Cl8O4  #DOI: -
@@ -38,9 +43,13 @@ def filterIDs(df: pd.DataFrame) -> pd.DataFrame:
     print("A total of {} MPIDs are inconsistent with the rest."
           .format(len(unsupportedMPIDs)))
 
+    dropped = 0
     for unsupportedMPID in unsupportedMPIDs:
         if unsupportedMPID in list(df["material_id"].values):
             df = df.drop(df[df["material_id"] == str(unsupportedMPID)].index)
+            dropped += 1
+    print("A total of {} MPIDs were dropped from the dataset provided."
+          .format(len(unsupportedMPIDs)))
 
     df = df.reset_index(drop=True)
     return df

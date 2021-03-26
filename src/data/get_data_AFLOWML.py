@@ -6,7 +6,7 @@ import pickle
 import wget
 from pathlib import Path
 from tqdm import tqdm
-from src.data.utils import countSimilarEntriesWithMP, LOG
+from src.data.utils import countSimilarEntriesWithMP, LOG, sortByMPID
 # ML library and structural library
 try:
     from src.data.aflowml.client import AFLOWmlAPI
@@ -28,41 +28,9 @@ class data_AFLOWML(get_data_base.data_base):
         self.data_dir = Path(__file__).resolve().parents[2] / "data"
         self.raw_data_path = self.data_dir / "raw" / "AFLOWML" / "AFLOWML.pkl"
         self.interim_data_path = self.data_dir / "interim" / "AFLOWML" / "AFLOWML.pkl"
-        self.df = None
         super().__init__()
 
-    def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
-
-        # Add unique url id for figshare endpoint
-        url = "https://ndownloader.figshare.com/files/26777714"
-        file = wget.download(url)
-
-        # Read and load pkl
-        with open(file, 'rb') as f:
-            self.df = pickle.load(f)
-            os.remove(file)
-
-        # TODO : Add option to make new queries to AFLOWML
-        """
-        # Get data from Materials Project
-        try:
-            MP = data_MP(API_KEY = self.MAPI_KEY)
-        except:
-            raise ValueError("AFLOW-ML is dependent on MP data. Add MAPI_KEY argument\
-            to class constructor.")
-        entries = MP.get_dataframe()
-
-        newEntries = False
-        if newEntries:
-            self.df = get_dataframe_AFLOWML(entries=entries)
-        """
-
-        LOG.info("Writing to raw data...")
-        self.df.to_pickle(self.data_dir / "raw"  / "AFLOWML" / "AFLOWML.pkl")
-
-        return self.df;
-
-    def get_data_AFLOWML(entries: pd.DataFrame)-> Dict:
+    def get_data_AFLOWML(self, entries: pd.DataFrame)-> Dict:
         """
         A function used to initialise AFLOW-ML with appropiate inputs.
         ...
@@ -113,7 +81,7 @@ class data_AFLOWML(get_data_base.data_base):
 
         return aflowml_dict
 
-    def get_dataframe_AFLOWML(entries: pd.DataFrame)-> pd.DataFrame:
+    def get_dataframe_AFLOWML(self, entries: pd.DataFrame)-> pd.DataFrame:
         """
         A function used to initialise AFLOW-ML with appropiate inputs.
         ...
@@ -128,28 +96,57 @@ class data_AFLOWML(get_data_base.data_base):
             as well as the keys in the AFLOW-ML algorithm Property
             Labeled Material Fragments.
         """
-        return pd.DataFrame.from_dict(get_data_AFLOWML(entries))
+        return pd.DataFrame.from_dict(self.get_data_AFLOWML(entries))
+    def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
 
-    def _sort(self, entries: pd.DataFrame)-> pd.DataFrame:
+        # Add unique url id for figshare endpoint
+        url = "https://ndownloader.figshare.com/files/26922764"
+        file = wget.download(url)
 
-        bandgap = np.empty(len(entries))
-        bandgap[:] = np.nan
+        # Read and load pkl
+        with open(file, 'rb') as f:
+            df = pickle.load(f)
+            os.remove(file)
 
-        for i, mpid in tqdm(enumerate(entries["material_id"])):
-            for j, mid in enumerate(self.df["material_id"]):
-                if mpid==mid:
-                    bandgap[i] = float(self.df["ml_egap"].iloc[j])
+        # Get data from Materials Project
+        try:
+            MP = data_MP(API_KEY = self.MAPI_KEY)
+        except:
+            raise ValueError("AFLOW-ML is dependent on MP data. Add MAPI_KEY argument\
+            to class constructor.")
+        entries = MP.get_dataframe()
 
-        sorted_df = pd.DataFrame({"aflowml_bg": bandgap})
+        # Find if there are new entries in MP
+        newEntries = entries[~entries["material_id"].isin(df["material_id"])]
 
+        # Update if there are new entries
+        if newEntries.shape[0]>0:
+            LOG.info("New entries identified. Generating features...")
+
+            AFLOWML_portion = self.get_dataframe_AFLOWML(entries=newEntries)
+
+            df = pd.concat([df, AFLOWML_portion])
+            df = sortByMPID(df)
+
+        LOG.info("Writing to raw data...")
+        df.to_pickle(self.data_dir / "raw"  / "AFLOWML" / "AFLOWML.pkl")
+
+        return df;
+
+    def _sort(self, df: pd.DataFrame, entries: pd.DataFrame)-> pd.DataFrame:
+
+
+        sorted_df = df[df.material_id.isin(entries.material_id)]
+        sorted_df = sorted_df.add_prefix("AFLOWML|")
+        sorted_df = sorted_df.rename(columns={"AFLOWML|material_id": "material_id"})
+        sorted_df = sorted_df.reset_index(drop=True)
         sorted_df.to_pickle(self.interim_data_path)
         return sorted_df
 
-    def sort_with_MP(self, entries: pd.DataFrame)-> pd.DataFrame:
-
+    def sort_with_MP(self, df: pd.DataFrame, entries: pd.DataFrame)-> pd.DataFrame:
         if os.path.exists(self.interim_data_path):
             sorted_df = pd.read_pickle(self.interim_data_path)
         else:
-            sorted_df = self._sort(entries)
-        countSimilarEntriesWithMP(sorted_df["aflowml_bg"], "AFLOW-ML")
+            sorted_df = self._sort(df, entries)
+        countSimilarEntriesWithMP(sorted_df["AFLOWML|ml_egap"], "AFLOW-ML")
         return sorted_df
