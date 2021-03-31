@@ -3,7 +3,7 @@ import plotly.graph_objs as go
 import plotly.express as px
 from plotly.graph_objs import *
 from typing import Optional
-
+import shap
 import numpy as np
 import pandas as pd
 from sklearn.metrics import confusion_matrix
@@ -16,6 +16,9 @@ from sklearn.metrics import auc, average_precision_score, roc_curve, precision_r
 from pathlib import Path
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_selection import SelectFromModel
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+# Linear Regression for bandgaps
+from sklearn.linear_model import LinearRegression
 
 # textwidth in LateX
 width = 411.14224
@@ -70,8 +73,6 @@ def set_size(width, fraction=1, subplots=(1,1)):
     return (fig_width_in, fig_height_in)
 
 
-# Linear Regression for bandgaps
-from sklearn.linear_model import LinearRegression
 def plotSimilarities(x, y, full_formulas, xlabel, ylabel, title=None):
     """
     A function used to plot band gaps.
@@ -316,7 +317,7 @@ def top_eigenvector_vs_features(PCAcomponents, whichComponent:int = 0, NFeatures
 
 
 
-def plot_accuracy(models, names):
+def plot_accuracy(models, names, xlabel = "Cross validation folds"):
     fig, (ax1,ax2,ax3) = plt.subplots(3,1, figsize=set_size(width, 0.75, subplots=(3,1)))
     for i, model in enumerate(models):
         ax1.plot(model['trainAccuracy'], label=names[i])#, color = color[j])
@@ -333,7 +334,7 @@ def plot_accuracy(models, names):
         ax3.plot(model['f1_score'], label=names[i])#, color = color[j])
     ax3.set_title('f1-score')
 
-    ax3.set_xlabel("Cross validation folds")
+    ax3.set_xlabel(xlabel)
     fig.tight_layout()
 
     plt.show()
@@ -899,6 +900,17 @@ def runSupervisedModel(classifier,
         falsePositives = np.nonzero(y_pred_full.reshape((-1,)) > y)
         falseNegatives = np.nonzero(y_pred_full.reshape((-1,)) < y)
 
+        ######################################
+        ############# SHAP metrics ###########
+        ######################################
+
+        #explainer = shap.Explainer(classifier["model"], masker=shap.maskers.Impute(data=X_train))
+        #explainer = shap.KernelExplainer(classifier.named_steps['model'].predict_proba, )
+        #shap_values = explainer.shap_values(X_test)
+
+        #list_shap_values.append(shap_values)
+        #list_test_sets.append(test_index)
+
         #claim the scores
         modelResults['trainAccuracy'][i] = classifier.score(X_train, y_train)
         modelResults['testAccuracy'][i]  = classifier.score(X_test, y_test)
@@ -968,9 +980,81 @@ def runSupervisedModel(classifier,
 
     plt.show()
 
-
+    """
+    #combining results from all iterations
+    test_set = list_test_sets[0]
+    shap_values = np.array(list_shap_values[0])
+    for i in range(0,len(list_test_sets)):
+        test_set = np.concatenate((test_set,list_test_sets[i]),axis=0)
+        shap_values = np.concatenate((shap_values,np.array(list_shap_values[i])),axis=1)
+    #bringing back variable names
+    X_test = pd.DataFrame(X[test_set],columns=columns)
+    #creating explanation plot for the whole experiment
+    shap.summary_plot(shap_values[1], X_test)
+    """
     print ("Mean accuracy:{:0.5f}".format(np.mean(modelResults['testAccuracy'])))
     print ("Standard deviation:{:0.5f}".format(modelResults['std'][-1]))
     print ("f1-score:{:0.5f}".format(modelResults['f1_score'][-1]))
 
     return modelResults
+
+def principalComponentsVSscores(classifier,
+                       X: pd.DataFrame,
+                       y,
+                       k: int,
+                       n: int,
+                       cv,
+                       title: str):
+    numTotalComp = X.shape[1]
+    modelResults = {
+        'trainAccuracy':   np.zeros(numTotalComp),
+        'testAccuracy':    np.zeros(numTotalComp),
+        'f1_score':        np.zeros(numTotalComp),
+        'std':             np.zeros(numTotalComp),
+        'numPredPero':     np.zeros(numTotalComp),
+        'confusionMatrix': np.zeros((len(y), len(y))),
+        'falsePositives':  np.zeros(len(y)),
+        'falseNegatives':  np.zeros(len(y)),
+        }
+
+    from dtreeviz.trees import dtreeviz # will be used for tree visualization
+    from sklearn import tree
+
+    for numberComponents in tqdm(range(1, numTotalComp+1)):
+
+        trainAccuracy = []
+        testAccuracy  = []
+        f1_scores     = []
+
+        for i, (train_index, test_index) in enumerate(cv.split(X, y)):
+
+            #partition the data
+            X_train, X_test = X.iloc[train_index, :numberComponents], X.iloc[test_index, :numberComponents]
+            y_train, y_test = y[train_index], y[test_index]
+
+            #fit the model
+            classifier.fit(X_train, y_train)
+
+            if (numberComponents == -1) and (type(classifier) == type(RandomForestClassifier())):
+                #print(i)
+                #print(numberComponents)
+                #plt.figure(figsize=(20,20))
+                #_ = tree.plot_tree(classifier.estimators_[0], feature_names=X.columns[:numberComponents], filled=True)
+                viz = dtreeviz(classifier.estimators_[0], X_train, y_train, feature_names=X.columns[:numberComponents], target_name="Candidate")
+                viz.view()
+                #plt.show()
+
+            #predict on test set
+            y_pred      = classifier.predict(X_test)
+
+            trainAccuracy.append(classifier.score(X_train, y_train))
+            testAccuracy.append(classifier.score(X_test, y_test))
+            f1_scores.append(f1_score(y_test, y_pred))
+
+        modelResults['trainAccuracy'][numberComponents-1] = np.mean(trainAccuracy)
+        modelResults['testAccuracy'][numberComponents-1]  = np.mean(testAccuracy)
+        modelResults['f1_score'][numberComponents-1]      = np.mean(f1_scores)
+        modelResults['std'][numberComponents-1]           = np.std(testAccuracy)
+    return modelResults
+
+    #for i, (train_index, test_index) in tqdm(enumerate(cv.split(X, y))):
