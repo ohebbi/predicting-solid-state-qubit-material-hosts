@@ -46,4 +46,17 @@ class data_MP(get_data_base.data_base):
 
     def sort_with_MP(self, entries: pd.DataFrame)-> np.array:
 
-        return entries["full_formula"].values
+        bandgap_GGA = np.empty(len(entries["material_id"]))
+        bandgap_GGA[:] = np.nan
+
+        bandgaps_GGAU = np.copy(bandgap_GGA)
+
+        bandgap_GGA[entries["run_type"]=="GGA"] = entries["band_gap"][entries["run_type"]=="GGA"]
+        bandgaps_GGAU[entries["run_type"]=="GGA+U"] = entries["band_gap"][entries["run_type"]=="GGA+U"]
+
+        sorted_df = pd.DataFrame({"mp_bg_gga":   bandgap_GGA,
+                                  "mp_bg_gga_u": bandgaps_GGAU,
+                                  "mp_bg":       entries["band_gap"],
+                                  "material_id": entries["material_id"]})
+
+        return sorted_df

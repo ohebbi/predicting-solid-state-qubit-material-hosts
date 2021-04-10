@@ -36,7 +36,8 @@ class data_AFLOW(get_data_base.data_base):
             df = pickle.load(f)
             os.remove(file)
 
-        # TODO : Add option to make new queries to AFLOW
+        # TODO : Add option to make new queries to AFLOW. This has to be
+        #        rewritten since AFLOW does not have MPID.
         """
         try:
             MP = data_MP(API_KEY = self.MAPI_KEY)
@@ -46,14 +47,24 @@ class data_AFLOW(get_data_base.data_base):
 
         entries = MP.get_dataframe()
 
-        compound_list = list(entries["full_formula"])
-        #choosing keys used in AFLOW. We will here use all features in AFLOW.
-        keys = list(pd.read_pickle(Path.cwd().parent / "data" / "raw" / "AFLOW" / "AFLOW_keywords.pkl").columns)
+        df = self.sort_with_MP(df, entries)
 
+        # Find if there are new entries in MP
+        newEntries = entries[~entries["material_id"].isin(df["material_id"])]
 
-        df = get_dataframe_AFLOW(compound_list=compound_list, keys=keys, batch_size = 1000, catalog="icsd")
+        # Update if there are new entries
+        if newEntries.shape[0]>0:
+            keys = list(pd.read_pickle(self.data_dir / "raw" / "AFLOW" / "AFLOW_keywords.pkl"))
+
+            LOG.info("New entries identified. Generating features for AFLOW...")
+
+            AFLOW_portion = self.get_dataframe_AFLOW(compound_list=list(newEntries["full_formula"]), keys=keys, batch_size = 1000, catalog="icsd")
+
+            AFLOW_portion = self._sort(AFLOW_portion, entries)
+
+            df = pd.concat([df, AFLOW_portion])
+            df = sortByMPID(df)
         """
-
         LOG.info("Writing to raw data...")
         df.to_pickle(self.data_dir / "raw"  / "AFLOW" / "AFLOW.pkl")
 

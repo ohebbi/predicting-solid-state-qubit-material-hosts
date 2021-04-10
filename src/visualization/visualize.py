@@ -32,7 +32,7 @@ tex_fonts = {
     "font.family": "Palatino",
     "axes.labelsize":12,
     "font.size": 12,
-    "legend.fontsize": 12,
+    "legend.fontsize": 10,
     "xtick.labelsize": 12,
     "ytick.labelsize":12
 }
@@ -118,7 +118,7 @@ def plotSimilarities(x, y, full_formulas, xlabel, ylabel, title=None):
                    "paper_bgcolor": "rgba(0, 0, 0, 0)"})
     return fig
 
-def matplotBandGaps(x, y, xlabel, ylabel, filename, title=None, addOLS = True):
+def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS = True):
     """
     A function used to plot band gaps.
     ...
@@ -143,35 +143,64 @@ def matplotBandGaps(x, y, xlabel, ylabel, filename, title=None, addOLS = True):
         A DataFrame containing the resulting matching queries. This can result
         in several matching compounds
     """
-    x = np.array(x)
+    x1 = np.array(x1)
 
-    fig, ax = plt.subplots(1,1, figsize=(set_size(width, 1)[0], set_size(width, 1)[0]))
+    fig, (ax1, ax2) = plt.subplots(1,2, figsize=set_size(width, 1, subplots=(1,2)))
 
-    ax.plot(x[(x>0)&(y>0)], y[(x>0)&(y>0)], "o")
-    ax.set(xlim=(0, 10), ylim=(0, 10))
+    ax1.plot(x1[(x1>0)&(y1>0)], y1[(x1>0)&(y1>0)], "o",color='k', markersize=3)
+    ax1.set(xlim=(0, 10), ylim=(0, 10))
 
-    ax.set_title(title)
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
+    ax1.set_title("Common db. entries")
+    ax1.set_xlabel(xlabel)
+    ax1.set_ylabel(ylabel)
 
     if addOLS:
-        reg = LinearRegression().fit(x[(x>0)&(y>0)].reshape(-1,1),y[(x>0)&(y>0)])
+        reg = LinearRegression().fit(x1[(x1>0)&(y1>0)].reshape(-1,1),y1[(x1>0)&(y1>0)])
 
-        linreg_y = [reg.intercept_,reg.intercept_+max(x)*reg.coef_[0]]
-        linreg_x = [0,max(x)]
+        linreg_y = [reg.intercept_,reg.intercept_+max(x1)*reg.coef_[0]]
+        linreg_x = [0,max(x1)]
 
-        ax.plot(linreg_x, linreg_y, color="red", label="")
+        ax1.plot(linreg_x, linreg_y, color="red", label=r"${:0.2f}x+{:0.2f}$".format(reg.coef_[0], reg.intercept_))
 
         #some confidence interval
         ci = 1.96 * np.std(linreg_y)/np.mean(linreg_y)
-        ax.fill_between(linreg_x, (linreg_y-ci), (linreg_y+ci), color='b', alpha=.1)
+        ax1.fill_between(linreg_x, (linreg_y-ci), (linreg_y+ci), color='k', alpha=.1, label=r"$\pm {:0.2f}$".format(ci))
 
-        print("label: {}. line = {:0.2f}x+{:0.2f}".format(ylabel,reg.coef_[0], reg.intercept_))
+        print("label to the left: {}. line = {:0.2f}x+{:0.2f}".format(ylabel,reg.coef_[0], reg.intercept_))
         print("CI: {:0.2f}".format(ci))
+    ax1.legend(loc="upper left")
+
+    x2 = np.array(x2)
+    y2 = np.array(y2)
+    ax2.plot(x2[(x2>0)&(y2>0)], y2[(x2>0)&(y2>0)], "o", markersize=3)
+    ax2.set(xlim=(0, 10), ylim=(0, 10))
+
+    ax2.set_title("Common exp. entries")
+    ax2.set_xlabel(xlabel)
+    #ax2.set_ylabel(ylabel)
+
+    if addOLS:
+        reg = LinearRegression().fit(x2[(x2>0)&(y2>0)].reshape(-1,1),y2[(x2>0)&(y2>0)])
+
+        linreg_y = [reg.intercept_,reg.intercept_+max(x2[x2>0])*reg.coef_[0]]
+        linreg_x = [0,max(x2[x2>0])]
+
+        ax2.plot(linreg_x, linreg_y, color="red", label=r"${:0.2f}x+{:0.2f}$".format(reg.coef_[0], reg.intercept_))
+
+        #some confidence interval
+        ci = 1.96 * np.std(linreg_y)/np.mean(linreg_y)
+        ax2.fill_between(linreg_x, (linreg_y-ci), (linreg_y+ci), color='b', alpha=.1, label=r"$\pm {:0.2f}$".format(ci))
+
+        print("label to the left: {}. line = {:0.2f}x+{:0.2f}".format(ylabel,reg.coef_[0], reg.intercept_))
+        print("CI: {:0.2f}".format(ci))
+
+    ax2.legend(loc="upper left")
 
     fig.savefig(Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "bandgaps" \
                             / filename, format="pdf", bbox_inches="tight")
+
+    fig.tight_layout()
     return fig
 
 

@@ -121,7 +121,7 @@ class data_AFLOWML(get_data_base.data_base):
 
         # Update if there are new entries
         if newEntries.shape[0]>0:
-            LOG.info("New entries identified. Generating features...")
+            LOG.info("{} new entries identified. Generating features for AFLOW-ML...".format(newEntries.shape[0]))
 
             AFLOWML_portion = self.get_dataframe_AFLOWML(entries=newEntries)
 
@@ -134,7 +134,6 @@ class data_AFLOWML(get_data_base.data_base):
         return df;
 
     def _sort(self, df: pd.DataFrame, entries: pd.DataFrame)-> pd.DataFrame:
-
 
         sorted_df = df[df.material_id.isin(entries.material_id)]
         sorted_df = sorted_df.add_prefix("AFLOWML|")

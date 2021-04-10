@@ -19,7 +19,7 @@ import dotenv
 def featurize_by_material_id(material_ids: np.array,
                             featurizerObject: featurizer.extendedMODFeaturizer,
                             MAPI_KEY: str,
-                            writeToFile: bool = False) -> pd.DataFrame:
+                            writeToFile: bool = True) -> pd.DataFrame:
     """ Run all of the preset featurizers on the input dataframe.
     Arguments:
         df: the input dataframe with a `"structure"` column
@@ -44,7 +44,7 @@ def featurize_by_material_id(material_ids: np.array,
 
     mpdr = MPDataRetrieval(MAPI_KEY)
 
-    steps = 1
+    steps = 25
     leftover = len(material_ids)%steps
 
     df        = pd.DataFrame({})

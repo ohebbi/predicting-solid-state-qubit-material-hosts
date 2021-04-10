@@ -65,7 +65,7 @@ def findParamGrid(model):
     typeModel = type(model)
     if typeModel == type(RandomForestClassifier()):
         return {#"model__n_estimators": [10, 100, 1000],
-                "model__max_features": [25,50, 75, 100], #['auto', 'sqrt', 'log2'],
+                "model__max_features": ['auto', 'sqrt', 'log2'],#[1, 25,50, 75, 100], #
                 "model__max_depth" : [2]#,4,6,8],
                 #"model__criterion" :['gini', 'entropy'],
                 }
@@ -73,7 +73,7 @@ def findParamGrid(model):
         return {#"model__loss":["deviance", "exponential"],
                 #"model__learning_rate": [0.01, 0.025, 0.1, 0.2],
                 "model__max_depth":[2],#,4],6,8],
-                "model__max_features":[25,50, 75, 100], #['auto', 'sqrt', 'log2'],
+                "model__max_features":['auto', 'sqrt', 'log2'],#[25,50, 75, 100], #['auto', 'sqrt', 'log2'],
                 #"model__criterion": ["friedman_mse", "mse"],
                 #"model__subsample":[0.5, 0.75, 1],
                 #"model__n_estimators":[10,100,1000]
