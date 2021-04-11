@@ -19,7 +19,11 @@ from sklearn.feature_selection import SelectFromModel
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 # Linear Regression for bandgaps
 from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from plotly.subplots import make_subplots
 
+from matplotlib import gridspec
 # textwidth in LateX
 width = 411.14224
 
@@ -71,6 +75,12 @@ def set_size(width, fraction=1, subplots=(1,1)):
     fig_height_in = fig_width_in * golden_ratio * (subplots[0] / subplots[1])
 
     return (fig_width_in, fig_height_in)
+
+def save_matplot_fig(fig, dir_path, filename):
+
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
+
+    fig.savefig(dir_path / filename , format="pdf", bbox_inches="tight")
 
 
 def plotSimilarities(x, y, full_formulas, xlabel, ylabel, title=None):
@@ -346,7 +356,7 @@ def top_eigenvector_vs_features(PCAcomponents, whichComponent:int = 0, NFeatures
 
 
 
-def plot_accuracy(models, names, xlabel = "Cross validation folds"):
+def plot_accuracy(models, names, prettyNames, numPC, approach, xlabel = "Cross validation folds"):
     fig, (ax1,ax2,ax3) = plt.subplots(3,1, figsize=set_size(width, 0.75, subplots=(3,1)))
     for i, model in enumerate(models):
         ax1.plot(model['trainAccuracy'], label=names[i])#, color = color[j])
@@ -366,102 +376,40 @@ def plot_accuracy(models, names, xlabel = "Cross validation folds"):
     ax3.set_xlabel(xlabel)
     fig.tight_layout()
 
+    dir_path = Path(__file__).resolve().parents[2] / \
+                                    "reports" / "figures"  / "cv-accuracy"
+
+    save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + ".pdf"))
+
     plt.show()
-    """
-    fig = go.Figure()
-    for i, model in enumerate(models):
-        fig.add_trace(go.Scatter(y=model['trainAccuracy'],
-                    mode='lines',
-                    name=names[i]))
-    fig.update_layout(autosize=False,
-                    width=width,
-                    height=height,
-                   title='Train accuracy',
-                   xaxis_title='Cross validation folds',
-                   yaxis_title='Accuracy')
-    fig.show()
-
-    fig = go.Figure()
-    for i, model in enumerate(models):
-        fig.add_trace(go.Scatter(y=model['testAccuracy'],
-                    mode='lines',
-                    name=names[i]))
-    fig.update_layout(
-                    autosize=False,
-                    width=width,
-                    height=height,
-                    title='Test accuracy',
-                   xaxis_title='Cross validation folds',
-                   yaxis_title='Accuracy',
-                   font=dict(family="Palatino",
-                             color="Black",
-                            size=12),)
-    fig.show()
+def plot_important_features(models, X, k, n, prettyNames, numPC, approach):
+    fig = make_subplots(rows=models.shape[0], cols=1, shared_xaxes=True)
+    fig.update_layout({"plot_bgcolor": "rgba(0, 0, 0, 0)",
+                           "paper_bgcolor": "rgba(0, 0, 0, 0)",
+                          },
+                        barmode='group',
+                        autosize=False,
+                        width=width_plotly,
+                        height=height_plotly,
+                        margin=dict(l=0, r=0, t=25, b=0),
+                        title=go.layout.Title(text="Mean feature importance for {} iterations".format(k*n)),
+                        #xaxis=dict(title="Number principal components"),
+                        #yaxis=dict(title="Relative importance"),
+                        font=dict(family="Palatino",
+                                  color="Black",
+                                  size=12),)
 
     for i, model in enumerate(models):
-        fig.add_trace(go.Scatter(y=model['f1_score'],
-                    mode='lines',
-                    name=names[i]))
-    fig.update_layout(
-                  autosize=False,
-                  width=width,
-                  height=height,
-                  title='f1 score on test set',
-                   xaxis_title='Cross validation folds',
-                   yaxis_title='f1 score',
-                   font=dict(family="Palatino",
-                             color="Black",
-                            size=12),)
+        fig.add_traces(go.Bar(name=prettyNames[i], x=np.arange(1,numPC+1),
+                    y=np.mean(model["relativeImportance"], axis=0),
+                    error_y=dict(type='data', array=np.std(model["relativeImportance"], axis=0))), cols = 1, rows=i+1)
+
+    fig['layout']['xaxis3']['title']='Number principal component'
+    dir_path = Path(__file__).resolve().parents[2] / "reports" / "figures" / "feature-importance"
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
+    fig.write_image(str(dir_path / Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pdf")))
     fig.show()
-    """
-    """
-    fig = go.Figure()
-    for i, model in enumerate(models):
-        fig.add_trace(go.Scatter(y=model['numPredPero'],
-                    mode='lines',
-                    name=names[i]))
-    fig.update_layout(title='Number of predicted candidates',
-                   xaxis_title='Cross validation folds',
-                   yaxis_title='Counted candidates')
-    fig.show()
-    """
 
-def plot_important_features(models, names,X, k, n):
-    """
-    Plot features vs importance features
-    """
-    """
-    fig = go.Figure(
-            layout = go.Layout (
-                title=go.layout.Title(text='Features used in model (Nruns = {})'.format(k*n)),
-                yaxis=dict(title="Number times"),
-                barmode='group'
-            )
-        )
-
-    for i, model in enumerate(models):
-        fig.add_traces(go.Bar(name=names[i], x=X.columns.values, y=model['importantKeys']))
-
-    fig.show()
-    """
-    fig = go.Figure(
-            layout = go.Layout (
-                autosize=False,
-                width=width_plotly,
-                height=height_plotly,
-                title=go.layout.Title(text="Feature Importance for the 100th iteration".format(k*n)),
-                yaxis=dict(title='Relative importance'),
-                barmode='group',
-                font=dict(family="Palatino",
-                          color="Black",
-                         size=12),)
-            )
-
-
-    for i, model in enumerate(models):
-        fig.add_traces(go.Bar(name=names[i], x=X.columns.values, y=model['relativeImportance']))
-
-    fig.show()
 
 def plot_important_features_restricted_domain(models, names, trainingSet, k, n):
     """
@@ -508,30 +456,15 @@ def plot_important_features_restricted_domain(models, names, trainingSet, k, n):
 
 
 
-def plot_confusion_metrics(models, names, data,  k, n, abbreviations=[]):
+def plot_confusion_metrics(models, names, data,  k, n, prettyNames:[], numPC:int, approach:str):
     """
     Plot false positives and false negatives for a given dataset.
     """
-    fig = go.Figure(
-            layout = go.Layout (
-                title=go.layout.Title(text="False positives (Nruns = {})".format(n*k)),
-                yaxis=dict(title='Counts'),
-                barmode='group',
-                font=dict(family="Palatino",
-                          color="Black",
-                         size=12))
-            )
 
-
-    for i, model in enumerate(models):
-
-        fig.add_traces(go.Bar(name=names[i],
-                            x=data['full_formula'][model['falsePositives'] > 0],
-                            y=model['falsePositives'][model['falsePositives'] > 0]))
     fig = go.Figure(
             layout = go.Layout (
                 autosize=False,
-                width=width_plotly,
+                width=width_plotly*4,
                 height=height_plotly,
                 title=go.layout.Title(text="False positive (Nruns = {})".format(n*k)),
                 yaxis=dict(title='Counts'),
@@ -540,13 +473,17 @@ def plot_confusion_metrics(models, names, data,  k, n, abbreviations=[]):
                           color="Black",
                          size=12))
             )
+    for i, model in enumerate(models):
+        fig.add_traces(go.Bar(name=names[i],
+                            x=data['full_formula'][model['falsePositives'] > 0],
+                            y=model['falsePositives'][model['falsePositives'] > 0]))
 
     fig.show()
 
     fig = go.Figure(
             layout = go.Layout (
                 autosize=False,
-                width=width_plotly,
+                width=width_plotly*2,
                 height=height_plotly,
                 title=go.layout.Title(text="False negative (Nruns = {})".format(n*k)),
                 yaxis=dict(title='Counts'),
@@ -561,56 +498,31 @@ def plot_confusion_metrics(models, names, data,  k, n, abbreviations=[]):
                                 x=data['full_formula'][model['falseNegatives'] > 0],
                                 y=model['falseNegatives'][model['falseNegatives'] > 0]))
 
+    dir_path = Path(__file__).resolve().parents[2] / "reports" / "figures" / "confusion-metrics"
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
+    fig.write_image(str(dir_path / Path(approach + "-" + str(numPC) +".pdf")))
+
     fig.show()
 
 
-def plot_confusion_matrixQT(models, y, data, names, k, n):
-    """
-    Plot confusion matrix that lays the fundament of precision and recall metrics.
-    """
-    confidence = np.linspace(0,k*n,k*n)
-    #confidence = 95 # % confidence. Put as 50 or more.
-    mat = np.zeros((len(confidence),2,2))
-    bigger_than = 100-confidence
-
-    #Finding true positives and true negatives as a function of confidence
-    for j, model in enumerate(models):
-
-        for i, conf in enumerate(confidence):
-            bigger_than = 100 - conf
-            confidence[i] = bigger_than
-            #print(conf)
-            model["y_pred_full"] =  y.values.reshape(-1,).copy()
-
-            model["y_pred_full"]\
-                [data['material_id'][model['falseNegatives'] > bigger_than].index] = 0
-
-            model["y_pred_full"]\
-                [data['material_id'][model['falsePositives'] > bigger_than].index] = 1
-
-            mat[i] = confusion_matrix(y.values.reshape(-1,), model["y_pred_full"])
-
-        plt.plot(confidence, mat[:,0,1])
-        plt.plot(confidence, mat[:,1,0])
-        plt.plot([50,50],[-2,np.max(mat[:,0,1])], "--")
-
-        plt.xlabel("Confidence / counts of wrongly predictions")
-        plt.ylabel("Number of compounds")
-        plt.title("Confusion matrix for predictions 100 times {}".format(names[j]))
-        plt.legend(["False negatives", "False positives"])
-        plt.show()
-
-def confusion_matrixQT(models, y, names):
+def confusion_matrixQT(models, y, prettyNames:str, numPC:int, approach:str):
     #print(mat)
     for i, model in enumerate(models):
-        mat = confusion_matrix(y.values.reshape(-1,), model["y_pred_full"])
-        sns.heatmap(mat.T, square=True, annot=True, fmt='d', cbar=False,
+        fig, ax = plt.subplots(1,1, figsize=set_size(width, 0.75))
+
+        sns.heatmap(model["confusionMatrix"], square=True, annot=True, fmt='d', cbar=False,
                 xticklabels=[0,1],
                 yticklabels=[0,1])
-        plt.xlabel('true label')
-        plt.ylabel('predicted label');
-        plt.title("Confusion matrix {}".format(names[i]))
-        plt.figure(figsize=set_size(width, 0.4))
+        ax.set_xlabel('true label')
+        ax.set_ylabel('predicted label');
+        ax.set_title("Confusion matrix {}".format(prettyNames[i]))
+        fig.tight_layout()
+
+        dir_path = Path(__file__).resolve().parents[2] / \
+                                    "reports" / "figures"  / "confusion-matrix"
+
+        save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pdf"))
+
         plt.show()
 
 def draw_cv_roc_curve(classifier,
@@ -834,13 +746,15 @@ def resampling(X, y, method = None, strategy = None):
         #print("No resampling applied.")
         return X, y
 
-def runSupervisedModel(classifier,
+def evaluatePrecisionRecallMetrics(classifier,
                        X: pd.DataFrame,
                        y,
                        k: int,
                        n: int,
                        cv,
                        title: str,
+                       numPC: int,
+                       approach: str,
                        featureImportance: Optional[bool] = False,
                        resamplingMethod: Optional[str] = "None"):
 
@@ -850,12 +764,12 @@ def runSupervisedModel(classifier,
         'testAccuracy':    np.zeros(n*k),
         'f1_score':        np.zeros(n*k),
         'std':             np.zeros(n*k),
-        'importantKeys':   np.zeros(len(X.columns.values)),
+        'importantKeys':   np.zeros(classifier.named_steps["pca"].n_components),
         'numPredPero':     np.zeros(n*k),
         'confusionMatrix': np.zeros((len(y), len(y))),
         'falsePositives':  np.zeros(len(y)),
         'falseNegatives':  np.zeros(len(y)),
-        'relativeImportance': np.zeros(len(X.columns.values))
+        'relativeImportance': np.zeros((n*k,classifier.named_steps["pca"].n_components))
         }
 
     # Initializing Creating ROC metrics
@@ -877,7 +791,7 @@ def runSupervisedModel(classifier,
         sel_classifier = SelectFromModel(classifier.named_steps["model"])
 
     for i, (train_index, test_index) in tqdm(enumerate(cv.split(X, y))):
-
+        #print(i)
         #partition the data
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
         y_train, y_test = y[train_index], y[test_index]
@@ -946,15 +860,14 @@ def runSupervisedModel(classifier,
         modelResults['f1_score'][i]      = f1_score(y_test, y_pred)
         modelResults['std'][i]           = np.std(modelResults['testAccuracy'][0:i+1])
         modelResults['numPredPero'][i]   = np.sum(y_pred_full)
-        modelResults['confusionMatrix']  = confusion_matrix(y_test, y_pred)
+        modelResults['confusionMatrix']  = confusion_matrix(y, y_pred_full)
         modelResults['falsePositives'][falsePositives] += 1
         modelResults['falseNegatives'][falseNegatives] += 1
 
         if (featureImportance) and (type(classifier["model"]) != type(LogisticRegression())):
-            modelResults['importantKeys'][sel_classifier.get_support()] += 1
-
-    if (featureImportance) and (type(classifier["model"]) != type(LogisticRegression())):
-        modelResults['relativeImportance'] = classifier.named_steps["model"].feature_importances_
+            modelResults['relativeImportance'][i] = classifier.named_steps["model"].feature_importances_
+        elif type(classifier["model"]) == type(LogisticRegression()):
+            modelResults['relativeImportance'][i] = classifier.named_steps['model'].coef_
 
     ######################################
     ## Finding precision recall metrics ##
@@ -1007,6 +920,16 @@ def runSupervisedModel(classifier,
     ax2.legend(loc="lower right")
     fig2.tight_layout()
 
+    dir_path = Path(__file__).resolve().parents[2] / \
+                            "reports" / "figures"  / "roc-auc"
+    save_matplot_fig(fig1, dir_path=dir_path, filename = Path(approach + "-" + str(numPC) + "-" + title +".pdf"))
+
+    dir_path = Path(__file__).resolve().parents[2] / \
+                                "reports" / "figures"  / "recall-metrics"
+
+    save_matplot_fig(fig2, dir_path=dir_path, filename = Path(approach + "-" + str(numPC) + "-" + title +".pdf"))
+
+
     plt.show()
 
     """
@@ -1027,63 +950,60 @@ def runSupervisedModel(classifier,
 
     return modelResults
 
-def principalComponentsVSscores(classifier,
-                       X: pd.DataFrame,
-                       y,
-                       k: int,
-                       n: int,
-                       cv,
-                       title: str):
-    numTotalComp = X.shape[1]
-    modelResults = {
-        'trainAccuracy':   np.zeros(numTotalComp),
-        'testAccuracy':    np.zeros(numTotalComp),
-        'f1_score':        np.zeros(numTotalComp),
-        'std':             np.zeros(numTotalComp),
-        'numPredPero':     np.zeros(numTotalComp),
-        'confusionMatrix': np.zeros((len(y), len(y))),
-        'falsePositives':  np.zeros(len(y)),
-        'falseNegatives':  np.zeros(len(y)),
-        }
+def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames:str, numPC:int, approach:str):
 
-    from dtreeviz.trees import dtreeviz # will be used for tree visualization
-    from sklearn import tree
+    scaledTrainingData = StandardScaler().fit_transform(X) # normalizing the features
+    pca = PCA().fit(scaledTrainingData)
+    #print(pca.explained_variance_ratio_)
+    for i, algorithm in enumerate(ModelsBestParams):
 
-    for numberComponents in tqdm(range(1, numTotalComp+1)):
+        fig, (ax0, ax1) = plt.subplots(nrows=2, sharex=True, figsize=set_size(width, 1, subplots=(2,1)))
+        gs = gridspec.GridSpec(2, 1, height_ratios=[3, 1])
+        ax0 = plt.subplot(gs[0])
+        ax1 = plt.subplot(gs[1])
 
-        trainAccuracy = []
-        testAccuracy  = []
-        f1_scores     = []
+        ax1.bar( np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_, alpha=0.5, align='center')
+        ax1.step(np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_.cumsum(), where='mid')
 
-        for i, (train_index, test_index) in enumerate(cv.split(X, y)):
+        ax1.set_ylabel('PCA var ratio')
 
-            #partition the data
-            X_train, X_test = X.iloc[train_index, :numberComponents], X.iloc[test_index, :numberComponents]
-            y_train, y_test = y[train_index], y[test_index]
+        ax1.axvline(algorithm.best_estimator_.named_steps['pca'].n_components,
+                linestyle=':', label='Optimal')
 
-            #fit the model
-            classifier.fit(X_train, y_train)
+        ax1.legend(prop=dict(size=12))
 
-            if (numberComponents == -1) and (type(classifier) == type(RandomForestClassifier())):
-                #print(i)
-                #print(numberComponents)
-                #plt.figure(figsize=(20,20))
-                #_ = tree.plot_tree(classifier.estimators_[0], feature_names=X.columns[:numberComponents], filled=True)
-                viz = dtreeviz(classifier.estimators_[0], X_train, y_train, feature_names=X.columns[:numberComponents], target_name="Candidate")
-                viz.view()
-                #plt.show()
+        # For each number of components, find the best classifier results
+        results = pd.DataFrame(algorithm.cv_results_)
+        components_col = 'param_pca__n_components'
+        best_clfs = results.groupby(components_col).apply(
+            lambda g: g.nlargest(1, 'mean_test_accuracy'))
 
-            #predict on test set
-            y_pred      = classifier.predict(X_test)
+        best_clfs.plot(x=components_col, y='mean_test_accuracy', yerr='std_test_accuracy',
+                       label="Test score", ax=ax0, capsize=4)
 
-            trainAccuracy.append(classifier.score(X_train, y_train))
-            testAccuracy.append(classifier.score(X_test, y_test))
-            f1_scores.append(f1_score(y_test, y_pred))
+        best_clfs.plot(x=components_col, y='mean_train_accuracy', yerr='std_train_accuracy',
+                       label="Train score", ax=ax0, capsize=4)
+        best_clfs.plot(x=components_col, y='mean_test_f1', yerr='std_test_f1',
+                       label="f1 score", ax=ax0, capsize=4)
 
-        modelResults['trainAccuracy'][numberComponents-1] = np.mean(trainAccuracy)
-        modelResults['testAccuracy'][numberComponents-1]  = np.mean(testAccuracy)
-        modelResults['f1_score'][numberComponents-1]      = np.mean(f1_scores)
-        modelResults['std'][numberComponents-1]           = np.std(testAccuracy)
-    return modelResults
+        ax0.set_ylabel('Classification accuracy')
+        ax1.set_xlabel('Number of principal components')
+        ax0.set_xlabel('')
+        ax0.set_title("Optimal param per PC for {}".format(prettyNames[i]))
 
-    #for i, (train_index, test_index) in tqdm(enumerate(cv.split(X, y))):
+        ax0.set_xlim([0.5,numPC+0.5])
+        ax1.set_xlim([0.5,numPC+0.5])
+
+        ax1.set_ylim([0,pca.explained_variance_ratio_.cumsum()[numPC+2]])
+        ax0.xaxis.set_major_formatter(plt.NullFormatter())
+
+        ax0.set_xticks(range(1,numPC+1))
+        ax1.set_xticks(range(1,numPC+1))
+
+        fig.tight_layout()
+
+        dir_path = Path(__file__).resolve().parents[2] / \
+                            "reports" / "figures"  / "pca-scores"
+        save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pdf"))
+
+        plt.show()

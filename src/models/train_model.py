@@ -21,8 +21,11 @@ from sklearn.linear_model import LogisticRegression
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
 from imblearn.pipeline import Pipeline
+from matplotlib import gridspec
 
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
 
 def chooseSampler(sampleMethod: Optional[str]):
     if sampleMethod == "under":
@@ -42,17 +45,23 @@ def getPipe(model, sampleMethod: Optional[str]):
     sampler = chooseSampler(sampleMethod)
     if not (sampler):
         return Pipeline([
+            ('scale', StandardScaler()),
+            ("pca", PCA(svd_solver="randomized")),
             ('model', model)
         ])
 
     if len(sampler)==2:
         return Pipeline([
+            ('scale', StandardScaler()),
+            ("pca", PCA(svd_solver="randomized")),
             sampler,
             ('model', model)
         ])
 
     elif len(sampler)==4:
         return Pipeline([
+            ('scale', StandardScaler()),
+            ("pca", PCA(svd_solver="randomized")),
             sampler[0:2],
             sampler[2:4],
             ('model', model)
@@ -61,40 +70,44 @@ def getPipe(model, sampleMethod: Optional[str]):
     else:
         raise ValueError("Wrong number of samplers: len(sampler)={}".format(len(sampler)))
 
-def findParamGrid(model):
+def findParamGrid(model, numFeatures):
     typeModel = type(model)
     if typeModel == type(RandomForestClassifier()):
         return {#"model__n_estimators": [10, 100, 1000],
-                "model__max_features": ['auto', 'sqrt', 'log2'],#[1, 25,50, 75, 100], #
-                "model__max_depth" : [2]#,4,6,8],
+                "model__max_features": ['auto'],#, 'sqrt', 'log2'],#[1, 25,50, 75, 100], #
+                "model__max_depth" : [2],#,4,6,8],
                 #"model__criterion" :['gini', 'entropy'],
+                "pca__n_components": range(1,numFeatures+1)
                 }
     elif typeModel == type(GradientBoostingClassifier()):
         return {#"model__loss":["deviance", "exponential"],
                 #"model__learning_rate": [0.01, 0.025, 0.1, 0.2],
                 "model__max_depth":[2],#,4],6,8],
-                "model__max_features":['auto', 'sqrt', 'log2'],#[25,50, 75, 100], #['auto', 'sqrt', 'log2'],
+                "model__max_features":['auto'],#, 'sqrt', 'log2'],#[25,50, 75, 100], #['auto', 'sqrt', 'log2'],
                 #"model__criterion": ["friedman_mse", "mse"],
                 #"model__subsample":[0.5, 0.75, 1],
-                #"model__n_estimators":[10,100,1000]
+                #"model__n_estimators":[10,100,1000],
+                "pca__n_components": range(1,numFeatures+1)
                 }
     elif typeModel == type(LogisticRegression()):#penalty{‘l1’, ‘l2’, ‘elasticnet’, ‘none’}
         return {"model__penalty":["l2"],# "l2", "elasticnet", "none"],
                 #"model__learning_C": [0.001,0.01,0.1,1,10,100,1000],
-                "model__max_iter":[200]
+                "model__max_iter":[200],
+                "pca__n_components": range(1,numFeatures+1)
                 }
     else:
         raise TypeError("No model has been specified: type(model):{}".format(typeModel))
 
 
-def applyGridSearch(X: pd.DataFrame, y, model, cv, sampleMethod="under"):
-    param_grid = findParamGrid(model)
+def applyGridSearch(X: pd.DataFrame, y, model, cv, numPC: int, sampleMethod="under"):
+    param_grid = findParamGrid(model, numFeatures=numPC)
 
     ## TODO: Insert these somehow in gridsearch (scoring=scoring,refit=False)
     scoring = {'accuracy':  make_scorer(accuracy_score),
                'precision': make_scorer(precision_score),
                'recall':    make_scorer(recall_score),
-               'f1':        make_scorer(f1_score)}
+               'f1':        make_scorer(f1_score),
+               }
 
     # Making a pipeline
     pipe = getPipe(model, sampleMethod)
