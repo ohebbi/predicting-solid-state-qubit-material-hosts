@@ -404,7 +404,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach):
                     y=np.mean(model["relativeImportance"], axis=0),
                     error_y=dict(type='data', array=np.std(model["relativeImportance"], axis=0))), cols = 1, rows=i+1)
 
-    fig['layout']['xaxis3']['title']='Number principal component'
+    fig['layout']['xaxis4']['title']='Number principal component'
     dir_path = Path(__file__).resolve().parents[2] / "reports" / "figures" / "feature-importance"
     Path(dir_path).mkdir(parents=True, exist_ok=True)
     fig.write_image(str(dir_path / Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pdf")))
@@ -966,7 +966,10 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         ax1.step(np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_.cumsum(), where='mid')
 
         ax1.set_ylabel('PCA var ratio')
-
+        print(algorithm)
+        print(algorithm.best_estimator_)
+        print(algorithm.best_estimator_.named_steps['pca'])
+        print(algorithm.best_estimator_.named_steps['pca'].n_components)
         ax1.axvline(algorithm.best_estimator_.named_steps['pca'].n_components,
                 linestyle=':', label='Optimal')
 

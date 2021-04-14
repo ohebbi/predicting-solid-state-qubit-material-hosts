@@ -16,7 +16,7 @@ from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_sc
 # Models
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
-
+from sklearn.tree import DecisionTreeClassifier
 # Resampling
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
@@ -75,18 +75,27 @@ def findParamGrid(model, numFeatures):
     if typeModel == type(RandomForestClassifier()):
         return {#"model__n_estimators": [10, 100, 1000],
                 "model__max_features": ['auto'],#, 'sqrt', 'log2'],#[1, 25,50, 75, 100], #
-                "model__max_depth" : [2],#,4,6,8],
+                "model__max_depth" : np.arange(1,8),
                 #"model__criterion" :['gini', 'entropy'],
                 "pca__n_components": range(1,numFeatures+1)
                 }
     elif typeModel == type(GradientBoostingClassifier()):
         return {#"model__loss":["deviance", "exponential"],
                 #"model__learning_rate": [0.01, 0.025, 0.1, 0.2],
-                "model__max_depth":[2],#,4],6,8],
+                "model__max_depth":np.arange(1,8),
                 "model__max_features":['auto'],#, 'sqrt', 'log2'],#[25,50, 75, 100], #['auto', 'sqrt', 'log2'],
                 #"model__criterion": ["friedman_mse", "mse"],
                 #"model__subsample":[0.5, 0.75, 1],
                 #"model__n_estimators":[10,100,1000],
+                "pca__n_components": range(1,numFeatures+1)
+                }
+    elif typeModel == type(DecisionTreeClassifier()):
+        return {"model__max_features": ['sqrt'],# 'log2'],
+                #"model__min_samples_split": np.linspace(0.1, 0.5, 2),
+                #"model__min_samples_leaf": np.linspace(0.1, 0.5, 2),
+                "model__max_depth" : np.arange(1,4),
+                #"model__ccp_alpha" : np.arange(0, 1, 0.05)
+                #"model__criterion" :['gini'],#, 'entropy'],
                 "pca__n_components": range(1,numFeatures+1)
                 }
     elif typeModel == type(LogisticRegression()):#penalty{‘l1’, ‘l2’, ‘elasticnet’, ‘none’}
