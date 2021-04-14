@@ -957,7 +957,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
     #print(pca.explained_variance_ratio_)
     for i, algorithm in enumerate(ModelsBestParams):
 
-        fig, (ax0, ax1) = plt.subplots(nrows=2, sharex=True, figsize=set_size(width, 1, subplots=(2,1)))
+        fig, (ax0, ax1) = plt.subplots(nrows=2, sharex=True, figsize=(set_size(width, 0.5)[0],set_size(width, 0.5)[0]))
         gs = gridspec.GridSpec(2, 1, height_ratios=[3, 1])
         ax0 = plt.subplot(gs[0])
         ax1 = plt.subplot(gs[1])
@@ -965,11 +965,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         ax1.bar( np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_, alpha=0.5, align='center')
         ax1.step(np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_.cumsum(), where='mid')
 
-        ax1.set_ylabel('PCA var ratio')
-        print(algorithm)
-        print(algorithm.best_estimator_)
-        print(algorithm.best_estimator_.named_steps['pca'])
-        print(algorithm.best_estimator_.named_steps['pca'].n_components)
+        ax1.set_ylabel('PCA var')
         ax1.axvline(algorithm.best_estimator_.named_steps['pca'].n_components,
                 linestyle=':', label='Optimal')
 
@@ -989,10 +985,10 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         best_clfs.plot(x=components_col, y='mean_test_f1', yerr='std_test_f1',
                        label="f1 score", ax=ax0, capsize=4)
 
-        ax0.set_ylabel('Classification accuracy')
-        ax1.set_xlabel('Number of principal components')
+        ax0.set_ylabel('Accuracy')
+        ax1.set_xlabel('Principal components')
         ax0.set_xlabel('')
-        ax0.set_title("Optimal param per PC for {}".format(prettyNames[i]))
+        ax0.set_title("Best estimator {}".format(prettyNames[i]))
 
         ax0.set_xlim([0.5,numPC+0.5])
         ax1.set_xlim([0.5,numPC+0.5])
