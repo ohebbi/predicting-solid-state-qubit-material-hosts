@@ -43,6 +43,10 @@ def filterIDs(df: pd.DataFrame) -> pd.DataFrame:
                         "mp-698375", #Cu8H96C40S32N8
                         "mp-705194", #Mn16Sn8C80Br8O80
                         "mp-705526", #H64Au4C24S8N16Cl4O16
+                        "mp-706304", #H72Ru4C24S12N12Cl4O12
+                        "mp-707239", #H32C8Se4S8Br8N16
+                        "mp-720895", #Re4H88C16S16N32Cl32O12 # not enough memory
+                        "mp-722571", #Re20H20C80O80
                         "mp-1195290", #Ga3Si5P10H36C12N4Cl11 #DOI: -
                         "mp-1196358", #P4H120Pt8C40I8N4Cl8   #DOI: -
                         "mp-1196439", #Sn8P4H128C44N12Cl8O4  #DOI: -

@@ -99,7 +99,7 @@ def findParamGrid(model, numFeatures):
         raise TypeError("No model has been specified: type(model):{}".format(typeModel))
 
 
-def applyGridSearch(X: pd.DataFrame, y, model, cv, numPC: int, sampleMethod="under"):
+def applyGridSearch(X: pd.DataFrame, y, model, cv, numPC: int, sampleMethod="None"):
     param_grid = findParamGrid(model, numFeatures=numPC)
 
     ## TODO: Insert these somehow in gridsearch (scoring=scoring,refit=False)
