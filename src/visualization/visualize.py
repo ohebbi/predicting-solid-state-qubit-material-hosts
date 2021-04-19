@@ -9,7 +9,7 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-
+import tikzplotlib
 import seaborn as sns
 from tqdm import tqdm
 from sklearn.metrics import auc, average_precision_score, roc_curve, precision_recall_curve, f1_score
@@ -1083,7 +1083,7 @@ def gridsearchVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames
 
         plt.show()
 
-def make_parallel_coordinate_matplot(generatedData):
+def make_parallel_coordinate_matplot(generatedData, insertApproach):
     import matplotlib.pyplot as plt
     import matplotlib.patches as patches
     import numpy as np
@@ -1157,7 +1157,19 @@ def make_parallel_coordinate_matplot(generatedData):
     host.legend(legend_handles, targetNames,
                 loc='lower center', bbox_to_anchor=(0.5, -0.18),
                 ncol=len(targetNames), fancybox=False, shadow=False)
+
+
     plt.tight_layout()
+
+
+    dir_path = Path(__file__).resolve().parents[2] / \
+                            "reports" / "figures"  / "parallel_coordinates"
+
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
+
+    #fig.savefig(dir_path / Path(insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
+
+    tikzplotlib.save(dir_path / Path(insertApproach + ".tex"))
     plt.show()
 
 def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
