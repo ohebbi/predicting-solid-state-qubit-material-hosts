@@ -1100,13 +1100,12 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach):
     interestingFeatures = {
     "MP|total_magnetization":"Mag",
     "MP|Polar SG": "Polar SG",
-    "IonProperty|max ionic char":"Max ionic char",
+    "IonProperty|max ionic char":"Ionic char",
     #"AverageBondLength|mean Average bond length":"Avg bond length",
-    "ElementProperty|MagpieData range CovalentRadius": "Covalent radius range",
-    "IonProperty|max ionic char":"Max ionic char",
+    "ElementProperty|MagpieData range CovalentRadius": "Cov range",
     #"candidate":"Label",
     #"MP|oxide_type":"Oxid type",
-    "MP|nelements": "Number of elements",
+    "MP|nelements": "Num elements",
     "MP_Eg":"Eg"
     }
     generatedData = generatedData[generatedData["candidate"] != -1]
@@ -1130,7 +1129,7 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach):
     zs[:, 0] = ys[:, 0]
     zs[:, 1:] = (ys[:, 1:] - ymins[1:]) / dys[1:] * dys[0] + ymins[0]
 
-    fig, host = plt.subplots(figsize=set_size(width))
+    fig, host = plt.subplots(figsize=(set_size(width, 1)[0],set_size(width, 0.75)[0]))
 
     axes = [host] + [host.twinx() for i in range(ys.shape[1] - 1)]
     for i, ax in enumerate(axes):
