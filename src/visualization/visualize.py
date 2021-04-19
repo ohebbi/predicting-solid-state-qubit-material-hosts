@@ -1090,7 +1090,7 @@ def gridsearchVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames
 
         plt.show()
 
-def make_parallel_coordinate_matplot(generatedData, insertApproach):
+def make_parallel_coordinate_matplot(generatedData, insertApproach, applyLegend=False):
     import matplotlib.pyplot as plt
     import matplotlib.patches as patches
     import numpy as np
@@ -1129,7 +1129,7 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach):
     zs[:, 0] = ys[:, 0]
     zs[:, 1:] = (ys[:, 1:] - ymins[1:]) / dys[1:] * dys[0] + ymins[0]
 
-    fig, host = plt.subplots(figsize=(set_size(width, 1)[0],set_size(width, 0.75)[1]))
+    fig, host = plt.subplots(figsize=(set_size(width, 1)[0],set_size(width, 0.70)[1]))
 
     axes = [host] + [host.twinx() for i in range(ys.shape[1] - 1)]
     for i, ax in enumerate(axes):
@@ -1160,7 +1160,9 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach):
         patch = patches.PathPatch(path, facecolor='none', lw=2, alpha=0.7, edgecolor=colors[int(df["candidate"].values[j])])
         legend_handles[int(df["candidate"].values[j])] = patch
         host.add_patch(patch)
-    host.legend(legend_handles, targetNames,
+
+    if (applyLegend):
+        host.legend(legend_handles, targetNames,
                 loc='lower center', bbox_to_anchor=(0.5, -0.18),
                 ncol=len(targetNames), fancybox=False, shadow=False)
 
@@ -1216,6 +1218,9 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
     fig, ax = plt.subplots(nrows=1, sharex=True, figsize=(set_size(width, 0.5)[0],set_size(width, 0.5)[0]))
     plt.grid()
 
+    ax.set_xlabel("PC{}".format(1))
+    ax.set_ylabel("PC{}".format(2))
+
     #Call the function. Use only the 2 PCs.
     myplot(x_new[:,0:2],np.transpose(pca.components_[0:2, :]), y=trainingTarget.to_numpy())
 
@@ -1224,6 +1229,6 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
 
     Path(dir_path).mkdir(parents=True, exist_ok=True)
 
-    #fig.savefig(dir_path / Path(insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
+    fig.savefig(dir_path / Path(insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
     tikzplotlib.save(dir_path / Path(insertApproach + ".tex"))
     plt.show()
