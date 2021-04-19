@@ -1129,7 +1129,7 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach):
     zs[:, 0] = ys[:, 0]
     zs[:, 1:] = (ys[:, 1:] - ymins[1:]) / dys[1:] * dys[0] + ymins[0]
 
-    fig, host = plt.subplots(figsize=(set_size(width, 1)[0],set_size(width, 0.75)[0]))
+    fig, host = plt.subplots(figsize=(set_size(width, 1)[0],set_size(width, 0.75)[1]))
 
     axes = [host] + [host.twinx() for i in range(ys.shape[1] - 1)]
     for i, ax in enumerate(axes):
