@@ -1108,8 +1108,9 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach, applyLegend=
     "MP|nelements": "Num elements",
     "MP_Eg":"Eg"
     }
+    generatedData = generatedData.astype({"MP|Polar SG": int})
     generatedData = generatedData[generatedData["candidate"] != -1]
-    df = generatedData.groupby('candidate').apply(lambda s: s.sample(min(len(s), 200)))
+    df = generatedData.groupby('candidate').apply(lambda s: s.sample(min(len(s), 250)))
     #df = df[df["candidate"]!=-1]
 
     ynames = interestingFeatures.values()
@@ -1121,13 +1122,13 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach, applyLegend=
     ymins -= dys * 0.05  # add 5% padding below and above
     ymaxs += dys * 0.05
 
-    ymaxs[1], ymins[1] = ymins[1], ymaxs[1]  # reverse axis 1 to have less crossings
+    #ymaxs[1], ymins[1] = ymins[1], ymaxs[1]  # reverse axis 1 to have less crossings
     dys = ymaxs - ymins
 
     # transform all data to be compatible with the main axis
     zs = np.zeros_like(ys)
     zs[:, 0] = ys[:, 0]
-    zs[:, 1:] = (ys[:, 1:] - ymins[1:]) / dys[1:] * dys[0] + ymins[0]
+    zs[:, :] = (ys[:, :] - ymins[:]) / dys[:] * dys[0] + ymins[0]
 
     if (applyLegend):
         fig, host = plt.subplots(figsize=(set_size(width, 1)[0],set_size(width, 0.7)[1]))
