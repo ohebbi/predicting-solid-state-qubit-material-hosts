@@ -93,15 +93,15 @@ def findParamGrid(model, numFeatures):
         return {"model__max_features": ['sqrt'],# 'log2'],
                 #"model__min_samples_split": np.linspace(0.1, 0.5, 2),
                 #"model__min_samples_leaf": np.linspace(0.1, 0.5, 2),
-                "model__max_depth" : np.arange(1,4),
+                "model__max_depth" : np.arange(1,8),
                 #"model__ccp_alpha" : np.arange(0, 1, 0.05)
                 #"model__criterion" :['gini'],#, 'entropy'],
                 "pca__n_components": range(1,numFeatures+1)
                 }
     elif typeModel == type(LogisticRegression()):#penalty{‘l1’, ‘l2’, ‘elasticnet’, ‘none’}
         return {"model__penalty":["l2"],# "l2", "elasticnet", "none"],
-                #"model__learning_C": [0.001,0.01,0.1,1,10,100,1000],
-                "model__max_iter":[200],
+                "model__C": np.logspace(-3,5,7),
+                "model__max_iter":[200, 400],
                 "pca__n_components": range(1,numFeatures+1)
                 }
     else:

@@ -44,7 +44,7 @@ def featurize_by_material_id(material_ids: np.array,
 
     mpdr = MPDataRetrieval(MAPI_KEY)
 
-    steps = 25
+    steps = 1
     leftover = len(material_ids)%steps
 
     df        = pd.DataFrame({})

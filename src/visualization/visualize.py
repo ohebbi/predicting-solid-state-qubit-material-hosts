@@ -31,17 +31,8 @@ height = ((5**.5 - 1) / 2 )*width
 
 width_plotly = 548.1896533333334 #pt to px
 height_plotly = ((5**.5 - 0.75) / 2 )*width_plotly
-tex_fonts = {
-    "text.usetex": True,
-    "font.family": "Palatino",
-    "axes.labelsize":12,
-    "font.size": 12,
-    "legend.fontsize": 10,
-    "xtick.labelsize": 12,
-    "ytick.labelsize":12
-}
-plt.rcParams.update(tex_fonts)
 
+#plt.rcParams.update(tex_fonts)
 
 def set_size(width, fraction=1, subplots=(1,1)):
     """ Set fgure dimensions to avoid scaling in LateX.
@@ -76,11 +67,29 @@ def set_size(width, fraction=1, subplots=(1,1)):
 
     return (fig_width_in, fig_height_in)
 
+pgf_with_latex = {                      # setup matplotlib to use latex for output
+    "pgf.texsystem": "pdflatex",        # change this if using xetex or lautex
+    "text.usetex": True,                # use LaTeX to write all text
+    "font.family": "Palatino",
+    "font.serif": [],                   # blank entries should cause plots
+    "font.sans-serif": [],              # to inherit fonts from the document
+    "font.monospace": [],
+    "axes.labelsize": 10,               # LaTeX default is 10pt font.
+    "font.size": 10,
+    "legend.fontsize": 8,               # Make the legend/label fonts
+    "xtick.labelsize": 8,               # a little smaller
+    "ytick.labelsize": 8,
+    "figure.figsize": set_size(width, 0.9),     # default fig size of 0.9 textwidth
+    "pgf.preamble": r"\usepackage[detect-all,locale=DE]{siunitx} \usepackage[T1]{fontenc} \usepackage[utf8x]{inputenc}"
+    }
+
+mpl.rcParams.update(pgf_with_latex)
+
 def save_matplot_fig(fig, dir_path, filename):
 
     Path(dir_path).mkdir(parents=True, exist_ok=True)
 
-    fig.savefig(dir_path / filename , format="pdf", bbox_inches="tight")
+    fig.savefig(dir_path / filename , format="pgf", bbox_inches="tight")
 
 
 def plotSimilarities(x, y, full_formulas, xlabel, ylabel, title=None):
@@ -208,7 +217,7 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
 
     fig.savefig(Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "bandgaps" \
-                            / filename, format="pdf", bbox_inches="tight")
+                            / filename, format="pgf", bbox_inches="tight")
 
     fig.tight_layout()
     return fig
@@ -379,7 +388,7 @@ def plot_accuracy(models, names, prettyNames, numPC, approach, xlabel = "Cross v
     dir_path = Path(__file__).resolve().parents[2] / \
                                     "reports" / "figures"  / "cv-accuracy"
 
-    save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + ".pdf"))
+    save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + ".pgf"))
 
     plt.show()
 def plot_important_features(models, X, k, n, prettyNames, numPC, approach):
@@ -521,7 +530,7 @@ def confusion_matrixQT(models, y, prettyNames:str, numPC:int, approach:str):
         dir_path = Path(__file__).resolve().parents[2] / \
                                     "reports" / "figures"  / "confusion-matrix"
 
-        save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pdf"))
+        save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pgf"))
 
         plt.show()
 
@@ -673,7 +682,7 @@ def plot_histogram_bg_nelements(entries):
     _nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quaternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
     fig = px.histogram(entries[entries["MP|band_gap"]<9], x="MP|band_gap", color="MP|nelements", nbins=20,
                        title='Band gaps and material phases in dataset',
-                       labels={"MP|band_gap": "MP BG [ev]", 'MP|nelements':'Material phase'},
+                       labels={"MP|band_gap": "MP BG [eV]", 'MP|nelements':'Material phase'},
                        category_orders={"MP|nelements": list(_nelements.values())})
 
     fig.update_layout(
@@ -922,12 +931,12 @@ def evaluatePrecisionRecallMetrics(classifier,
 
     dir_path = Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "roc-auc"
-    save_matplot_fig(fig1, dir_path=dir_path, filename = Path(approach + "-" + str(numPC) + "-" + title +".pdf"))
+    save_matplot_fig(fig1, dir_path=dir_path, filename = Path(approach + "-" + str(numPC) + "-" + title +".pgf"))
 
     dir_path = Path(__file__).resolve().parents[2] / \
                                 "reports" / "figures"  / "recall-metrics"
 
-    save_matplot_fig(fig2, dir_path=dir_path, filename = Path(approach + "-" + str(numPC) + "-" + title +".pdf"))
+    save_matplot_fig(fig2, dir_path=dir_path, filename = Path(approach + "-" + str(numPC) + "-" + title +".pgf"))
 
 
     plt.show()
@@ -993,7 +1002,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         ax0.set_xlim([0.5,numPC+0.5])
         ax1.set_xlim([0.5,numPC+0.5])
 
-        ax1.set_ylim([0,pca.explained_variance_ratio_.cumsum()[numPC+2]])
+        ax1.set_ylim([0,pca.explained_variance_ratio_.cumsum()[numPC-1]+0.1])
         ax0.xaxis.set_major_formatter(plt.NullFormatter())
 
         ax0.set_xticks(range(1,numPC+1))
@@ -1003,6 +1012,200 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
 
         dir_path = Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "pca-scores"
-        save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pdf"))
+        save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pgf"))
 
         plt.show()
+
+def gridsearchVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames:str, approach:str):
+
+    for i, algorithm in enumerate(ModelsBestParams):
+
+        fig, ax0 = plt.subplots(nrows=1, sharex=True, figsize=(set_size(width, 0.5)[0],set_size(width, 0.5)[0]))
+
+        #print(algorithm.estimator.named_steps["model"])
+        if type(algorithm.estimator.named_steps["model"]) == type(LogisticRegression()):
+            components_col = 'param_model__C'
+            xlabel = "Reg. strength"
+            xscale = "log"
+            best_param = algorithm.best_estimator_.named_steps['model'].C
+        else:
+            components_col = 'param_model__max_depth'
+            xlabel = "Max depth"
+            xscale = "linear"
+            best_param = algorithm.best_estimator_.named_steps['model'].max_depth
+
+
+        # For each number of components, find the best classifier results
+        results = pd.DataFrame(algorithm.cv_results_)
+        best_clfs = results.groupby(components_col).apply(
+            lambda g: g.nlargest(1, 'mean_test_accuracy'))
+
+        best_clfs.plot(x=components_col, y='mean_test_accuracy', yerr='std_test_accuracy',
+                       label="Test score", ax=ax0, capsize=4)
+
+        best_clfs.plot(x=components_col, y='mean_train_accuracy', yerr='std_train_accuracy',
+                       label="Train score", ax=ax0, capsize=4)
+        best_clfs.plot(x=components_col, y='mean_test_f1', yerr='std_test_f1',
+                       label="f1 score", ax=ax0, capsize=4)
+
+
+        ax0.axvline(best_param, linestyle=':', label='Optimal')
+
+        #ax1.legend(prop=dict(size=12))
+
+        ax0.set_ylabel('Accuracy')
+        ax0.set_xlabel(xlabel)
+        ax0.set_title("Best estimator {}".format(prettyNames[i]))
+        ax0.set_xscale(xscale)
+        #ax0.set_xlim([0.5,numPC+0.5])
+        #ax1.set_xlim([0.5,numPC+0.5])
+
+        #ax1.set_ylim([0,pca.explained_variance_ratio_.cumsum()[numPC+2]])
+        #ax0.xaxis.set_major_formatter(plt.NullFormatter())
+
+        #ax0.set_xticks(range(1,numPC+1))
+        #ax1.set_xticks(range(1,numPC+1))
+        # Put a legend below current axis
+        #box = ax0.get_position()
+        #ax0.set_position([box.x0, box.y0 + box.height * 0.1,
+        #         box.width, box.height * 0.9])
+
+        #ax0.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),fancybox=True, shadow=True, ncol=5)
+
+        fig.tight_layout()
+
+        dir_path = Path(__file__).resolve().parents[2] / \
+                            "reports" / "figures"  / "grid-scores"
+
+        Path(dir_path / "PR-RE").mkdir(parents=True, exist_ok=True)
+
+        fig.savefig(dir_path / Path(prettyNames[i] + approach + ".pgf") , format="pgf", bbox_inches="tight")
+
+        plt.show()
+
+def make_parallel_coordinate_matplot(generatedData):
+    import matplotlib.pyplot as plt
+    import matplotlib.patches as patches
+    import numpy as np
+    from matplotlib.colors import ListedColormap
+    targetNames = ["Bad candidates", "Good candidates", "Unlabelled"]
+    #iris = datasets.load_iris()
+    interestingFeatures = {
+    "MP|total_magnetization":"Mag",
+    "MP|Polar SG": "Polar SG",
+    "IonProperty|max ionic char":"Max ionic char",
+    #"AverageBondLength|mean Average bond length":"Avg bond length",
+    "ElementProperty|MagpieData range CovalentRadius": "Covalent radius range",
+    "IonProperty|max ionic char":"Max ionic char",
+    #"candidate":"Label",
+    #"MP|oxide_type":"Oxid type",
+    "MP|nelements": "Number of elements",
+    "MP_Eg":"Eg"
+    }
+    generatedData = generatedData[generatedData["candidate"] != -1]
+    df = generatedData.groupby('candidate').apply(lambda s: s.sample(min(len(s), 200)))
+    #df = df[df["candidate"]!=-1]
+
+    ynames = interestingFeatures.values()
+    ys = df[interestingFeatures.keys()].to_numpy()
+    ymins = ys.min(axis=0)
+    ymaxs = ys.max(axis=0)
+
+    dys = ymaxs - ymins
+    ymins -= dys * 0.05  # add 5% padding below and above
+    ymaxs += dys * 0.05
+
+    ymaxs[1], ymins[1] = ymins[1], ymaxs[1]  # reverse axis 1 to have less crossings
+    dys = ymaxs - ymins
+
+    # transform all data to be compatible with the main axis
+    zs = np.zeros_like(ys)
+    zs[:, 0] = ys[:, 0]
+    zs[:, 1:] = (ys[:, 1:] - ymins[1:]) / dys[1:] * dys[0] + ymins[0]
+
+    fig, host = plt.subplots(figsize=(10,4))
+
+    axes = [host] + [host.twinx() for i in range(ys.shape[1] - 1)]
+    for i, ax in enumerate(axes):
+        ax.set_ylim(ymins[i], ymaxs[i])
+        ax.spines['top'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        if ax != host:
+            ax.spines['left'].set_visible(False)
+            ax.yaxis.set_ticks_position('right')
+            ax.spines["right"].set_position(("axes", i / (ys.shape[1] - 1)))
+
+    host.set_xlim(0, ys.shape[1] - 1)
+    host.set_xticks(range(ys.shape[1]))
+    host.set_xticklabels(ynames, fontsize=10)
+    host.tick_params(axis='x', which='major', pad=7)
+    host.spines['right'].set_visible(False)
+    host.xaxis.tick_top()
+
+    colors = ['tomato', 'limegreen', 'grey']
+    legend_handles = [None for _ in targetNames]
+    for j in tqdm(range(ys.shape[0])):
+        # create bezier curves
+        verts = list(zip([x for x in np.linspace(0, len(ys) - 1, len(ys) * 3 - 2, endpoint=True)],
+                         np.repeat(zs[j, :], 3)[1:-1]))
+        codes = [mpl.path.Path.MOVETO] + [mpl.path.Path.CURVE4 for _ in range(len(verts) - 1)]
+        path = mpl.path.Path(verts, codes)
+        #print(colors[int(generatedData["candidate"].values[j])])
+        patch = patches.PathPatch(path, facecolor='none', lw=2, alpha=0.7, edgecolor=colors[int(df["candidate"].values[j])])
+        legend_handles[int(df["candidate"].values[j])] = patch
+        host.add_patch(patch)
+    host.legend(legend_handles, targetNames,
+                loc='lower center', bbox_to_anchor=(0.5, -0.18),
+                ncol=len(targetNames), fancybox=False, shadow=False)
+    plt.tight_layout()
+    plt.show()
+
+def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
+
+    X = trainingSet.drop(columns=["material_id", "full_formula"])
+
+    scaler = StandardScaler()
+    scaler.fit(X)
+    X=scaler.transform(X)
+
+    pca = PCA()
+    x_new = pca.fit_transform(X)
+
+    def myplot(score,coeff, labels=None, y=None, showVec=None):
+
+        xs = score[:,0]
+        ys = score[:,1]
+        n = coeff.shape[0]
+
+        scalex = 1.0/(xs.max() - xs.min())
+        scaley = 1.0/(ys.max() - ys.min())
+
+        col = {1:'limegreen', 0:'tomato', -1:'grey'}
+        colors = []
+        for lab in y:
+            colors.append(col[lab])
+
+        ax.scatter(xs * scalex,ys * scaley, s=11, c = colors)
+
+        if showVec:
+            for i in tqdm(range(2)):
+                ax.arrow(0, 0, coeff[i,0], coeff[i,1],color = 'r',alpha = 0.5)
+                if labels is None:
+                    ax.text(coeff[i,0]* 1.15, coeff[i,1] * 1.15, "Var"+str(i+1), color = 'g', ha = 'center', va = 'center')
+                else:
+                    ax.text(coeff[i,0]* 1.15, coeff[i,1] * 1.15, labels[i], color = 'g', ha = 'center', va = 'center')
+
+    fig, ax = plt.subplots(nrows=1, sharex=True, figsize=(set_size(width, 0.5)[0],set_size(width, 0.5)[0]))
+    plt.grid()
+
+    #Call the function. Use only the 2 PCs.
+    myplot(x_new[:,0:2],np.transpose(pca.components_[0:2, :]), y=trainingTarget.to_numpy())
+
+    dir_path = Path(__file__).resolve().parents[2] / \
+                            "reports" / "figures"  / "pca-2d-plots"
+
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
+
+    fig.savefig(dir_path / Path(insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
+
+    plt.show()
