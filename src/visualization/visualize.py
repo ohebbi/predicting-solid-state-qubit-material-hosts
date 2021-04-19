@@ -67,10 +67,17 @@ def set_size(width, fraction=1, subplots=(1,1)):
 
     return (fig_width_in, fig_height_in)
 
+import matplotlib.font_manager as font_manager
+
+#font_dirs = ['/home/oliver/.local/share/fonts/', ]
+#font_files = font_manager.findSystemFonts(fontpaths=font_dirs)
+#font_list = font_manager.FontManager.addfont(font_files)
+#font_manager.fontManager.ttflist.extend(font_list)
+
 pgf_with_latex = {                      # setup matplotlib to use latex for output
     "pgf.texsystem": "pdflatex",        # change this if using xetex or lautex
     "text.usetex": True,                # use LaTeX to write all text
-    "font.family": "Palatino",
+    "font.family": "Palatino Linotype",
     "font.serif": [],                   # blank entries should cause plots
     "font.sans-serif": [],              # to inherit fonts from the document
     "font.monospace": [],
@@ -1167,9 +1174,9 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach):
 
     Path(dir_path).mkdir(parents=True, exist_ok=True)
 
-    #fig.savefig(dir_path / Path(insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
+    fig.savefig(dir_path / Path(insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
 
-    tikzplotlib.save(dir_path / Path(insertApproach + ".tex"))
+
     plt.show()
 
 def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
@@ -1218,6 +1225,6 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
 
     Path(dir_path).mkdir(parents=True, exist_ok=True)
 
-    fig.savefig(dir_path / Path(insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
-
+    #fig.savefig(dir_path / Path(insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
+    tikzplotlib.save(dir_path / Path(insertApproach + ".tex"))
     plt.show()
