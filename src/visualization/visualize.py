@@ -175,6 +175,7 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
 
     ax1.plot(x1[(x1>0)&(y1>0)], y1[(x1>0)&(y1>0)], "o",color='k', markersize=3)
     ax1.set(xlim=(0, 10), ylim=(0, 10))
+    ax1.plot([-5,15], [-5,15], "--",color='black')
 
     ax1.set_title("Common db. entries")
     ax1.set_xlabel(xlabel)
@@ -200,6 +201,7 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
     y2 = np.array(y2)
     ax2.plot(x2[(x2>0)&(y2>0)], y2[(x2>0)&(y2>0)], "o", markersize=3)
     ax2.set(xlim=(0, 10), ylim=(0, 10))
+    ax2.plot([-5,15], [-5,15], "--",color='black')
 
     ax2.set_title("Common exp. entries")
     ax2.set_xlabel(xlabel)
@@ -1204,11 +1206,6 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
         scalex = 1.0/(xs.max() - xs.min())
         scaley = 1.0/(ys.max() - ys.min())
 
-        col = {1:'limegreen', 0:'tomato', -1:'grey'}
-        mark = {1:'s', 0:'o'}
-        colors = []
-        markers = []
-
         for lab in y:
             colors.append(col[lab])
             markers.append(col[lab])
@@ -1241,3 +1238,5 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
     fig.savefig(dir_path / Path(insertApproach + ".pdf") , format="pdf", bbox_inches="tight")
     tikzplotlib.save(dir_path / Path(insertApproach + ".tex"))
     plt.show()
+
+    plt.legend()
