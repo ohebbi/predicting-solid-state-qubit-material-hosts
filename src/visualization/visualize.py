@@ -77,7 +77,7 @@ import matplotlib.font_manager as font_manager
 pgf_with_latex = {                      # setup matplotlib to use latex for output
     "pgf.texsystem": "pdflatex",        # change this if using xetex or lautex
     "text.usetex": True,                # use LaTeX to write all text
-    "font.family": "Palatino Linotype",
+    "font.family": "Palatino Linotype, Bold",
     "font.serif": [],                   # blank entries should cause plots
     "font.sans-serif": [],              # to inherit fonts from the document
     "font.monospace": [],
@@ -422,7 +422,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach):
                     y=np.mean(model["relativeImportance"], axis=0),
                     error_y=dict(type='data', array=np.std(model["relativeImportance"], axis=0))), cols = 1, rows=i+1)
 
-    fig['layout']['xaxis4']['title']='Number principal component'
+    fig['layout']['xaxis']['title']='Number principal component'
     dir_path = Path(__file__).resolve().parents[2] / "reports" / "figures" / "feature-importance"
     Path(dir_path).mkdir(parents=True, exist_ok=True)
     fig.write_image(str(dir_path / Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pdf")))
@@ -1092,7 +1092,7 @@ def gridsearchVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames
 
         plt.show()
 
-def make_parallel_coordinate_matplot(generatedData, insertApproach, applyLegend=False):
+def make_parallel_coordinate_matplot(generatedData, insertApproach, title, applyLegend=False):
     import matplotlib.pyplot as plt
     import matplotlib.patches as patches
     import numpy as np
@@ -1153,7 +1153,7 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach, applyLegend=
     host.tick_params(axis='x', which='major', pad=7)
     host.spines['right'].set_visible(False)
     host.xaxis.tick_top()
-
+    host.set_title(title)
     colors = ['tomato', 'limegreen', 'grey']
     legend_handles = [None for _ in targetNames]
     for j in tqdm(range(ys.shape[0])):
@@ -1186,7 +1186,7 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach, applyLegend=
 
     plt.show()
 
-def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
+def plot_2d_pca(trainingSet, trainingTarget, insertApproach, title):
 
     X = trainingSet.drop(columns=["material_id", "full_formula"])
 
@@ -1194,7 +1194,11 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
     scaler.fit(X)
     X=scaler.transform(X)
 
-    pca = PCA()
+    import pickle
+    # We use here a pre-trained PCA model on the whole data for the purpose of visualizing and comparison of the different approaches.
+    pca = pd.read_pickle(Path(__file__).resolve().parents[2] / \
+                                "models" / "trained-models"  / "PCA-total" / "PCA-total.pkl")
+    #pca = PCA()
     x_new = pca.fit_transform(X)
 
     def myplot(score,coeff, labels=None, y=None, showVec=None):
@@ -1206,12 +1210,8 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
         scalex = 1.0/(xs.max() - xs.min())
         scaley = 1.0/(ys.max() - ys.min())
 
-        for lab in y:
-            colors.append(col[lab])
-            markers.append(col[lab])
-
-        ax.scatter(xs[y==1] * scalex,ys[y==1] * scaley, s=7, c = "limegreen", marker='s')
-        ax.scatter(xs[y==0] * scalex,ys[y==0] * scaley, s=7, c = "tomato", marker='o')
+        ax.scatter(xs[y==1] * scalex,ys[y==1] * scaley, s=7, c = "limegreen", marker='s', label="Good candidates")
+        ax.scatter(xs[y==0] * scalex,ys[y==0] * scaley, s=7, c = "tomato", marker="^", label = "Bad candidates")
 
         if showVec:
             for i in tqdm(range(2)):
@@ -1226,7 +1226,7 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
 
     ax.set_xlabel("PC{}".format(1))
     ax.set_ylabel("PC{}".format(2))
-
+    ax.set_title(title)
     #Call the function. Use only the 2 PCs.
     myplot(x_new[:,0:2],np.transpose(pca.components_[0:2, :]), y=trainingTarget.to_numpy())
 
@@ -1234,9 +1234,6 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
                             "reports" / "figures"  / "pca-2d-plots"
 
     Path(dir_path).mkdir(parents=True, exist_ok=True)
-
     fig.savefig(dir_path / Path(insertApproach + ".pdf") , format="pdf", bbox_inches="tight")
     tikzplotlib.save(dir_path / Path(insertApproach + ".tex"))
     plt.show()
-
-    plt.legend()
