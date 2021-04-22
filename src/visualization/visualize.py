@@ -1205,11 +1205,16 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
         scaley = 1.0/(ys.max() - ys.min())
 
         col = {1:'limegreen', 0:'tomato', -1:'grey'}
+        mark = {1:'s', 0:'o'}
         colors = []
+        markers = []
+
         for lab in y:
             colors.append(col[lab])
+            markers.append(col[lab])
 
-        ax.scatter(xs * scalex,ys * scaley, s=11, c = colors)
+        ax.scatter(xs[y==1] * scalex,ys[y==1] * scaley, s=7, c = "limegreen", marker='s')
+        ax.scatter(xs[y==0] * scalex,ys[y==0] * scaley, s=7, c = "tomato", marker='o')
 
         if showVec:
             for i in tqdm(range(2)):
@@ -1233,6 +1238,6 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach):
 
     Path(dir_path).mkdir(parents=True, exist_ok=True)
 
-    fig.savefig(dir_path / Path(insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
+    fig.savefig(dir_path / Path(insertApproach + ".pdf") , format="pdf", bbox_inches="tight")
     tikzplotlib.save(dir_path / Path(insertApproach + ".tex"))
     plt.show()

@@ -50,7 +50,9 @@ def filterIDs(df: pd.DataFrame) -> pd.DataFrame:
                         "mp-744395", #Ni4H72C16S24N32O16
                         "mp-744919", #Mn6Mo4H68C44N32O10
                         "mp-782100", #As16H96C32S28N8
+                        "mp-1195164", #Cu4B4P16H96C32S16F16
                         "mp-1195290", #Ga3Si5P10H36C12N4Cl11 #DOI: -
+                        "mp-1195608", #C200Cl44
                         "mp-1196358", #P4H120Pt8C40I8N4Cl8   #DOI: -
                         "mp-1196439", #Sn8P4H128C44N12Cl8O4  #DOI: -
                         "mp-1198652", #Te4H72C36S24N12Cl4    #DOI: -
