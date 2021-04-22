@@ -1186,7 +1186,7 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach, title, apply
 
     plt.show()
 
-def plot_2d_pca(trainingSet, trainingTarget, insertApproach, title):
+def plot_2d_pca(trainingSet, trainingTarget, insertApproach, title, legend=False):
 
     X = trainingSet.drop(columns=["material_id", "full_formula"])
 
@@ -1212,7 +1212,8 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach, title):
 
         ax.scatter(xs[y==1] * scalex,ys[y==1] * scaley, s=7, c = "limegreen", marker='s', label="Good candidates")
         ax.scatter(xs[y==0] * scalex,ys[y==0] * scaley, s=7, c = "tomato", marker="^", label = "Bad candidates")
-
+        if legend:
+            ax.legend()
         if showVec:
             for i in tqdm(range(2)):
                 ax.arrow(0, 0, coeff[i,0], coeff[i,1],color = 'r',alpha = 0.5)
@@ -1227,6 +1228,7 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach, title):
     ax.set_xlabel("PC{}".format(1))
     ax.set_ylabel("PC{}".format(2))
     ax.set_title(title)
+
     #Call the function. Use only the 2 PCs.
     myplot(x_new[:,0:2],np.transpose(pca.components_[0:2, :]), y=trainingTarget.to_numpy())
 

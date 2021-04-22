@@ -5,6 +5,8 @@
 \definecolor{color1}{rgb}{1,0.388235294117647,0.27843137254902}
 
 \begin{axis}[
+legend cell align={left},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
 tick align=outside,
 tick pos=left,
 title={Insightful approach},
@@ -216,6 +218,7 @@ x  y
 -0.301814713974027 0.294149688211579
 -0.280310946036717 0.0529785377851392
 };
+\addlegendentry{Good candidates}
 \addplot [draw=color1, fill=color1, mark=triangle*, only marks, scatter]
 table{%
 x  y
@@ -638,6 +641,7 @@ x  y
 0.0725746242383991 -0.0640765091228395
 0.109451046028184 -0.0956325846740384
 };
+\addlegendentry{Bad candidates}
 \end{axis}
 
 \end{tikzpicture}
