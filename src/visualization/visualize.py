@@ -226,7 +226,7 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
 
     fig.savefig(Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "bandgaps" \
-                            / filename, format="pgf", bbox_inches="tight")
+                            / filename, format="pdf", bbox_inches="tight")
 
     fig.tight_layout()
     return fig
