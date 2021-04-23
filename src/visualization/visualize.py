@@ -145,7 +145,7 @@ def plotSimilarities(x, y, full_formulas, xlabel, ylabel, title=None):
                    "paper_bgcolor": "rgba(0, 0, 0, 0)"})
     return fig
 
-def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS = True):
+def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS = True, first=False):
     """
     A function used to plot band gaps.
     ...
@@ -172,13 +172,13 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
     """
     x1 = np.array(x1)
 
-    fig, (ax1, ax2) = plt.subplots(1,2, figsize=set_size(width, 1, subplots=(1,2)))
+    fig, (ax1, ax2) = plt.subplots(1,2, figsize=(set_size(width, 1, subplots=(1,2))[0], set_size(width, 0.5, subplots=(1,2))[0] ))
 
     ax1.plot(x1[(x1>0)&(y1>0)], y1[(x1>0)&(y1>0)], "o",color='k', markersize=3)
     ax1.set(xlim=(0, 10), ylim=(0, 10))
     ax1.plot([-5,15], [-5,15], "--",color='black')
-
-    ax1.set_title("Common db. entries")
+    if first:
+        ax1.set_title("Common db. entries")
     ax1.set_xlabel(xlabel)
     ax1.set_ylabel(ylabel)
 
@@ -203,8 +203,8 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
     ax2.plot(x2[(x2>0)&(y2>0)], y2[(x2>0)&(y2>0)], "o", markersize=3)
     ax2.set(xlim=(0, 10), ylim=(0, 10))
     ax2.plot([-5,15], [-5,15], "--",color='black')
-
-    ax2.set_title("Common exp. entries")
+    if first:
+        ax2.set_title("Common exp. entries")
     ax2.set_xlabel(xlabel)
     #ax2.set_ylabel(ylabel)
 
