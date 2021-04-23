@@ -46,14 +46,14 @@ def getPipe(model, sampleMethod: Optional[str]):
     if not (sampler):
         return Pipeline([
             ('scale', StandardScaler()),
-            ("pca", PCA(svd_solver="randomized")),
+            ("pca", PCA()),
             ('model', model)
         ])
 
     if len(sampler)==2:
         return Pipeline([
             ('scale', StandardScaler()),
-            ("pca", PCA(svd_solver="randomized")),
+            ("pca", PCA()),
             sampler,
             ('model', model)
         ])
@@ -61,7 +61,7 @@ def getPipe(model, sampleMethod: Optional[str]):
     elif len(sampler)==4:
         return Pipeline([
             ('scale', StandardScaler()),
-            ("pca", PCA(svd_solver="randomized")),
+            ("pca", PCA()),
             sampler[0:2],
             sampler[2:4],
             ('model', model)

@@ -77,12 +77,13 @@ import matplotlib.font_manager as font_manager
 pgf_with_latex = {                      # setup matplotlib to use latex for output
     "pgf.texsystem": "pdflatex",        # change this if using xetex or lautex
     "text.usetex": True,                # use LaTeX to write all text
-    "font.family": "Palatino Linotype, Bold",
+    "font.family": "Palatino Linotype",
     "font.serif": [],                   # blank entries should cause plots
     "font.sans-serif": [],              # to inherit fonts from the document
     "font.monospace": [],
     "axes.labelsize": 10,               # LaTeX default is 10pt font.
     "font.size": 10,
+    "font.weight": "bold",
     "legend.fontsize": 8,               # Make the legend/label fonts
     "xtick.labelsize": 8,               # a little smaller
     "ytick.labelsize": 8,
@@ -689,9 +690,9 @@ def plot_parallel_coordinates(data, dimensions, color):
 
 def plot_histogram_bg_nelements(entries):
     _nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quaternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
-    fig = px.histogram(entries[entries["MP|band_gap"]<9], x="MP|band_gap", color="MP|nelements", nbins=20,
-                       title='Band gaps and material phases in dataset',
-                       labels={"MP|band_gap": "MP BG [eV]", 'MP|nelements':'Material phase'},
+    fig = px.histogram(entries[entries["MP|band_gap"]<8], x="MP|band_gap", color="MP|nelements", nbins=20,
+                       #title='Band gaps and material phases in dataset',
+                       labels={"MP|band_gap": "Materials Project band gap [eV]", 'MP|nelements':'Number of elements'},
                        category_orders={"MP|nelements": list(_nelements.values())})
 
     fig.update_layout(
@@ -704,7 +705,7 @@ def plot_histogram_bg_nelements(entries):
                         size=12),
                       autosize=False,
                       width=width_plotly,
-                      height=height_plotly,
+                      height=height_plotly*0.75,
                      )
     fig.write_image(str(Path(__file__).resolve().parents[2] / \
                                 "reports" / "figures"  / "buildingFeatures"\
@@ -716,8 +717,8 @@ def plot_histogram_oxid_nelements(entries):
     _nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quaternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
 
     fig = px.histogram(entries, x="MP|nelements", color="MP|oxide_type", nbins=7,
-                   title='Oxid types and material phases in dataset',
-                   labels={'MP|nelements':'Material phase', "MP|oxide_type": "Oxid type"},
+                   #title='Oxid types and material phases in dataset',
+                   labels={'MP|nelements':'Number of elements', "MP|oxide_type": "Oxid type"},
                    category_orders={"MP|nelements": list(_nelements.values()),
                                     "MP|oxide_type":list(_oxideType.keys())})
     fig.update_layout(
@@ -725,12 +726,12 @@ def plot_histogram_oxid_nelements(entries):
                        "paper_bgcolor": "rgba(0, 0, 0, 0)",
                       },
                       font=dict(
-                        family="Palatino",
+                        family="Palatino, bold",
                         color="Black",
                         size=12),
                       autosize=False,
                       width=width_plotly,
-                      height=height_plotly,
+                      height=height_plotly*0.75,
                      )
 
     fig.write_image(str(Path(__file__).resolve().parents[2] / \
@@ -1114,7 +1115,7 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach, title, apply
     generatedData = generatedData[generatedData["candidate"] != -1]
     df = generatedData.groupby('candidate').apply(lambda s: s.sample(min(len(s), 250)))
     #df = df[df["candidate"]!=-1]
-
+    print(df[df["candidate"]==1].shape[0])
     ynames = interestingFeatures.values()
     ys = df[interestingFeatures.keys()].to_numpy()
     ymins = ys.min(axis=0)
@@ -1238,4 +1239,53 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach, title, legend=False
     Path(dir_path).mkdir(parents=True, exist_ok=True)
     fig.savefig(dir_path / Path(insertApproach + ".pdf") , format="pdf", bbox_inches="tight")
     tikzplotlib.save(dir_path / Path(insertApproach + ".tex"))
+    plt.show()
+
+def visualize_heatmap_of_combinations(Summary):
+    abbreviations = ["LOG ", "DT ", "RF ", "GB "]
+
+    dictionary = {}
+    for i in range(len(abbreviations)):
+
+        lists = []
+        for j in range(len(abbreviations)):
+            #if i!=j:
+            lists.append( Summary[(Summary[abbreviations[i]] == 1) & (Summary[abbreviations[j]] == 1)].shape[0] / Summary[(Summary[abbreviations[i]] == 1)].shape[0])
+
+        dictionary[abbreviations[i]] = lists
+    df = pd.DataFrame(dictionary, index= abbreviations, columns= abbreviations)
+
+    import seaborn as sns
+
+
+    sns.heatmap(df, annot=True)
+    plt.show()
+
+    abbreviations = ["LOG ", "DT ", "RF ", "GB "]
+
+    new_abbreviations = []
+    dictionary = {}
+    for i in range(len(abbreviations)):
+        for j in range(len(abbreviations)):
+            lists = []
+            for k in range(len(abbreviations)):
+                for l in range(len(abbreviations)):
+                    lists.append( Summary[(Summary[abbreviations[i]] == 1) &
+                                          (Summary[abbreviations[j]] == 1) &
+                                          (Summary[abbreviations[k]] == 1) &
+                                          (Summary[abbreviations[l]] == 1) ].shape[0])
+
+            new_abbreviations.append(abbreviations[i]+abbreviations[j]+abbreviations[k]+abbreviations[l])
+
+            dictionary[abbreviations[i]+abbreviations[j]+abbreviations[k]+abbreviations[l]] = lists
+
+    df = pd.DataFrame(dictionary, index=new_abbreviations, columns=new_abbreviations)
+
+    import seaborn as sns
+
+    # Getting the Upper Triangle of the co-relation matrix
+    #matrix = np.triu(df)
+
+    # using the upper triangle matrix as mask
+    sns.heatmap(df, annot=False)#, mask=matrix)
     plt.show()
