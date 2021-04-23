@@ -692,7 +692,7 @@ def plot_histogram_bg_nelements(entries):
     _nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quaternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
     fig = px.histogram(entries[entries["MP|band_gap"]<8], x="MP|band_gap", color="MP|nelements", nbins=20,
                        #title='Band gaps and material phases in dataset',
-                       labels={"MP|band_gap": "Materials Project band gap [eV]", 'MP|nelements':'Number of elements'},
+                       labels={"MP|band_gap": "Materials Project band gap [eV]", 'MP|nelements':'Compound type'},
                        category_orders={"MP|nelements": list(_nelements.values())})
 
     fig.update_layout(
@@ -705,7 +705,7 @@ def plot_histogram_bg_nelements(entries):
                         size=12),
                       autosize=False,
                       width=width_plotly,
-                      height=height_plotly*0.75,
+                      height=height_plotly*0.8,
                      )
     fig.write_image(str(Path(__file__).resolve().parents[2] / \
                                 "reports" / "figures"  / "buildingFeatures"\
@@ -718,7 +718,7 @@ def plot_histogram_oxid_nelements(entries):
 
     fig = px.histogram(entries, x="MP|nelements", color="MP|oxide_type", nbins=7,
                    #title='Oxid types and material phases in dataset',
-                   labels={'MP|nelements':'Number of elements', "MP|oxide_type": "Oxid type"},
+                   labels={'MP|nelements':'Compound type', "MP|oxide_type": "Oxid type"},
                    category_orders={"MP|nelements": list(_nelements.values()),
                                     "MP|oxide_type":list(_oxideType.keys())})
     fig.update_layout(
