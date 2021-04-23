@@ -172,7 +172,7 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
     """
     x1 = np.array(x1)
 
-    fig, (ax1, ax2) = plt.subplots(1,2, figsize=(set_size(width, 1, subplots=(1,2))[0], set_size(width, 0.5, subplots=(1,2))[0] ))
+    fig, (ax1, ax2) = plt.subplots(1,2, figsize=(set_size(width, 1, subplots=(1,2))[0], set_size(width, 0.45, subplots=(1,2))[0] ))
 
     ax1.plot(x1[(x1>0)&(y1>0)], y1[(x1>0)&(y1>0)], "o",color='k', markersize=3)
     ax1.set(xlim=(0, 10), ylim=(0, 10))
