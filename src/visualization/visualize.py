@@ -968,6 +968,47 @@ def evaluatePrecisionRecallMetrics(classifier,
     print ("f1-score:{:0.5f}".format(modelResults['f1_score'][-1]))
 
     return modelResults
+def principalComponentsVSvariance(X: pd.DataFrame, approach:str):
+
+    scaledTrainingData = StandardScaler().fit_transform(X) # normalizing the features
+    pca = PCA(0.97).fit(scaledTrainingData)
+    #print(pca.explained_variance_ratio_)
+
+    fig, (ax0, ax1) = plt.subplots(nrows=2, sharex=True, sharey=True, figsize=(set_size(width, 0.5)[0],set_size(width, 0.75)[0]))
+    gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1])
+    ax0 = plt.subplot(gs[0])
+    ax1 = plt.subplot(gs[1])
+
+    ax1.bar( np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_, alpha=0.5, align='center')
+    ax0.plot(np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_.cumsum())
+
+    chosenNComponents = np.where(pca.explained_variance_ratio_.cumsum()>0.95)[0][0]
+
+    ax0.set_ylabel('Accumulated var ratio')
+    ax1.set_ylabel('Var ratio')
+    ax1.axvline(chosenNComponents,
+                linestyle=':', label='$95\%$ accumulated variance')
+    ax0.axvline(chosenNComponents,
+                linestyle=':')
+
+    #ax1.legend(loc="upper right")
+    ax1.legend(loc='upper center', bbox_to_anchor=(0.5, 1.05),
+          ncol=3, fancybox=True, shadow=True)
+    ax1.set_xlabel('Principal components')
+
+    ax0.xaxis.set_major_formatter(plt.NullFormatter())
+    #ax1.set_xlim([0.5,numPC+0.5])
+    ax0.set_title("Explained variance for " + str(approach), wrap=True)
+    ax1.set_ylim([0,max(pca.explained_variance_ratio_)])
+
+    #ax1.set_xticks(range(1,numPC+1))
+    fig.tight_layout()
+
+    dir_path = Path(__file__).resolve().parents[2] / \
+                            "reports" / "figures"  / "pca"
+    save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach +".pgf"))
+
+    plt.show()
 
 def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames:str, numPC:int, approach:str):
 
@@ -976,7 +1017,8 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
     #print(pca.explained_variance_ratio_)
     for i, algorithm in enumerate(ModelsBestParams):
 
-        fig, (ax0, ax1) = plt.subplots(nrows=2, sharex=True, figsize=(set_size(width, 0.5)[0],set_size(width, 0.5)[0]))
+        fig, ax0 = plt.subplots(nrows=1, figsize=(set_size(width, 0.5)[0],set_size(width, 0.5)[0]))
+        """
         gs = gridspec.GridSpec(2, 1, height_ratios=[3, 1])
         ax0 = plt.subplot(gs[0])
         ax1 = plt.subplot(gs[1])
@@ -989,6 +1031,10 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
                 linestyle=':', label='Optimal')
 
         ax1.legend(prop=dict(size=12))
+
+        """
+        ax0.axvline(algorithm.best_estimator_.named_steps['pca'].n_components,
+                        linestyle=':', label='Optimal')
 
         # For each number of components, find the best classifier results
         results = pd.DataFrame(algorithm.cv_results_)
@@ -1005,18 +1051,18 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
                        label="f1 score", ax=ax0, capsize=4)
 
         ax0.set_ylabel('Accuracy')
-        ax1.set_xlabel('Principal components')
-        ax0.set_xlabel('')
-        ax0.set_title("Best estimator {}".format(prettyNames[i]))
+        ax0.set_xlabel('Principal components')
+        #ax0.set_xlabel('')
+        #ax0.set_title("Best estimator {}".format(prettyNames[i]))
 
         ax0.set_xlim([0.5,numPC+0.5])
-        ax1.set_xlim([0.5,numPC+0.5])
+        #ax1.set_xlim([0.5,numPC+0.5])
 
-        ax1.set_ylim([0,pca.explained_variance_ratio_.cumsum()[numPC-1]+0.1])
+        #ax1.set_ylim([0,pca.explained_variance_ratio_.cumsum()[numPC-1]+0.1])
         ax0.xaxis.set_major_formatter(plt.NullFormatter())
 
         ax0.set_xticks(range(1,numPC+1))
-        ax1.set_xticks(range(1,numPC+1))
+        #ax1.set_xticks(range(1,numPC+1))
 
         fig.tight_layout()
 
