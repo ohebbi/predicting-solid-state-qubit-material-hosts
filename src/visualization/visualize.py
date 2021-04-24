@@ -1088,9 +1088,10 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         #display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==129])[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]])
         display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==129])[["std_test_accuracy", "std_test_precision", "std_test_recall", "std_test_f1"]])
 
+        nameMapping = {"LOG ": "Logistic regression", "DT ": "Decision tree", "RF ": "Random forest", "GB": "Gradient boost"}
         ax0.set_ylabel('Score')
         ax0.set_xlabel('Principal components')
-        ax0.set_title("Param grid search {}".format(prettyNames[i]))
+        ax0.set_title(nameMapping[prettyNames[i]])
 
         ax0.set_xlim([0.5,numPC+0.5])
         #ax0.legend().set_visible(False)
@@ -1108,6 +1109,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
             ax0.get_legend().remove()
         """
         #ax0.legend()
+
         fig.tight_layout()
         ax0.get_legend().remove()
         dir_path = Path(__file__).resolve().parents[2] / \

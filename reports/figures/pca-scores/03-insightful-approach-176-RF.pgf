@@ -26,7 +26,7 @@
 \begingroup%
 \makeatletter%
 \begin{pgfpicture}%
-\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{2.188960in}{2.174610in}}%
+\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{2.117005in}{2.174610in}}%
 \pgfusepath{use as bounding box, clip}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -37,8 +37,8 @@
 \pgfsetstrokeopacity{0.000000}%
 \pgfsetdash{}{0pt}%
 \pgfpathmoveto{\pgfqpoint{0.000000in}{-0.000000in}}%
-\pgfpathlineto{\pgfqpoint{2.188960in}{-0.000000in}}%
-\pgfpathlineto{\pgfqpoint{2.188960in}{2.174610in}}%
+\pgfpathlineto{\pgfqpoint{2.117005in}{-0.000000in}}%
+\pgfpathlineto{\pgfqpoint{2.117005in}{2.174610in}}%
 \pgfpathlineto{\pgfqpoint{0.000000in}{2.174610in}}%
 \pgfpathclose%
 \pgfusepath{}%
@@ -803,7 +803,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=1.271645in,y=1.959824in,,base]{\color{textcolor}\fontsize{12.000000}{14.400000}\selectfont Param grid search RF }%
+\pgftext[x=1.271645in,y=1.959824in,,base]{\color{textcolor}\fontsize{12.000000}{14.400000}\selectfont Random forest}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%
