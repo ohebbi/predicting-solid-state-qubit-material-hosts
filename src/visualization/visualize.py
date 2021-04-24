@@ -1088,7 +1088,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         #display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==129])[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]])
         display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==129])[["std_test_accuracy", "std_test_precision", "std_test_recall", "std_test_f1"]])
 
-        nameMapping = {"LOG ": "Logistic regression", "DT ": "Decision tree", "RF ": "Random forest", "GB": "Gradient boost"}
+        nameMapping = {"LOG ": "Logistic regression", "DT ": "Decision tree", "RF ": "Random forest", "GB ": "Gradient boost"}
         ax0.set_ylabel('Score')
         ax0.set_xlabel('Principal components')
         ax0.set_title(nameMapping[prettyNames[i]])
