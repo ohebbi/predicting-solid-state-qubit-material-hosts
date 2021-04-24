@@ -1114,8 +1114,8 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".pgf"))
         #tikzplotlib.clean_figure()
         tikzplotlib.save(dir_path / str(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".tex"),
-                        axis_height = str(set_size(width, 0.9, isTex=True)[0]) + "in",
-                        axis_width  = str(set_size(width, 0.9, isTex=True)[0]) + "in")
+                        axis_height = str(set_size(width, 0.8, isTex=True)[0]) + "in",
+                        axis_width  = str(set_size(width, 0.8, isTex=True)[0]) + "in")
 
         plt.show()
 
