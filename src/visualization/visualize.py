@@ -224,12 +224,17 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
         print("CI: {:0.2f}".format(ci))
 
     ax2.legend(loc="upper left")
+    dir_path = Path(__file__).resolve().parents[2] / \
+                            "reports" / "figures"  / "bandgaps"
 
-    fig.savefig(Path(__file__).resolve().parents[2] / \
-                            "reports" / "figures"  / "bandgaps" \
-                            / filename, format="pdf", bbox_inches="tight")
+    fig.savefig(dir_path / filename, format="pdf", bbox_inches="tight")
 
     fig.tight_layout()
+    print(set_size(width, 0.4)[0])
+
+    tikzplotlib.save(dir_path / str(filename[:-4] + ".tex"),
+                            axis_height = str(set_size(width, 0.4)[0]) + "cm",
+                            axis_width  = str(set_size(width, 0.4)[0]) + "cm")
     return fig
 
 
@@ -1086,7 +1091,9 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
                             "reports" / "figures"  / "pca-scores"
         save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".pgf"))
         #tikzplotlib.clean_figure()
-        tikzplotlib.save(dir_path / Path(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".tex"))
+        tikzplotlib.save(dir_path / Path(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".tex"),
+                        axis_height = str(set_size(width, 0.4)[0] + "cm"),
+                        axis_width  = str(set_size(width, 0.4)[0] + "cm"))
 
         plt.show()
 
