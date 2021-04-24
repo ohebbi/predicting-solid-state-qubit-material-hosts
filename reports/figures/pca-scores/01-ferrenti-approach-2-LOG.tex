@@ -1,0 +1,147 @@
+% This file was created by tikzplotlib v0.9.8.
+\begin{tikzpicture}
+
+\definecolor{color0}{rgb}{0.12156862745098,0.466666666666667,0.705882352941177}
+\definecolor{color1}{rgb}{1,0.498039215686275,0.0549019607843137}
+\definecolor{color2}{rgb}{0.172549019607843,0.627450980392157,0.172549019607843}
+\definecolor{color3}{rgb}{0.83921568627451,0.152941176470588,0.156862745098039}
+\definecolor{color4}{rgb}{0.580392156862745,0.403921568627451,0.741176470588235}
+
+\begin{axis}[
+height=1.2800194271481944in,
+legend cell align={left},
+legend style={
+  fill opacity=0.8,
+  draw opacity=1,
+  text opacity=1,
+  at={(0.03,0.97)},
+  anchor=north west,
+  draw=white!80!black
+},
+tick align=outside,
+tick pos=left,
+title={Param grid search LOG },
+width=1.2800194271481944in,
+x grid style={white!69.0196078431373!black},
+xlabel={Principal components},
+xmin=0.5, xmax=2.5,
+xtick style={color=black},
+y grid style={white!69.0196078431373!black},
+ylabel={Accuracy},
+ymin=0.70386649504444, ymax=0.956694929204548,
+ytick style={color=black},
+ytick={0.7,0.75,0.8,0.85,0.9,0.95,1},
+yticklabels={
+  \(\displaystyle {0.70}\),
+  \(\displaystyle {0.75}\),
+  \(\displaystyle {0.80}\),
+  \(\displaystyle {0.85}\),
+  \(\displaystyle {0.90}\),
+  \(\displaystyle {0.95}\),
+  \(\displaystyle {1.00}\)
+}
+]
+\path [draw=color0, semithick]
+(axis cs:2,0.72568728453488)
+--(axis cs:2,0.743382460799587);
+
+\path [draw=color1, semithick]
+(axis cs:2,0.715358696597172)
+--(axis cs:2,0.755086537600009);
+
+\path [draw=color2, semithick]
+(axis cs:2,0.71887154222658)
+--(axis cs:2,0.752672421891629);
+
+\path [draw=color3, semithick]
+(axis cs:2,0.902053130789122)
+--(axis cs:2,0.945202727651816);
+
+\path [draw=color4, semithick]
+(axis cs:2,0.80601484345353)
+--(axis cs:2,0.83163287125941);
+
+\addplot [semithick, color0, dotted]
+table {%
+2 0.70386649504444
+2 0.956694929204548
+};
+\addlegendentry{Train}
+\addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.72568728453488
+};
+\addlegendentry{f1}
+\addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.743382460799587
+};
+\addlegendentry{f1}
+\addplot [semithick, color1, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.715358696597172
+};
+\addlegendentry{f1}
+\addplot [semithick, color1, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.755086537600009
+};
+\addlegendentry{f1}
+\addplot [semithick, color2, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.71887154222658
+};
+\addlegendentry{f1}
+\addplot [semithick, color2, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.752672421891629
+};
+\addlegendentry{f1}
+\addplot [semithick, color3, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.902053130789122
+};
+\addlegendentry{f1}
+\addplot [semithick, color3, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.945202727651816
+};
+\addlegendentry{f1}
+\addplot [semithick, color4, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.80601484345353
+};
+\addlegendentry{f1}
+\addplot [semithick, color4, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.83163287125941
+};
+\addlegendentry{f1}
+\addplot [semithick, color0]
+table {%
+2 0.734534872667234
+};
+\addlegendentry{f1}
+\addplot [semithick, color1]
+table {%
+2 0.73522261709859
+};
+\addlegendentry{f1}
+\addplot [semithick, color2]
+table {%
+2 0.735771982059105
+};
+\addlegendentry{f1}
+\addplot [semithick, color3]
+table {%
+2 0.923627929220469
+};
+\addlegendentry{f1}
+\addplot [semithick, color4]
+table {%
+2 0.81882385735647
+};
+\addlegendentry{f1}
+\end{axis}
+
+\end{tikzpicture}

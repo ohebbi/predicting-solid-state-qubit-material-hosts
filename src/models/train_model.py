@@ -12,7 +12,7 @@ from sklearn.model_selection import GridSearchCV, RepeatedStratifiedKFold
 from sklearn.metrics import confusion_matrix, auc, plot_roc_curve
 
 # Scores
-from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score, make_scorer
+from sklearn.metrics import f1_score, balanced_accuracy_score, precision_score, recall_score, make_scorer
 # Models
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
@@ -77,7 +77,7 @@ def findParamGrid(model, numFeatures, searchPC):
                 "model__max_features": ['auto'],#, 'sqrt', 'log2'],#[1, 25,50, 75, 100], #
                 "model__max_depth" : np.arange(1,8),
                 #"model__criterion" :['gini', 'entropy'],
-                "pca__n_components": range(1,numFeatures+1) if (searchPC) else [numFeatures]
+                "pca__n_components": range(1,numFeatures+1, 2) if (searchPC) else [numFeatures]
                 }
     elif typeModel == type(GradientBoostingClassifier()):
         return {#"model__loss":["deviance", "exponential"],
@@ -87,7 +87,7 @@ def findParamGrid(model, numFeatures, searchPC):
                 #"model__criterion": ["friedman_mse", "mse"],
                 #"model__subsample":[0.5, 0.75, 1],
                 #"model__n_estimators":[10,100,1000],
-                "pca__n_components": range(1,numFeatures+1) if (searchPC) else [numFeatures]
+                "pca__n_components": range(1,numFeatures+1, 2) if (searchPC) else [numFeatures]
                 }
     elif typeModel == type(DecisionTreeClassifier()):
         return {"model__max_features": ['sqrt'],# 'log2'],
@@ -96,13 +96,13 @@ def findParamGrid(model, numFeatures, searchPC):
                 "model__max_depth" : np.arange(1,8),
                 #"model__ccp_alpha" : np.arange(0, 1, 0.05)
                 #"model__criterion" :['gini'],#, 'entropy'],
-                "pca__n_components": range(1,numFeatures+1) if (searchPC) else [numFeatures]
+                "pca__n_components": range(1,numFeatures+1, 2) if (searchPC) else [numFeatures]
                 }
     elif typeModel == type(LogisticRegression()):#penalty{‘l1’, ‘l2’, ‘elasticnet’, ‘none’}
         return {"model__penalty":["l2"],# "l2", "elasticnet", "none"],
                 "model__C": np.logspace(-3,5,7),
                 "model__max_iter":[200, 400],
-                "pca__n_components": range(1,numFeatures+1) if (searchPC) else [numFeatures]
+                "pca__n_components": range(1,numFeatures+1, 2) if (searchPC) else [numFeatures]
                 }
     else:
         raise TypeError("No model has been specified: type(model):{}".format(typeModel))
@@ -114,7 +114,7 @@ def applyGridSearch(X: pd.DataFrame, y, model, cv, numPC: int, sampleMethod="Non
     param_grid = findParamGrid(model, numFeatures=numPC, searchPC=searchPC)
 
     ## TODO: Insert these somehow in gridsearch (scoring=scoring,refit=False)
-    scoring = {'accuracy':  make_scorer(accuracy_score),
+    scoring = {'accuracy':  make_scorer(balanced_accuracy_score),
                'precision': make_scorer(precision_score),
                'recall':    make_scorer(recall_score),
                'f1':        make_scorer(f1_score),

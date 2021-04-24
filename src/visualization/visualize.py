@@ -231,7 +231,7 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
     fig.savefig(dir_path / filename, format="pdf", bbox_inches="tight")
 
     fig.tight_layout()
-    print(set_size(width, 1, subplots=(1,2), isTex=True)[0])
+    #print(set_size(width, 1, subplots=(1,2), isTex=True)[0])
 
     tikzplotlib.save(dir_path / str(filename[:-4] + ".tex"),
                             axis_width = str(set_size(width, 0.9, subplots=(1,2), isTex=True)[0]) + "in",
@@ -1056,19 +1056,30 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
             best_clfs.plot(x=components_col, y='mean_test_accuracy',
                            label="Test score", ax=ax0)
 
+            best_clfs.plot(x=components_col, y='mean_test_precision',
+                           label="Precision", ax=ax0)
+
+            best_clfs.plot(x=components_col, y='mean_test_recall',
+                           label="Recall", ax=ax0)
 
             best_clfs.plot(x=components_col, y='mean_test_f1',
                            label="f1 score", ax=ax0)
 
         else:
             best_clfs.plot(x=components_col, y='mean_train_accuracy', yerr='std_train_accuracy',
-                           label="Train score", ax=ax0, capsize=4)
+                           label="Train", ax=ax0, capsize=4)
 
             best_clfs.plot(x=components_col, y='mean_test_accuracy', yerr='std_test_accuracy',
-                           label="Test score", ax=ax0, capsize=4)
+                           label="Test", ax=ax0, capsize=4)
+
+            best_clfs.plot(x=components_col, y='mean_test_precision', yerr='std_test_precision',
+                           label="Precision", ax=ax0, capsize=4)
+
+            best_clfs.plot(x=components_col, y='mean_test_recall', yerr='std_test_recall',
+                           label="Recall", ax=ax0, capsize=4)
 
             best_clfs.plot(x=components_col, y='mean_test_f1', yerr='std_test_f1',
-                           label="f1 score", ax=ax0, capsize=4)
+                           label="f1", ax=ax0, capsize=4)
 
             ax0.xaxis.set_major_formatter(plt.NullFormatter())
 
@@ -1092,9 +1103,9 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
                             "reports" / "figures"  / "pca-scores"
         save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".pgf"))
         #tikzplotlib.clean_figure()
-        tikzplotlib.save(dir_path / Path(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".tex"),
-                        axis_height = str(set_size(width, 0.4)[0] + "cm"),
-                        axis_width  = str(set_size(width, 0.4)[0] + "cm"))
+        tikzplotlib.save(dir_path / str(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".tex"),
+                        axis_height = str(set_size(width, 0.45, isTex=True)[0]) + "in",
+                        axis_width  = str(set_size(width, 0.45, isTex=True)[0]) + "in")
 
         plt.show()
 
@@ -1120,15 +1131,22 @@ def gridsearchVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames
         # For each number of components, find the best classifier results
         results = pd.DataFrame(algorithm.cv_results_)
         best_clfs = results.groupby(components_col).apply(
-            lambda g: g.nlargest(1, 'mean_test_accuracy'))
-
-        best_clfs.plot(x=components_col, y='mean_test_accuracy', yerr='std_test_accuracy',
-                       label="Test score", ax=ax0, capsize=4)
+            lambda g: g.nlargest(1, 'mean_test_f1'))
 
         best_clfs.plot(x=components_col, y='mean_train_accuracy', yerr='std_train_accuracy',
-                       label="Train score", ax=ax0, capsize=4)
+                       label="Train", ax=ax0, capsize=4)
+
+        best_clfs.plot(x=components_col, y='mean_test_accuracy', yerr='std_test_accuracy',
+                       label="Test", ax=ax0, capsize=4)
+
+        best_clfs.plot(x=components_col, y='mean_test_precision', yerr='std_test_precision',
+                       label="Precision", ax=ax0, capsize=4)
+
+        best_clfs.plot(x=components_col, y='mean_test_recall', yerr='std_test_recall',
+                       label="Recall", ax=ax0, capsize=4)
+
         best_clfs.plot(x=components_col, y='mean_test_f1', yerr='std_test_f1',
-                       label="f1 score", ax=ax0, capsize=4)
+                       label="f1", ax=ax0, capsize=4)
 
 
         ax0.axvline(best_param, linestyle=':', label='Optimal')
@@ -1161,7 +1179,11 @@ def gridsearchVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames
 
         Path(dir_path / "PR-RE").mkdir(parents=True, exist_ok=True)
 
-        fig.savefig(dir_path / Path(prettyNames[i] + approach + ".pgf") , format="pgf", bbox_inches="tight")
+        #fig.savefig(dir_path / Path(prettyNames[i] + approach + ".pgf") , format="pgf", bbox_inches="tight")
+
+        tikzplotlib.save(dir_path / str(approach + "-" + prettyNames[i][:-1] +".tex"),
+                        axis_height = str(set_size(width, 0.45, isTex=True)[0]) + "in",
+                        axis_width  = str(set_size(width, 0.45, isTex=True)[0]) + "in")
 
         plt.show()
 
@@ -1311,6 +1333,11 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach, title, legend=False
     Path(dir_path).mkdir(parents=True, exist_ok=True)
     fig.savefig(dir_path / Path(insertApproach + ".pdf") , format="pdf", bbox_inches="tight")
     tikzplotlib.save(dir_path / Path(insertApproach + ".tex"))
+
+    #tikzplotlib.save(dir_path / str(approach + "-" + prettyNames[i][:-1] +".tex"),
+    #                        axis_height = str(set_size(width, 0.45, isTex=True)[0]) + "in",
+    #                        axis_width  = str(set_size(width, 0.45, isTex=True)[0]) + "in")
+
     plt.show()
 
 def visualize_heatmap_of_combinations(Summary):

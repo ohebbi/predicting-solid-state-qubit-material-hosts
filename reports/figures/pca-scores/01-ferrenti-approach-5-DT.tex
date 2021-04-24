@@ -1,0 +1,108 @@
+% This file was created by tikzplotlib v0.9.8.
+\begin{tikzpicture}
+
+\definecolor{color0}{rgb}{0.12156862745098,0.466666666666667,0.705882352941177}
+\definecolor{color1}{rgb}{1,0.498039215686275,0.0549019607843137}
+\definecolor{color2}{rgb}{0.172549019607843,0.627450980392157,0.172549019607843}
+
+\begin{axis}[
+height=1.2800194271481944in,
+legend cell align={left},
+legend style={
+  fill opacity=0.8,
+  draw opacity=1,
+  text opacity=1,
+  at={(0.03,0.97)},
+  anchor=north west,
+  draw=white!80!black
+},
+tick align=outside,
+tick pos=left,
+title={Param grid search DT },
+width=1.2800194271481944in,
+x grid style={white!69.0196078431373!black},
+xlabel={Principal components},
+xmin=0.5, xmax=5.5,
+xtick style={color=black},
+y grid style={white!69.0196078431373!black},
+ylabel={Accuracy},
+ymin=0.737993548728515, ymax=0.851767193106122,
+ytick style={color=black},
+ytick={0.72,0.74,0.76,0.78,0.8,0.82,0.84,0.86},
+yticklabels={
+  \(\displaystyle {0.72}\),
+  \(\displaystyle {0.74}\),
+  \(\displaystyle {0.76}\),
+  \(\displaystyle {0.78}\),
+  \(\displaystyle {0.80}\),
+  \(\displaystyle {0.82}\),
+  \(\displaystyle {0.84}\),
+  \(\displaystyle {0.86}\)
+}
+]
+\path [draw=color0, semithick]
+(axis cs:5,0.781637349887571)
+--(axis cs:5,0.800588196717723);
+
+\path [draw=color1, semithick]
+(axis cs:5,0.743165078018406)
+--(axis cs:5,0.782208080149545);
+
+\path [draw=color2, semithick]
+(axis cs:5,0.810224153214477)
+--(axis cs:5,0.846595663816231);
+
+\addplot [semithick, color0, dotted]
+table {%
+5 0.737993548728515
+5 0.851767193106122
+};
+\addlegendentry{Train score}
+\addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+5 0.781637349887571
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+5 0.800588196717723
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color1, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+5 0.743165078018406
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color1, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+5 0.782208080149545
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color2, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+5 0.810224153214477
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color2, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+5 0.846595663816231
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color0]
+table {%
+5 0.791112773302647
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color1]
+table {%
+5 0.762686579083976
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color2]
+table {%
+5 0.828409908515354
+};
+\addlegendentry{f1 score}
+\end{axis}
+
+\end{tikzpicture}

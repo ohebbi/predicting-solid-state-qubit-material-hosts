@@ -1,0 +1,240 @@
+% This file was created by tikzplotlib v0.9.8.
+\begin{tikzpicture}
+
+\definecolor{color0}{rgb}{0.12156862745098,0.466666666666667,0.705882352941177}
+\definecolor{color1}{rgb}{1,0.498039215686275,0.0549019607843137}
+\definecolor{color2}{rgb}{0.172549019607843,0.627450980392157,0.172549019607843}
+
+\begin{axis}[
+height=1.2800194271481944in,
+legend cell align={left},
+legend style={
+  fill opacity=0.8,
+  draw opacity=1,
+  text opacity=1,
+  at={(0.97,0.03)},
+  anchor=south east,
+  draw=white!80!black
+},
+tick align=outside,
+tick pos=left,
+title={Best estimator DT },
+width=1.2800194271481944in,
+x grid style={white!69.0196078431373!black},
+xlabel={Max depth},
+xmin=0.7, xmax=7.3,
+xtick style={color=black},
+xtick={0,2,4,6,8},
+xticklabels={
+  \(\displaystyle {0}\),
+  \(\displaystyle {2}\),
+  \(\displaystyle {4}\),
+  \(\displaystyle {6}\),
+  \(\displaystyle {8}\)
+},
+y grid style={white!69.0196078431373!black},
+ylabel={Accuracy},
+ymin=0.635985317569566, ymax=0.864392635721967,
+ytick style={color=black},
+ytick={0.6,0.65,0.7,0.75,0.8,0.85,0.9},
+yticklabels={
+  \(\displaystyle {0.60}\),
+  \(\displaystyle {0.65}\),
+  \(\displaystyle {0.70}\),
+  \(\displaystyle {0.75}\),
+  \(\displaystyle {0.80}\),
+  \(\displaystyle {0.85}\),
+  \(\displaystyle {0.90}\)
+}
+]
+\path [draw=color0, semithick]
+(axis cs:1,0.646367468394675)
+--(axis cs:1,0.649016471229172);
+
+\path [draw=color0, semithick]
+(axis cs:2,0.70670590013866)
+--(axis cs:2,0.745288669202075);
+
+\path [draw=color0, semithick]
+(axis cs:3,0.714266014739245)
+--(axis cs:3,0.75215174671106);
+
+\path [draw=color0, semithick]
+(axis cs:4,0.726240118903002)
+--(axis cs:4,0.774326107188122);
+
+\path [draw=color0, semithick]
+(axis cs:5,0.743165078018406)
+--(axis cs:5,0.782208080149545);
+
+\path [draw=color0, semithick]
+(axis cs:6,0.736873338276473)
+--(axis cs:6,0.77735179449516);
+
+\path [draw=color0, semithick]
+(axis cs:7,0.732619203346343)
+--(axis cs:7,0.794518919083078);
+
+\path [draw=color1, semithick]
+(axis cs:1,0.647360360106955)
+--(axis cs:1,0.648022388679757);
+
+\path [draw=color1, semithick]
+(axis cs:2,0.732762541392574)
+--(axis cs:2,0.749905192634544);
+
+\path [draw=color1, semithick]
+(axis cs:3,0.741637017084181)
+--(axis cs:3,0.753997945641591);
+
+\path [draw=color1, semithick]
+(axis cs:4,0.76551804943405)
+--(axis cs:4,0.786475346273159);
+
+\path [draw=color1, semithick]
+(axis cs:5,0.781637349887571)
+--(axis cs:5,0.800588196717723);
+
+\path [draw=color1, semithick]
+(axis cs:6,0.803760495144435)
+--(axis cs:6,0.829571520665841);
+
+\path [draw=color1, semithick]
+(axis cs:7,0.828911014077475)
+--(axis cs:7,0.854010484896858);
+
+\path [draw=color2, semithick]
+(axis cs:1,0.785203888276011)
+--(axis cs:1,0.787156322681063);
+
+\path [draw=color2, semithick]
+(axis cs:2,0.772387747842499)
+--(axis cs:2,0.814676021558725);
+
+\path [draw=color2, semithick]
+(axis cs:3,0.789530162261483)
+--(axis cs:3,0.831006980929644);
+
+\path [draw=color2, semithick]
+(axis cs:4,0.79549167909964)
+--(axis cs:4,0.843361935763797);
+
+\path [draw=color2, semithick]
+(axis cs:5,0.810224153214477)
+--(axis cs:5,0.846595663816231);
+
+\path [draw=color2, semithick]
+(axis cs:6,0.802140810037316)
+--(axis cs:6,0.836653287019226);
+
+\path [draw=color2, semithick]
+(axis cs:7,0.79247299054432)
+--(axis cs:7,0.846404387432516);
+
+\addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+1 0.646367468394675
+2 0.70670590013866
+3 0.714266014739245
+4 0.726240118903002
+5 0.743165078018406
+6 0.736873338276473
+7 0.732619203346343
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+1 0.649016471229172
+2 0.745288669202075
+3 0.75215174671106
+4 0.774326107188122
+5 0.782208080149545
+6 0.77735179449516
+7 0.794518919083078
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color1, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+1 0.647360360106955
+2 0.732762541392574
+3 0.741637017084181
+4 0.76551804943405
+5 0.781637349887571
+6 0.803760495144435
+7 0.828911014077475
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color1, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+1 0.648022388679757
+2 0.749905192634544
+3 0.753997945641591
+4 0.786475346273159
+5 0.800588196717723
+6 0.829571520665841
+7 0.854010484896858
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color2, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+1 0.785203888276011
+2 0.772387747842499
+3 0.789530162261483
+4 0.79549167909964
+5 0.810224153214477
+6 0.802140810037316
+7 0.79247299054432
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color2, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+1 0.787156322681063
+2 0.814676021558725
+3 0.831006980929644
+4 0.843361935763797
+5 0.846595663816231
+6 0.836653287019226
+7 0.846404387432516
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color0, dotted, forget plot]
+table {%
+5 0.635985317569566
+5 0.864392635721967
+};
+\addplot [semithick, color0]
+table {%
+1 0.647691969811924
+2 0.725997284670367
+3 0.733208880725153
+4 0.750283113045562
+5 0.762686579083976
+6 0.757112566385816
+7 0.763569061214711
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color1]
+table {%
+1 0.647691374393356
+2 0.741333867013559
+3 0.747817481362886
+4 0.775996697853605
+5 0.791112773302647
+6 0.816666007905138
+7 0.841460749487167
+};
+\addlegendentry{f1 score}
+\addplot [semithick, color2]
+table {%
+1 0.786180105478537
+2 0.793531884700612
+3 0.810268571595563
+4 0.819426807431718
+5 0.828409908515354
+6 0.819397048528271
+7 0.819438688988418
+};
+\addlegendentry{f1 score}
+\end{axis}
+
+\end{tikzpicture}
