@@ -1261,9 +1261,12 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach, title, apply
         patch = patches.PathPatch(path, facecolor='none', lw=0.5, alpha=0.5, edgecolor=colors[int(df["candidate"].values[j])])
         legend_handles[int(df["candidate"].values[j])] = patch
         host.add_patch(patch)
-
+    import matplotlib.lines as mlines
     if (applyLegend):
-        host.legend(legend_handles, targetNames,
+
+        legend_elements = [mlines.Line2D([0], [0], color="limegreen", label="Good candidates"),
+                           mlines.Line2D([0], [0], color="tomato", label="Bad candidates")]
+        host.legend(handles=legend_elements,
                 loc='lower center', bbox_to_anchor=(0.5, -0.18),
                 ncol=len(targetNames), fancybox=False, shadow=False)
 
