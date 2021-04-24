@@ -234,8 +234,8 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
     print(set_size(width, 1, subplots=(1,2), isTex=True)[0])
 
     tikzplotlib.save(dir_path / str(filename[:-4] + ".tex"),
-                            axis_width = str(set_size(width, 1, subplots=(1,2), isTex=True)[0]) + "in",
-                            axis_height  = str(set_size(width, 1, subplots=(1,2), isTex=True)[0]) + "in")
+                            axis_width = str(set_size(width, 0.9, subplots=(1,2), isTex=True)[0]) + "in",
+                            axis_height  = str(set_size(width, 0.9, subplots=(1,2), isTex=True)[0]) + "in")
     return fig
 
 
