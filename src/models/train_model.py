@@ -70,14 +70,14 @@ def getPipe(model, sampleMethod: Optional[str]):
     else:
         raise ValueError("Wrong number of samplers: len(sampler)={}".format(len(sampler)))
 
-def findParamGrid(model, numFeatures):
+def findParamGrid(model, numFeatures, searchPC):
     typeModel = type(model)
     if typeModel == type(RandomForestClassifier()):
         return {#"model__n_estimators": [10, 100, 1000],
                 "model__max_features": ['auto'],#, 'sqrt', 'log2'],#[1, 25,50, 75, 100], #
                 "model__max_depth" : np.arange(1,8),
                 #"model__criterion" :['gini', 'entropy'],
-                "pca__n_components": range(1,numFeatures+1)
+                "pca__n_components": range(1,numFeatures+1) if (searchPC) else [numFeatures]
                 }
     elif typeModel == type(GradientBoostingClassifier()):
         return {#"model__loss":["deviance", "exponential"],
@@ -87,7 +87,7 @@ def findParamGrid(model, numFeatures):
                 #"model__criterion": ["friedman_mse", "mse"],
                 #"model__subsample":[0.5, 0.75, 1],
                 #"model__n_estimators":[10,100,1000],
-                "pca__n_components": range(1,numFeatures+1)
+                "pca__n_components": range(1,numFeatures+1) if (searchPC) else [numFeatures]
                 }
     elif typeModel == type(DecisionTreeClassifier()):
         return {"model__max_features": ['sqrt'],# 'log2'],
@@ -96,20 +96,22 @@ def findParamGrid(model, numFeatures):
                 "model__max_depth" : np.arange(1,8),
                 #"model__ccp_alpha" : np.arange(0, 1, 0.05)
                 #"model__criterion" :['gini'],#, 'entropy'],
-                "pca__n_components": range(1,numFeatures+1)
+                "pca__n_components": range(1,numFeatures+1) if (searchPC) else [numFeatures]
                 }
     elif typeModel == type(LogisticRegression()):#penalty{‘l1’, ‘l2’, ‘elasticnet’, ‘none’}
         return {"model__penalty":["l2"],# "l2", "elasticnet", "none"],
                 "model__C": np.logspace(-3,5,7),
                 "model__max_iter":[200, 400],
-                "pca__n_components": range(1,numFeatures+1)
+                "pca__n_components": range(1,numFeatures+1) if (searchPC) else [numFeatures]
                 }
     else:
         raise TypeError("No model has been specified: type(model):{}".format(typeModel))
 
 
-def applyGridSearch(X: pd.DataFrame, y, model, cv, numPC: int, sampleMethod="None"):
-    param_grid = findParamGrid(model, numFeatures=numPC)
+
+def applyGridSearch(X: pd.DataFrame, y, model, cv, numPC: int, sampleMethod="None", searchPC=False):
+
+    param_grid = findParamGrid(model, numFeatures=numPC, searchPC=searchPC)
 
     ## TODO: Insert these somehow in gridsearch (scoring=scoring,refit=False)
     scoring = {'accuracy':  make_scorer(accuracy_score),

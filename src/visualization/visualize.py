@@ -1040,54 +1040,43 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         results = pd.DataFrame(algorithm.cv_results_)
         components_col = 'param_pca__n_components'
         best_clfs = results.groupby(components_col).apply(
-            lambda g: g.nlargest(1, 'mean_test_accuracy'))
+            lambda g: g.nlargest(1, 'mean_test_f1'))
 
         if (numPC > 100):
-            #some confidence interval
-            #ci = 1.96 * np.std(linreg_y)/np.mean(linreg_y)
-            #best_clfs.fill_between(x=np.range(), (linreg_y-ci), (linreg_y+ci), color='k', alpha=.1, label=r"$\pm {:0.2f}$".format(ci))
-
-            #plt.fill_between(mstd.index, ma-2*mstd, ma+2*mstd, color='b', alpha=0.2)
+            
+            best_clfs.plot(x=components_col, y='mean_train_accuracy',
+                           label="Train score", ax=ax0)
 
             best_clfs.plot(x=components_col, y='mean_test_accuracy',
                            label="Test score", ax=ax0)
 
-            best_clfs.plot(x=components_col, y='mean_train_accuracy',
-                           label="Train score", ax=ax0)
 
             best_clfs.plot(x=components_col, y='mean_test_f1',
                            label="f1 score", ax=ax0)
 
-            #ax0.xaxis.set_major_formatter(plt.NullFormatter())
-
-            #ax0.set_xticks(range(1,numPC+1))
-
         else:
+            best_clfs.plot(x=components_col, y='mean_train_accuracy', yerr='std_train_accuracy',
+                           label="Train score", ax=ax0, capsize=4)
 
             best_clfs.plot(x=components_col, y='mean_test_accuracy', yerr='std_test_accuracy',
                            label="Test score", ax=ax0, capsize=4)
 
-            best_clfs.plot(x=components_col, y='mean_train_accuracy', yerr='std_train_accuracy',
-                           label="Train score", ax=ax0, capsize=4)
             best_clfs.plot(x=components_col, y='mean_test_f1', yerr='std_test_f1',
                            label="f1 score", ax=ax0, capsize=4)
 
             ax0.xaxis.set_major_formatter(plt.NullFormatter())
 
             ax0.set_xticks(range(1,numPC+1))
+        #display(pd.DataFrame(best_clfs[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]]))
+        display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==176])[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]])
 
         ax0.set_ylabel('Accuracy')
         ax0.set_xlabel('Principal components')
-        #ax0.set_xlabel('')
         ax0.set_title("Best estimator {}".format(prettyNames[i]))
 
         ax0.set_xlim([0.5,numPC+0.5])
         ax0.legend()
-        #ax1.set_xlim([0.5,numPC+0.5])
 
-        #ax1.set_ylim([0,pca.explained_variance_ratio_.cumsum()[numPC-1]+0.1])
-
-        #ax1.set_xticks(range(1,numPC+1))
 
         fig.tight_layout()
 
