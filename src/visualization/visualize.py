@@ -34,7 +34,7 @@ height_plotly = ((5**.5 - 0.75) / 2 )*width_plotly
 
 #plt.rcParams.update(tex_fonts)
 
-def set_size(width, fraction=1, subplots=(1,1)):
+def set_size(width, fraction=1, subplots=(1,1), isTex=False):
     """ Set fgure dimensions to avoid scaling in LateX.
 
     Args
@@ -64,7 +64,8 @@ def set_size(width, fraction=1, subplots=(1,1)):
     fig_width_in = fig_width_pt * inches_per_pt
     # Figure height in inches
     fig_height_in = fig_width_in * golden_ratio * (subplots[0] / subplots[1])
-
+    if isTex:
+        return (fig_width_in*2.54, fig_height_in*2.54) #cm 
     return (fig_width_in, fig_height_in)
 
 import matplotlib.font_manager as font_manager
@@ -233,8 +234,8 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
     print(set_size(width, 0.4)[0])
 
     tikzplotlib.save(dir_path / str(filename[:-4] + ".tex"),
-                            axis_width = str(set_size(width, 1, subplots=(1,2))[0]) + "cm",
-                            axis_height  = str(set_size(width, 0.45, subplots=(1,2))[0]) + "cm")
+                            axis_width = str(set_size(width, 1, subplots=(1,2), isTex=True)[0]) + "cm",
+                            axis_height  = str(set_size(width, 0.45, subplots=(1,2), isTex=True)[0]) + "cm")
     return fig
 
 
