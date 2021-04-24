@@ -1051,10 +1051,10 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         if (numPC > 100):
 
             best_clfs.plot(x=components_col, y='mean_train_accuracy',
-                           label="Train score", ax=ax0)
+                           label="Train", ax=ax0)
 
             best_clfs.plot(x=components_col, y='mean_test_accuracy',
-                           label="Test score", ax=ax0)
+                           label="Test", ax=ax0)
 
             best_clfs.plot(x=components_col, y='mean_test_precision',
                            label="Precision", ax=ax0)
@@ -1063,7 +1063,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
                            label="Recall", ax=ax0)
 
             best_clfs.plot(x=components_col, y='mean_test_f1',
-                           label="f1 score", ax=ax0)
+                           label="f1", ax=ax0)
 
         else:
             best_clfs.plot(x=components_col, y='mean_train_accuracy', yerr='std_train_accuracy',
@@ -1085,18 +1085,23 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
 
             ax0.set_xticks(range(1,numPC+1))
         #display(pd.DataFrame(best_clfs[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]]))
-        display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==176])[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]])
+        #display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==176])[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]])
+        #display(pd.DataFrame(best_clfs)[["mean_test_accuracy", "mean_test_precision", "mean_test_recall", "mean_test_f1"]])
 
-        ax0.set_ylabel('Accuracy')
+        ax0.set_ylabel('Score')
         ax0.set_xlabel('Principal components')
         ax0.set_title("Param grid search {}".format(prettyNames[i]))
 
         ax0.set_xlim([0.5,numPC+0.5])
-        #if i==1:
-        #    print(i)
-        #    ax0.legend()
+        #ax0.legend().set_visible(False)
+        if i==2:
+            #print(i)
+            ax0.legend(loc='upper center', bbox_to_anchor=(0.5, 1.05),
+                      ncol=3, fancybox=True, shadow=True)
+        else:
+            ax0.get_legend().remove()
 
-
+        #ax0.legend()
         fig.tight_layout()
 
         dir_path = Path(__file__).resolve().parents[2] / \
@@ -1153,7 +1158,7 @@ def gridsearchVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames
 
         #ax1.legend(prop=dict(size=12))
 
-        ax0.set_ylabel('Accuracy')
+        ax0.set_ylabel('Score')
         ax0.set_xlabel(xlabel)
         ax0.set_title("Best estimator {}".format(prettyNames[i]))
         ax0.set_xscale(xscale)

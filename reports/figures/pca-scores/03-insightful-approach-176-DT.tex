@@ -9,15 +9,6 @@
 
 \begin{axis}[
 height=1.2800194271481944in,
-legend cell align={left},
-legend style={
-  fill opacity=0.8,
-  draw opacity=1,
-  text opacity=1,
-  at={(0.03,0.03)},
-  anchor=south west,
-  draw=white!80!black
-},
 tick align=outside,
 tick pos=left,
 title={Param grid search DT },
@@ -35,7 +26,7 @@ xticklabels={
   \(\displaystyle {200}\)
 },
 y grid style={white!69.0196078431373!black},
-ylabel={Accuracy},
+ylabel={Score},
 ymin=0.6376198717563, ymax=1.01092386958829,
 ytick style={color=black},
 ytick={0.6,0.7,0.8,0.9,1,1.1},
@@ -53,7 +44,6 @@ table {%
 3 0.6376198717563
 3 1.01092386958829
 };
-\addlegendentry{Train score}
 \addplot [semithick, color0]
 table {%
 1 0.946907237812916
@@ -145,7 +135,6 @@ table {%
 173 0.966299878877315
 175 0.944692986890555
 };
-\addlegendentry{Test score}
 \addplot [semithick, color1]
 table {%
 1 0.937994026526273
@@ -237,7 +226,6 @@ table {%
 173 0.794480240288887
 175 0.823998683810874
 };
-\addlegendentry{Precision}
 \addplot [semithick, color2]
 table {%
 1 0.876001365857367
@@ -329,7 +317,6 @@ table {%
 173 0.711010636132108
 175 0.801106845695627
 };
-\addlegendentry{Recall}
 \addplot [semithick, color3]
 table {%
 1 0.931495798319328
@@ -421,8 +408,7 @@ table {%
 173 0.710521008403361
 175 0.72453781512605
 };
-\addlegendentry{f1 score}
-\addplot [semithick, color4, forget plot]
+\addplot [semithick, color4]
 table {%
 1 0.90193519830171
 3 0.912656790419666

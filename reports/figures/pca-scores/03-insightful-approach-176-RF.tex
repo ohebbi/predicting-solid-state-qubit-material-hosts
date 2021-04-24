@@ -10,12 +10,13 @@
 \begin{axis}[
 height=1.2800194271481944in,
 legend cell align={left},
+legend columns=3,
 legend style={
-  fill opacity=0.8,
+  fill opacity=1,
   draw opacity=1,
   text opacity=1,
-  at={(0.03,0.03)},
-  anchor=south west,
+  at={(0.5,1.05)},
+  anchor=north,
   draw=white!80!black
 },
 tick align=outside,
@@ -35,7 +36,7 @@ xticklabels={
   \(\displaystyle {200}\)
 },
 y grid style={white!69.0196078431373!black},
-ylabel={Accuracy},
+ylabel={Score},
 ymin=0.698694117647059, ymax=1.01434789915966,
 ytick style={color=black},
 ytick={0.6,0.7,0.8,0.9,1,1.1},
@@ -53,7 +54,7 @@ table {%
 11 0.698694117647059
 11 1.01434789915966
 };
-\addlegendentry{Train score}
+\addlegendentry{Optimal}
 \addplot [semithick, color0]
 table {%
 1 0.945099511081713
@@ -145,7 +146,7 @@ table {%
 173 1
 175 1
 };
-\addlegendentry{Test score}
+\addlegendentry{Train}
 \addplot [semithick, color1]
 table {%
 1 0.936182106577571
@@ -237,7 +238,7 @@ table {%
 173 0.872794708244744
 175 0.846234146670716
 };
-\addlegendentry{Precision}
+\addlegendentry{Test}
 \addplot [semithick, color2]
 table {%
 1 0.881876217739995
@@ -329,7 +330,7 @@ table {%
 173 0.951764342856501
 175 0.936830351098678
 };
-\addlegendentry{Recall}
+\addlegendentry{Precision}
 \addplot [semithick, color3]
 table {%
 1 0.924504201680672
@@ -421,8 +422,8 @@ table {%
 173 0.761848739495798
 175 0.713042016806723
 };
-\addlegendentry{f1 score}
-\addplot [semithick, color4, forget plot]
+\addlegendentry{Recall}
+\addplot [semithick, color4]
 table {%
 1 0.901699195302949
 3 0.923629373608294
@@ -513,6 +514,7 @@ table {%
 173 0.843024203091938
 175 0.807162460644016
 };
+\addlegendentry{f1}
 \end{axis}
 
 \end{tikzpicture}
