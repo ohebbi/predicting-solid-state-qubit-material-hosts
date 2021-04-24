@@ -1083,7 +1083,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         dir_path = Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "pca-scores"
         save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".pgf"))
-
+        #tikzplotlib.clean_figure()
         tikzplotlib.save(dir_path / Path(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".tex"))
 
         plt.show()
