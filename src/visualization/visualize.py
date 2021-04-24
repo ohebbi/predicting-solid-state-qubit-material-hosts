@@ -1101,7 +1101,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
                              box.width, box.height * 0.9])
 
             # Put a legend below current axis
-            ax0.legend(loc='upper center', bbox_to_anchor=(0.5, -0.5),
+            ax0.legend(loc='upper center', bbox_to_anchor=(0.5, -0.35),
                       fancybox=True, shadow=True, ncol=3)
         else:
             ax0.get_legend().remove()
