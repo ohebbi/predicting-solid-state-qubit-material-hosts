@@ -176,7 +176,7 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
     fig, (ax1, ax2) = plt.subplots(1,2, figsize=(set_size(width, 1, subplots=(1,2))[0], set_size(width, 0.45, subplots=(1,2))[0] ))
 
     ax1.plot(x1[(x1>0)&(y1>0)], y1[(x1>0)&(y1>0)], "o",color='k', markersize=3)
-    ax1.set(xlim=(0, 10), ylim=(0, 10))
+    ax1.set(xlim=(0, 10.5), ylim=(0, 10.5))
     ax1.plot([-5,15], [-5,15], "--",color='black')
     if first:
         ax1.set_title("Common db. entries")
@@ -202,7 +202,7 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
     x2 = np.array(x2)
     y2 = np.array(y2)
     ax2.plot(x2[(x2>0)&(y2>0)], y2[(x2>0)&(y2>0)], "o", markersize=3)
-    ax2.set(xlim=(0, 10), ylim=(0, 10))
+    ax2.set(xlim=(0, 10.5), ylim=(0, 10.5))
     ax2.plot([-5,15], [-5,15], "--",color='black')
     if first:
         ax2.set_title("Common exp. entries")
@@ -234,8 +234,8 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
     print(set_size(width, 1, subplots=(1,2), isTex=True)[0])
 
     tikzplotlib.save(dir_path / str(filename[:-4] + ".tex"),
-                            axis_width = str(set_size(width, 0.8, subplots=(1,2), isTex=True)[0]) + "in",
-                            axis_height  = str(set_size(width, 0.8, subplots=(1,2), isTex=True)[0]) + "in")
+                            axis_width = str(set_size(width, 0.9, subplots=(1,2), isTex=True)[0]) + "in",
+                            axis_height  = str(set_size(width, 0.9, subplots=(1,2), isTex=True)[0]) + "in")
     return fig
 
 
