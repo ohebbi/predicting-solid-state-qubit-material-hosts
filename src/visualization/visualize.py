@@ -65,7 +65,7 @@ def set_size(width, fraction=1, subplots=(1,1), isTex=False):
     # Figure height in inches
     fig_height_in = fig_width_in * golden_ratio * (subplots[0] / subplots[1])
     if isTex:
-        return (fig_width_in*2.54, fig_height_in*2.54) #cm 
+        return (fig_width_in*1, fig_height_in*1) #cm 
     return (fig_width_in, fig_height_in)
 
 import matplotlib.font_manager as font_manager
