@@ -11,8 +11,8 @@ legend style={
   fill opacity=0.8,
   draw opacity=1,
   text opacity=1,
-  at={(0.03,0.03)},
-  anchor=south west,
+  at={(0.97,0.03)},
+  anchor=south east,
   draw=white!80!black
 },
 tick align=outside,
@@ -34,18 +34,14 @@ y grid style={white!69.0196078431373!black},
 ylabel={Accuracy},
 ymin=0.618650800622929, ymax=1.01815948568462,
 ytick style={color=black},
-ytick={0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1,1.05},
+ytick={0.6,0.7,0.8,0.9,1,1.1},
 yticklabels={
-  \(\displaystyle {0.60}\),
-  \(\displaystyle {0.65}\),
-  \(\displaystyle {0.70}\),
-  \(\displaystyle {0.75}\),
-  \(\displaystyle {0.80}\),
-  \(\displaystyle {0.85}\),
-  \(\displaystyle {0.90}\),
-  \(\displaystyle {0.95}\),
-  \(\displaystyle {1.00}\),
-  \(\displaystyle {1.05}\)
+  \(\displaystyle {0.6}\),
+  \(\displaystyle {0.7}\),
+  \(\displaystyle {0.8}\),
+  \(\displaystyle {0.9}\),
+  \(\displaystyle {1.0}\),
+  \(\displaystyle {1.1}\)
 }
 ]
 \addplot [semithick, color0, dotted]
@@ -53,7 +49,7 @@ table {%
 173 0.618650800622929
 173 1.01815948568462
 };
-\addlegendentry{Optimal}
+\addlegendentry{Train score}
 \addplot [semithick, color0]
 table {%
 1 0.6393101766148
@@ -233,7 +229,7 @@ table {%
 175 0.99671091209286
 176 0.996900760494321
 };
-\addlegendentry{Train score}
+\addlegendentry{Test score}
 \addplot [semithick, color1]
 table {%
 1 0.636810286307551
@@ -413,8 +409,8 @@ table {%
 175 0.98241744199976
 176 0.982669408617178
 };
-\addlegendentry{Test score}
-\addplot [semithick, color2]
+\addlegendentry{f1 score}
+\addplot [semithick, color2, forget plot]
 table {%
 1 0.76327826913597
 2 0.81882385735647
@@ -593,7 +589,6 @@ table {%
 175 0.986525619585989
 176 0.986726448974623
 };
-\addlegendentry{f1 score}
 \end{axis}
 
 \end{tikzpicture}

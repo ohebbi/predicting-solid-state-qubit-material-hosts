@@ -51,7 +51,7 @@ table {%
 37 0.631138668699323
 37 0.909026103702422
 };
-\addlegendentry{Optimal}
+\addlegendentry{Train score}
 \addplot [semithick, color0]
 table {%
 1 0.68880489818382
@@ -231,7 +231,7 @@ table {%
 175 0.867522339520688
 176 0.859992695251914
 };
-\addlegendentry{Train score}
+\addlegendentry{Test score}
 \addplot [semithick, color1]
 table {%
 1 0.672483727987861
@@ -411,8 +411,8 @@ table {%
 175 0.715499740446432
 176 0.723975562033303
 };
-\addlegendentry{Test score}
-\addplot [semithick, color2]
+\addlegendentry{f1 score}
+\addplot [semithick, color2, forget plot]
 table {%
 1 0.779835815655286
 2 0.828634252536922
@@ -591,7 +591,6 @@ table {%
 175 0.783605000804855
 176 0.789051326454012
 };
-\addlegendentry{f1 score}
 \end{axis}
 
 \end{tikzpicture}

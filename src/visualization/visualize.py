@@ -1017,7 +1017,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
     #print(pca.explained_variance_ratio_)
     for i, algorithm in enumerate(ModelsBestParams):
 
-        fig, ax0 = plt.subplots(nrows=1, figsize=(set_size(width, 0.5)[0],set_size(width, 0.5)[0]))
+        fig, ax0 = plt.subplots(nrows=1, figsize=(set_size(width, 0.4)[0],set_size(width, 0.4)[0]))
         """
         gs = gridspec.GridSpec(2, 1, height_ratios=[3, 1])
         ax0 = plt.subplot(gs[0])
@@ -1075,7 +1075,9 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         ax0.set_title("Param grid search {}".format(prettyNames[i]))
 
         ax0.set_xlim([0.5,numPC+0.5])
-        ax0.legend()
+        #if i==1:
+        #    print(i)
+        #    ax0.legend()
 
 
         fig.tight_layout()

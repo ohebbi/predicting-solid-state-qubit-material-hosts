@@ -34,17 +34,14 @@ y grid style={white!69.0196078431373!black},
 ylabel={Accuracy},
 ymin=0.659745071808505, ymax=1.00964211558886,
 ytick style={color=black},
-ytick={0.65,0.7,0.75,0.8,0.85,0.9,0.95,1,1.05},
+ytick={0.6,0.7,0.8,0.9,1,1.1},
 yticklabels={
-  \(\displaystyle {0.65}\),
-  \(\displaystyle {0.70}\),
-  \(\displaystyle {0.75}\),
-  \(\displaystyle {0.80}\),
-  \(\displaystyle {0.85}\),
-  \(\displaystyle {0.90}\),
-  \(\displaystyle {0.95}\),
-  \(\displaystyle {1.00}\),
-  \(\displaystyle {1.05}\)
+  \(\displaystyle {0.6}\),
+  \(\displaystyle {0.7}\),
+  \(\displaystyle {0.8}\),
+  \(\displaystyle {0.9}\),
+  \(\displaystyle {1.0}\),
+  \(\displaystyle {1.1}\)
 }
 ]
 \addplot [semithick, color0, dotted]
@@ -52,7 +49,7 @@ table {%
 50 0.659745071808505
 50 1.00964211558886
 };
-\addlegendentry{Optimal}
+\addlegendentry{Train score}
 \addplot [semithick, color0]
 table {%
 1 0.68880489818382
@@ -232,7 +229,7 @@ table {%
 175 0.992852654225246
 176 0.993232075849302
 };
-\addlegendentry{Train score}
+\addlegendentry{Test score}
 \addplot [semithick, color1]
 table {%
 1 0.67564948288943
@@ -412,8 +409,8 @@ table {%
 175 0.875777263107455
 176 0.871471868386375
 };
-\addlegendentry{Test score}
-\addplot [semithick, color2]
+\addlegendentry{f1 score}
+\addplot [semithick, color2, forget plot]
 table {%
 1 0.782025546315744
 2 0.829755637464679
@@ -592,7 +589,6 @@ table {%
 175 0.912378947923708
 176 0.909577845720852
 };
-\addlegendentry{f1 score}
 \end{axis}
 
 \end{tikzpicture}
