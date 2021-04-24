@@ -9,16 +9,6 @@
 
 \begin{axis}[
 height=2.275590092707901in,
-legend cell align={left},
-legend columns=3,
-legend style={
-  fill opacity=1,
-  draw opacity=1,
-  text opacity=1,
-  at={(0.5,-0.35)},
-  anchor=north,
-  draw=white!80!black
-},
 tick align=outside,
 tick pos=left,
 title={Param grid search RF },
@@ -54,7 +44,6 @@ table {%
 11 0.698694117647059
 11 1.01434789915966
 };
-\addlegendentry{Optimal}
 \addplot [semithick, color0]
 table {%
 1 0.945099511081713
@@ -146,7 +135,6 @@ table {%
 173 1
 175 1
 };
-\addlegendentry{Train}
 \addplot [semithick, color1]
 table {%
 1 0.936182106577571
@@ -238,7 +226,6 @@ table {%
 173 0.872794708244744
 175 0.846234146670716
 };
-\addlegendentry{Test}
 \addplot [semithick, color2]
 table {%
 1 0.881876217739995
@@ -330,7 +317,6 @@ table {%
 173 0.951764342856501
 175 0.936830351098678
 };
-\addlegendentry{Precision}
 \addplot [semithick, color3]
 table {%
 1 0.924504201680672
@@ -422,7 +408,6 @@ table {%
 173 0.761848739495798
 175 0.713042016806723
 };
-\addlegendentry{Recall}
 \addplot [semithick, color4]
 table {%
 1 0.901699195302949
@@ -514,7 +499,6 @@ table {%
 173 0.843024203091938
 175 0.807162460644016
 };
-\addlegendentry{f1}
 \end{axis}
 
 \end{tikzpicture}

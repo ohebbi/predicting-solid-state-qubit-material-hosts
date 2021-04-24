@@ -1085,8 +1085,8 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
 
             ax0.set_xticks(range(1,numPC+1))
         #display(pd.DataFrame(best_clfs[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]]))
-        #display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==176])[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]])
-        #display(pd.DataFrame(best_clfs)[["mean_test_accuracy", "mean_test_precision", "mean_test_recall", "mean_test_f1"]])
+        #display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==129])[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]])
+        display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==129])[["std_test_accuracy", "std_test_precision", "std_test_recall", "std_test_f1"]])
 
         ax0.set_ylabel('Score')
         ax0.set_xlabel('Principal components')
@@ -1094,6 +1094,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
 
         ax0.set_xlim([0.5,numPC+0.5])
         #ax0.legend().set_visible(False)
+        """
         if i==2:
             # Shrink current axis's height by 10% on the bottom
             box = ax0.get_position()
@@ -1105,10 +1106,10 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
                       fancybox=True, shadow=True, ncol=3)
         else:
             ax0.get_legend().remove()
-
+        """
         #ax0.legend()
         fig.tight_layout()
-
+        ax0.get_legend().remove()
         dir_path = Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "pca-scores"
         save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".pgf"))
