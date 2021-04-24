@@ -844,7 +844,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=1.615122in,y=2.528721in,,base]{\color{textcolor}\fontsize{12.000000}{14.400000}\selectfont Best estimator LOG }%
+\pgftext[x=1.615122in,y=2.528721in,,base]{\color{textcolor}\fontsize{12.000000}{14.400000}\selectfont Param grid search LOG }%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%

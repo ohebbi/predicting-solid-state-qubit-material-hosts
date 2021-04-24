@@ -1043,7 +1043,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
             lambda g: g.nlargest(1, 'mean_test_f1'))
 
         if (numPC > 100):
-            
+
             best_clfs.plot(x=components_col, y='mean_train_accuracy',
                            label="Train score", ax=ax0)
 
@@ -1072,7 +1072,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
 
         ax0.set_ylabel('Accuracy')
         ax0.set_xlabel('Principal components')
-        ax0.set_title("Best estimator {}".format(prettyNames[i]))
+        ax0.set_title("Param grid search {}".format(prettyNames[i]))
 
         ax0.set_xlim([0.5,numPC+0.5])
         ax0.legend()
@@ -1083,6 +1083,8 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         dir_path = Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "pca-scores"
         save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pgf"))
+
+        tikzplotlib.save(dir_path / Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".tex"))
 
         plt.show()
 
