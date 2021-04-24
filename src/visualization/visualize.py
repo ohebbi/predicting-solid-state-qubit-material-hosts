@@ -1095,9 +1095,14 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         ax0.set_xlim([0.5,numPC+0.5])
         #ax0.legend().set_visible(False)
         if i==2:
-            #print(i)
-            ax0.legend(loc='upper center', bbox_to_anchor=(0.5, 1.05),
-                      ncol=3, fancybox=True, shadow=True)
+            # Shrink current axis's height by 10% on the bottom
+            box = ax0.get_position()
+            ax0.set_position([box.x0, box.y0 + box.height * 0.1,
+                             box.width, box.height * 0.9])
+
+            # Put a legend below current axis
+            ax0.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
+                      fancybox=True, shadow=True, ncol=3)
         else:
             ax0.get_legend().remove()
 
@@ -1109,8 +1114,8 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".pgf"))
         #tikzplotlib.clean_figure()
         tikzplotlib.save(dir_path / str(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".tex"),
-                        axis_height = str(set_size(width, 0.45, isTex=True)[0]) + "in",
-                        axis_width  = str(set_size(width, 0.45, isTex=True)[0]) + "in")
+                        axis_height = str(set_size(width, 0.9, isTex=True)[0]) + "in",
+                        axis_width  = str(set_size(width, 0.9, isTex=True)[0]) + "in")
 
         plt.show()
 
