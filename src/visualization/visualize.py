@@ -1198,8 +1198,8 @@ def gridsearchVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames
         #fig.savefig(dir_path / Path(prettyNames[i] + approach + ".pgf") , format="pgf", bbox_inches="tight")
 
         tikzplotlib.save(dir_path / str(approach + "-" + prettyNames[i][:-1] +".tex"),
-                        axis_height = str(set_size(width, 0.45, isTex=True)[0]) + "in",
-                        axis_width  = str(set_size(width, 0.45, isTex=True)[0]) + "in")
+                        axis_height = str(set_size(width, 0.8, isTex=True)[0]) + "in",
+                        axis_width  = str(set_size(width, 0.8, isTex=True)[0]) + "in")
 
         plt.show()
 
