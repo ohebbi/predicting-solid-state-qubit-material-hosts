@@ -1083,12 +1083,12 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
 
             ax0.set_xticks(range(1,numPC+1))
 
-        ax0.axvline(algorithm.best_estimator_.named_steps['pca'].n_components, color="tab:purple",   
+        ax0.axvline(algorithm.best_estimator_.named_steps['pca'].n_components, color="tab:purple",
                         linestyle='dashdot', label='Optimal')
         #display(pd.DataFrame(best_clfs[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]]))
-        jepp = 93
-        display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==jepp])[["mean_test_accuracy", "mean_test_precision", "mean_test_recall", "mean_test_f1"]])
-        display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==jepp])[["std_test_accuracy", "std_test_precision", "std_test_recall", "std_test_f1"]])
+        #jepp = 93
+        #display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==jepp])[["mean_test_accuracy", "mean_test_precision", "mean_test_recall", "mean_test_f1"]])
+        #display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==jepp])[["std_test_accuracy", "std_test_precision", "std_test_recall", "std_test_f1"]])
 
         nameMapping = {"LOG ": "Logistic regression", "DT ": "Decision tree", "RF ": "Random forest", "GB ": "Gradient boost"}
         ax0.set_ylabel('Score')
@@ -1164,13 +1164,14 @@ def gridsearchVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames
                        label="f1", ax=ax0, capsize=4)
 
 
-        ax0.axvline(best_param, linestyle=':', label='Optimal')
+        ax0.axvline(best_param, linestyle='dashdot', label='Optimal', color="tab:purple")
 
         #ax1.legend(prop=dict(size=12))
+        nameMapping = {"LOG ": "Logistic regression", "DT ": "Decision tree", "RF ": "Random forest", "GB ": "Gradient boost"}
 
         ax0.set_ylabel('Score')
         ax0.set_xlabel(xlabel)
-        ax0.set_title("Best estimator {}".format(prettyNames[i]))
+        ax0.set_title(nameMapping[prettyNames[i]])
         ax0.set_xscale(xscale)
         #ax0.set_xlim([0.5,numPC+0.5])
         #ax1.set_xlim([0.5,numPC+0.5])
@@ -1186,7 +1187,7 @@ def gridsearchVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames
         #         box.width, box.height * 0.9])
 
         #ax0.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),fancybox=True, shadow=True, ncol=5)
-
+        ax0.get_legend().remove()
         fig.tight_layout()
 
         dir_path = Path(__file__).resolve().parents[2] / \
