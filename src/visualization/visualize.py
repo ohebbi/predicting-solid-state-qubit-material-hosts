@@ -1039,8 +1039,6 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         ax1.legend(prop=dict(size=12))
 
         """
-        ax0.axvline(algorithm.best_estimator_.named_steps['pca'].n_components,
-                        linestyle='dashdot', label='Optimal')
 
         # For each number of components, find the best classifier results
         results = pd.DataFrame(algorithm.cv_results_)
@@ -1084,6 +1082,9 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
             ax0.xaxis.set_major_formatter(plt.NullFormatter())
 
             ax0.set_xticks(range(1,numPC+1))
+
+        ax0.axvline(algorithm.best_estimator_.named_steps['pca'].n_components, color="mediumpurple",   
+                        linestyle='dashdot', label='Optimal')
         #display(pd.DataFrame(best_clfs[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]]))
         jepp = 93
         display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==jepp])[["mean_test_accuracy", "mean_test_precision", "mean_test_recall", "mean_test_f1"]])

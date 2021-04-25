@@ -6,6 +6,7 @@
 \definecolor{color2}{rgb}{0.172549019607843,0.627450980392157,0.172549019607843}
 \definecolor{color3}{rgb}{0.83921568627451,0.152941176470588,0.156862745098039}
 \definecolor{color4}{rgb}{0.580392156862745,0.403921568627451,0.741176470588235}
+\definecolor{color5}{rgb}{0.576470588235294,0.43921568627451,0.858823529411765}
 
 \begin{axis}[
 height=2.275590092707901in,
@@ -39,11 +40,6 @@ yticklabels={
   \(\displaystyle {1.1}\)
 }
 ]
-\addplot [semithick, color0, dash pattern=on 1pt off 3pt on 3pt off 3pt]
-table {%
-3 0.6376198717563
-3 1.01092386958829
-};
 \addplot [semithick, color0]
 table {%
 1 0.946907237812916
@@ -498,6 +494,11 @@ table {%
 171 0.757478891757761
 173 0.707729760622821
 175 0.754544587587871
+};
+\addplot [semithick, color5, dash pattern=on 1pt off 3pt on 3pt off 3pt]
+table {%
+3 0.6376198717563
+3 1.01092386958829
 };
 \end{axis}
 
