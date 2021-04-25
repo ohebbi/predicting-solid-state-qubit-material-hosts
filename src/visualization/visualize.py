@@ -1040,7 +1040,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
 
         """
         ax0.axvline(algorithm.best_estimator_.named_steps['pca'].n_components,
-                        linestyle=':', label='Optimal')
+                        linestyle='dashdot', label='Optimal')
 
         # For each number of components, find the best classifier results
         results = pd.DataFrame(algorithm.cv_results_)
@@ -1085,8 +1085,9 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
 
             ax0.set_xticks(range(1,numPC+1))
         #display(pd.DataFrame(best_clfs[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]]))
-        #display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==129])[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]])
-        display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==129])[["std_test_accuracy", "std_test_precision", "std_test_recall", "std_test_f1"]])
+        jepp = 93
+        display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==jepp])[["mean_test_accuracy", "mean_test_precision", "mean_test_recall", "mean_test_f1"]])
+        display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==jepp])[["std_test_accuracy", "std_test_precision", "std_test_recall", "std_test_f1"]])
 
         nameMapping = {"LOG ": "Logistic regression", "DT ": "Decision tree", "RF ": "Random forest", "GB ": "Gradient boost"}
         ax0.set_ylabel('Score')

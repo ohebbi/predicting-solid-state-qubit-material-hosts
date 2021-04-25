@@ -305,7 +305,7 @@
 \pgfsetlinewidth{1.505625pt}%
 \definecolor{currentstroke}{rgb}{0.121569,0.466667,0.705882}%
 \pgfsetstrokecolor{currentstroke}%
-\pgfsetdash{{1.500000pt}{2.475000pt}}{0.000000pt}%
+\pgfsetdash{{9.600000pt}{2.400000pt}{1.500000pt}{2.400000pt}}{0.000000pt}%
 \pgfpathmoveto{\pgfqpoint{0.847635in}{0.473711in}}%
 \pgfpathlineto{\pgfqpoint{0.847635in}{1.876490in}}%
 \pgfusepath{stroke}%
