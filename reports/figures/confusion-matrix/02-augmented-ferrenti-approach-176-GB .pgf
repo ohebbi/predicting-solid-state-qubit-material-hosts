@@ -248,13 +248,13 @@
 \definecolor{textcolor}{rgb}{1.000000,1.000000,1.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=0.914755in,y=1.796842in,,]{\color{textcolor}\fontsize{10.000000}{12.000000}\bfseries\selectfont 515}%
+\pgftext[x=0.914755in,y=1.796842in,,]{\color{textcolor}\fontsize{10.000000}{12.000000}\bfseries\selectfont 514}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{1.000000,1.000000,1.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=1.796842in,y=1.796842in,,]{\color{textcolor}\fontsize{10.000000}{12.000000}\bfseries\selectfont 42}%
+\pgftext[x=1.796842in,y=1.796842in,,]{\color{textcolor}\fontsize{10.000000}{12.000000}\bfseries\selectfont 43}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{1.000000,1.000000,1.000000}%
