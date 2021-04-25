@@ -1083,7 +1083,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
 
             ax0.set_xticks(range(1,numPC+1))
 
-        ax0.axvline(algorithm.best_estimator_.named_steps['pca'].n_components, color="mediumpurple",   
+        ax0.axvline(algorithm.best_estimator_.named_steps['pca'].n_components, color="tab:purple",   
                         linestyle='dashdot', label='Optimal')
         #display(pd.DataFrame(best_clfs[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]]))
         jepp = 93
