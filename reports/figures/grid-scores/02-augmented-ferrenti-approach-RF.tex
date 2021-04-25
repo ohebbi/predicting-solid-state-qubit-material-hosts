@@ -8,20 +8,11 @@
 \definecolor{color4}{rgb}{0.580392156862745,0.403921568627451,0.741176470588235}
 
 \begin{axis}[
-height=1.2800194271481944in,
-legend cell align={left},
-legend style={
-  fill opacity=0.8,
-  draw opacity=1,
-  text opacity=1,
-  at={(0.09,0.5)},
-  anchor=west,
-  draw=white!80!black
-},
+height=2.275590092707901in,
 tick align=outside,
 tick pos=left,
-title={Best estimator RF },
-width=1.2800194271481944in,
+title={Random forest},
+width=2.275590092707901in,
 x grid style={white!69.0196078431373!black},
 xlabel={Max depth},
 xmin=0.7, xmax=7.3,
@@ -200,7 +191,6 @@ table {%
 6 0.734693006067397
 7 0.813092824546678
 };
-\addlegendentry{f1}
 \addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.552544058558274
@@ -211,7 +201,6 @@ table {%
 6 0.771906782433827
 7 0.848479701614425
 };
-\addlegendentry{f1}
 \addplot [semithick, color1, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.523318046246049
@@ -222,7 +211,6 @@ table {%
 6 0.638473391229095
 7 0.67232053421259
 };
-\addlegendentry{f1}
 \addplot [semithick, color1, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.552927278007628
@@ -233,7 +221,6 @@ table {%
 6 0.691905211376238
 7 0.728967219616931
 };
-\addlegendentry{f1}
 \addplot [semithick, color2, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.798072405426494
@@ -244,7 +231,6 @@ table {%
 6 0.838994074479031
 7 0.852003685634271
 };
-\addlegendentry{f1}
 \addplot [semithick, color2, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.807966570072573
@@ -255,7 +241,6 @@ table {%
 6 0.859533310663272
 7 0.874454618325378
 };
-\addlegendentry{f1}
 \addplot [semithick, color3, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.99840854740843
@@ -266,7 +251,6 @@ table {%
 6 0.995261977022375
 7 0.99372001447622
 };
-\addlegendentry{f1}
 \addplot [semithick, color3, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 1.00044632246315
@@ -277,7 +261,6 @@ table {%
 6 1.00054027323334
 7 0.99960195392928
 };
-\addlegendentry{f1}
 \addplot [semithick, color4, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.887409969117206
@@ -288,7 +271,6 @@ table {%
 6 0.911790000398945
 7 0.919088894022907
 };
-\addlegendentry{f1}
 \addplot [semithick, color4, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.893618087808899
@@ -299,8 +281,7 @@ table {%
 6 0.923335440803511
 7 0.93113136976697
 };
-\addlegendentry{f1}
-\addplot [semithick, color0, dotted, forget plot]
+\addplot [semithick, color4, dash pattern=on 1pt off 3pt on 3pt off 3pt]
 table {%
 7 0.499451515813104
 7 1.02451518533791
@@ -315,7 +296,6 @@ table {%
 6 0.753299894250612
 7 0.830786263080552
 };
-\addlegendentry{f1}
 \addplot [semithick, color1]
 table {%
 1 0.538122662126839
@@ -326,7 +306,6 @@ table {%
 6 0.665189301302666
 7 0.70064387691476
 };
-\addlegendentry{f1}
 \addplot [semithick, color2]
 table {%
 1 0.803019487749533
@@ -337,7 +316,6 @@ table {%
 6 0.849263692571151
 7 0.863229151979825
 };
-\addlegendentry{f1}
 \addplot [semithick, color3]
 table {%
 1 0.999427434935788
@@ -348,7 +326,6 @@ table {%
 6 0.997901125127855
 7 0.99666098420275
 };
-\addlegendentry{f1}
 \addplot [semithick, color4]
 table {%
 1 0.890514028463053
@@ -359,7 +336,6 @@ table {%
 6 0.917562720601228
 7 0.925110131894938
 };
-\addlegendentry{f1}
 \end{axis}
 
 \end{tikzpicture}
