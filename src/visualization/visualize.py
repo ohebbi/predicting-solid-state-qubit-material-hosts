@@ -407,7 +407,7 @@ def plot_accuracy(models, names, prettyNames, numPC, approach, xlabel = "Cross v
     save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + ".pgf"))
 
     plt.show()
-def plot_important_features(models, X, k, n, prettyNames, numPC, approach):
+def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFeat=25):
     fig = make_subplots(rows=models.shape[0], cols=1, shared_xaxes=True)
     fig.update_layout({"plot_bgcolor": "rgba(0, 0, 0, 0)",
                            "paper_bgcolor": "rgba(0, 0, 0, 0)",
@@ -435,13 +435,87 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach):
     fig.write_image(str(dir_path / Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pdf")))
     fig.show()
 
+    fig, (ax0,ax1,ax2,ax3, ax4) = plt.subplots(5,1, figsize=(set_size(width, 1)[0], set_size(width, 1.5)[0]), sharex=True)
+
+    scaledTrainingData = StandardScaler().fit_transform(X) # normalizing the features
+    pca = PCA(0.955).fit(scaledTrainingData)
+    #print(pca.explained_variance_ratio_)
+    map_names={"01-ferrenti-approach": "Ferrenti approach", "02-augmented-ferrenti-approach": "Augmented Ferrenti approach", "03-insightful-approach": "Insightful approach"}
+    ax0.set_title(map_names[approach])
+
+    mean_importance = np.mean(models[prettyNames[0]]["relativeImportance"], axis=0)[:numFeat]
+    std_importance = np.std(models[prettyNames[0]]["relativeImportance"], axis=0)[:numFeat]
+    ax0.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color="#88CCEE", label="Logistic regression coef.")
+    ax0.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color="#88CCEE")
+    ax0.set_ylim([min(mean_importance-0.05),max(mean_importance+0.2)])
+    ax0.set_xlim([0.5,numFeat+0.5])
+    ax0.grid()
+    ax0.legend(loc="upper right")
+
+
+    mean_importance = np.mean(models[prettyNames[1]]["relativeImportance"], axis=0)[:numFeat]
+    std_importance = np.std(models[prettyNames[1]]["relativeImportance"], axis=0)[:numFeat]
+    ax1.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color="#CC6677", label="Decision tree f.i.")
+    ax1.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color="#CC6677")
+    ax1.set_ylim([0,max(mean_importance+0.1)])
+    ax1.set_xlim([0.5,numFeat+0.5])
+    ax1.grid()
+
+    mean_importance = np.mean(models[prettyNames[2]]["relativeImportance"], axis=0)[:numFeat]
+    std_importance = np.std(models[prettyNames[2]]["relativeImportance"], axis=0)[:numFeat]
+    ax2.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color="#DDCC77", label="Random forest f.i.")
+    ax2.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color="#DDCC77")
+    ax2.set_ylim([0,max(mean_importance+0.1)])
+    ax2.set_xlim([0.5,numFeat+0.5])
+    ax2.grid()
+    ax2.legend()
+
+    mean_importance = np.mean(models[prettyNames[3]]["relativeImportance"], axis=0)[:numFeat]
+    std_importance = np.std(models[prettyNames[3]]["relativeImportance"], axis=0)[:numFeat]
+
+    ax3.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color="#117733", label="Gradient boost f.i.")
+    ax3.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color="#117733")
+    ax3.set_ylim([0,max(mean_importance+0.1)])
+    ax3.set_xlim([0.5,numFeat+0.5])
+    ax3.grid()
+    ax3.legend()
+    #ax3.set_xlabel("Principal components")
+
+    ax4.bar( np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_, alpha=0.5, align='center', color="#888888", label="Explained variance")
+    ax4.set_ylim([0,max(pca.explained_variance_ratio_+0.01)])
+    ax4.set_xlim([0.5,numFeat+0.5])
+    ax4.grid()
+    ax4.set_xlabel("Principal components")
+    ax4.legend()
+
+    chosenNComponents = np.where(pca.explained_variance_ratio_.cumsum()>0.95)[0][0]
+
+    ax4.set_title("Explained variance")
+
+    fig.tight_layout()
+    tikzplotlib.save(dir_path / Path(approach + ".tex"),
+                                axis_height = str(set_size(width, 1, isTex=True)[0]) + "in",
+                                axis_width  = str(set_size(width, 0.5, isTex=True)[0]) + "in")
+
+    plt.show()
+
+
+    #plt.title('Feature Importances')
+    #plt.barh(importances, range(len(indices)), color='b', align='center')
+    #plt.yticks(range(len(indices)), [features[i] for i in indices])
+    #plt.xlabel('Relative Importance')
+    #plt.show()
+
+
+    #for i, model in enumerate(models):
+        #ax.plot(abs(PCAcomponents.iloc[i]).nlargest(NFeatures).values,"-", color=cmap(c[i]))
 
 def plot_important_features_restricted_domain(models, names, trainingSet, k, n):
     """
     Only plot features that have been deemed important at least once.
     """
 
-    threshold = 49
+    threshold = (k+n)/2
     fig = go.Figure(
             layout = go.Layout (
                 title=go.layout.Title(text="Features used in model (Nruns = {})".format(n*k)),
@@ -977,7 +1051,7 @@ def evaluatePrecisionRecallMetrics(classifier,
 def principalComponentsVSvariance(X: pd.DataFrame, approach:str):
 
     scaledTrainingData = StandardScaler().fit_transform(X) # normalizing the features
-    pca = PCA(0.97).fit(scaledTrainingData)
+    pca = PCA(0.955).fit(scaledTrainingData)
     #print(pca.explained_variance_ratio_)
 
     fig, (ax0, ax1) = plt.subplots(nrows=2, sharex=True, sharey=True, figsize=(set_size(width, 0.5)[0],set_size(width, 0.75)[0]))
@@ -989,7 +1063,7 @@ def principalComponentsVSvariance(X: pd.DataFrame, approach:str):
     ax0.plot(np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_.cumsum())
 
     chosenNComponents = np.where(pca.explained_variance_ratio_.cumsum()>0.95)[0][0]
-
+    print("95% accumulated variance needs {} principal components".format(chosenNComponents))
     ax0.set_ylabel('Accumulated var ratio')
     ax1.set_ylabel('Var ratio')
     ax1.axvline(chosenNComponents,
@@ -1013,6 +1087,41 @@ def principalComponentsVSvariance(X: pd.DataFrame, approach:str):
     dir_path = Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "pca"
     save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach +".pgf"))
+
+    plt.show()
+    ########################
+
+    fig, ax0 = plt.subplots(figsize=(set_size(width, 1)[0],set_size(width, 1)[0]))
+
+    ax0.bar( np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_, alpha=0.5, align='center')
+
+    chosenNComponents = np.where(pca.explained_variance_ratio_.cumsum()>0.95)[0][0]
+    ax0.set_ylabel('Accumulated var ratio')
+    ax0.set_ylabel('Explained variance')
+    ax0.axvline(chosenNComponents,
+                linestyle='--', label='$95\%={}$'.format(chosenNComponents))
+
+    ax0.legend(loc="best")
+    #ax1.legend(loc='upper center', bbox_to_anchor=(0.5, 1.05),
+    #      ncol=3, fancybox=True, shadow=True)
+    ax0.set_xlabel('Principal components')
+
+    #ax0.xaxis.set_major_formatter(plt.NullFormatter())
+    #ax1.set_xlim([0.5,numPC+0.5])
+    ax0.set_title(str(approach), wrap=True)
+    print(pca.explained_variance_ratio_[0])
+    ax0.set_ylim([0,pca.explained_variance_ratio_[0]+0.01])
+
+    #ax1.set_xticks(range(1,numPC+1))
+    fig.tight_layout()
+
+    dir_path = Path(__file__).resolve().parents[2] / \
+                            "reports" / "figures"  / "pca"
+
+
+    tikzplotlib.save(dir_path / Path(approach + ".tex"),
+                        axis_height = str(set_size(width, 0.8, isTex=True)[0]) + "in",
+                        axis_width  = str(set_size(width, 0.8, isTex=True)[0]) + "in")
 
     plt.show()
 
@@ -1351,11 +1460,11 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach, title, legend=False
 
     Path(dir_path).mkdir(parents=True, exist_ok=True)
     fig.savefig(dir_path / Path(insertApproach + ".pdf") , format="pdf", bbox_inches="tight")
-    tikzplotlib.save(dir_path / Path(insertApproach + ".tex"))
+    #tikzplotlib.save(dir_path / Path(insertApproach + ".tex"))
 
-    #tikzplotlib.save(dir_path / str(approach + "-" + prettyNames[i][:-1] +".tex"),
-    #                        axis_height = str(set_size(width, 0.45, isTex=True)[0]) + "in",
-    #                        axis_width  = str(set_size(width, 0.45, isTex=True)[0]) + "in")
+    tikzplotlib.save(dir_path / Path(insertApproach + ".tex"),
+                            axis_height = str(set_size(width, 0.45, isTex=True)[0]) + "in",
+                            axis_width  = str(set_size(width, 0.45, isTex=True)[0]) + "in")
 
     plt.show()
 
