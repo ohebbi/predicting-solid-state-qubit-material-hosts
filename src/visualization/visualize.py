@@ -445,53 +445,58 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     pca = PCA(0.955).fit(scaledTrainingData)
     #print(pca.explained_variance_ratio_)
     map_names={"01-ferrenti-approach": "Ferrenti approach", "02-augmented-ferrenti-approach": "Augmented Ferrenti approach", "03-insightful-approach": "Insightful approach"}
-    ax0.set_title(map_names[approach])
+    #ax0.set_title(map_names[approach])
 
     mean_importance = np.mean(models[prettyNames[0]]["relativeImportance"], axis=0)[:numFeat]
     std_importance = np.std(models[prettyNames[0]]["relativeImportance"], axis=0)[:numFeat]
-    ax0.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color="#88CCEE", label="Logistic regression coef.")
+    ax0.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color="#88CCEE")
     ax0.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color="#88CCEE")
     ax0.set_ylim([min(mean_importance-0.05),max(mean_importance+0.2)])
     ax0.set_xlim([0.5,numFeat+0.5])
     ax0.grid()
     #ax0.legend(loc="upper right")
-
+    ax0.set_title("Logistic regression coef.")
 
     mean_importance = np.mean(models[prettyNames[1]]["relativeImportance"], axis=0)[:numFeat]
     std_importance = np.std(models[prettyNames[1]]["relativeImportance"], axis=0)[:numFeat]
-    ax1.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color="#CC6677", label="Decision tree f.i.")
+    ax1.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color="#CC6677")
     ax1.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color="#CC6677")
     ax1.set_ylim([0,max(mean_importance+0.1)])
     ax1.set_xlim([0.5,numFeat+0.5])
     #ax1.legend()
     ax1.grid()
+    ax1.set_title("Decision tree f.i.")
 
     mean_importance = np.mean(models[prettyNames[2]]["relativeImportance"], axis=0)[:numFeat]
     std_importance = np.std(models[prettyNames[2]]["relativeImportance"], axis=0)[:numFeat]
-    ax2.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color="#DDCC77", label="Random forest f.i.")
+    ax2.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color="#DDCC77")
     ax2.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color="#DDCC77")
     ax2.set_ylim([0,max(mean_importance+0.1)])
     ax2.set_xlim([0.5,numFeat+0.5])
     ax2.grid()
+    ax2.set_title("Random forest f.i.")
     #ax2.legend()
+
 
     mean_importance = np.mean(models[prettyNames[3]]["relativeImportance"], axis=0)[:numFeat]
     std_importance = np.std(models[prettyNames[3]]["relativeImportance"], axis=0)[:numFeat]
 
-    ax3.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color="#117733", label="Gradient boost f.i.")
+    ax3.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color="#117733")
     ax3.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color="#117733")
     ax3.set_ylim([0,max(mean_importance+0.1)])
     ax3.set_xlim([0.5,numFeat+0.5])
     ax3.grid()
     #ax3.legend()
     #ax3.set_xlabel("Principal components")
+    ax3.set_title("Gradient boost f.i.")
 
-    ax4.bar( np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_, alpha=0.5, align='center', color="#888888", label="Explained variance")
+    ax4.bar( np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_, alpha=0.5, align='center', color="#888888")
     ax4.set_ylim([0,max(pca.explained_variance_ratio_+0.01)])
     ax4.set_xlim([0.5,numFeat+0.5])
     ax4.grid()
     ax4.set_xlabel("Principal components")
     #ax4.legend()
+    ax4.set_title("Explained variance")
 
     chosenNComponents = np.where(pca.explained_variance_ratio_.cumsum()>0.95)[0][0]
 
