@@ -459,6 +459,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     ax1.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color="#CC6677")
     ax1.set_ylim([0,max(mean_importance+0.1)])
     ax1.set_xlim([0.5,numFeat+0.5])
+    ax1.legend()
     ax1.grid()
 
     mean_importance = np.mean(models[prettyNames[2]]["relativeImportance"], axis=0)[:numFeat]
@@ -517,12 +518,12 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
 
         ax.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color=colors[i], label=map_legends[name])
         ax.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color=colors[i])
-        ax.xaxis.set_major_formatter(plt.NullFormatter())
+        #ax.xaxis.set_major_formatter(plt.NullFormatter())
 
         ax.set_xlim([0.5,numFeat+0.5])
         ax.grid()
         ax.legend(loc="upper right")
-        fig.tight_layout()
+        #fig.tight_layout()
         tikzplotlib.save(dir_path / Path(approach + name[:-1] + ".tex"),
                                     axis_height = str(set_size(width, 0.3, isTex=True)[0]) + "in",
                                     axis_width  = str(set_size(width, 0.5, isTex=True)[0]) + "in")
