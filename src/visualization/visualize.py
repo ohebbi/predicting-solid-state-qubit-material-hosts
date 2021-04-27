@@ -407,7 +407,7 @@ def plot_accuracy(models, names, prettyNames, numPC, approach, xlabel = "Cross v
     save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + ".pgf"))
 
     plt.show()
-def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFeat=2):
+def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFeat=25):
     scaledTrainingData = StandardScaler().fit_transform(X) # normalizing the features
     pca = PCA(0.955).fit(scaledTrainingData)
     dir_path = Path(__file__).resolve().parents[2] / "reports" / "figures" / "feature-importance"
@@ -530,8 +530,8 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
         #ax.legend(loc="upper right")
         #fig.tight_layout()
         tikzplotlib.save(dir_path / Path(approach + name[:-1] + ".tex"),
-                                    axis_height = str(set_size(width, 0.3, isTex=True)[0]) + "in",
-                                    axis_width  = str(set_size(width, 0.5, isTex=True)[0]) + "in")
+                                    axis_height = str(set_size(width, 0.8, isTex=True)[0]) + "in",
+                                    axis_width  = str(set_size(width, 0.8, isTex=True)[0]) + "in")
         fig.show()
 
     fig, ax = plt.subplots(1,1, figsize=(set_size(width, 1)[0], set_size(width, 1.0)[0]))
