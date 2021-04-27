@@ -455,7 +455,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     ax0.set_xlim([0.5,numFeat+0.5])
     ax0.grid()
     #ax0.legend(loc="upper right")
-    ax0.set_title("Logistic regression coef.")
+    #ax0.set_title("Logistic regression coef.")
 
     mean_importance = np.mean(models[prettyNames[1]]["relativeImportance"], axis=0)[:numFeat]
     std_importance = np.std(models[prettyNames[1]]["relativeImportance"], axis=0)[:numFeat]
@@ -465,7 +465,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     ax1.set_xlim([0.5,numFeat+0.5])
     #ax1.legend()
     ax1.grid()
-    ax1.set_title("Decision tree f.i.")
+    #ax1.set_title("Decision tree f.i.")
 
     mean_importance = np.mean(models[prettyNames[2]]["relativeImportance"], axis=0)[:numFeat]
     std_importance = np.std(models[prettyNames[2]]["relativeImportance"], axis=0)[:numFeat]
@@ -474,7 +474,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     ax2.set_ylim([0,max(mean_importance+0.1)])
     ax2.set_xlim([0.5,numFeat+0.5])
     ax2.grid()
-    ax2.set_title("Random forest f.i.")
+    #ax2.set_title("Random forest f.i.")
     #ax2.legend()
 
 
@@ -488,7 +488,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     ax3.grid()
     #ax3.legend()
     #ax3.set_xlabel("Principal components")
-    ax3.set_title("Gradient boost f.i.")
+    #ax3.set_title("Gradient boost f.i.")
 
     ax4.bar( np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_, alpha=0.5, align='center', color="#888888")
     ax4.set_ylim([0,max(pca.explained_variance_ratio_+0.01)])
@@ -496,7 +496,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     ax4.grid()
     ax4.set_xlabel("Principal components")
     #ax4.legend()
-    ax4.set_title("Explained variance")
+    #ax4.set_title("Explained variance")
 
     chosenNComponents = np.where(pca.explained_variance_ratio_.cumsum()>0.95)[0][0]
 
@@ -524,7 +524,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
         else:
             ax.set_ylim([0,max(mean_importance+0.05)])
 
-        ax.set_title(map_legends[name])
+        #ax.set_title(map_legends[name])
         ax.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color=colors[i])#, label=map_legends[name])
         ax.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color=colors[i])
         #ax.xaxis.set_major_formatter(plt.NullFormatter())
@@ -540,7 +540,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
 
     fig, ax = plt.subplots(1,1, figsize=(set_size(width, 1)[0], set_size(width, 1.0)[0]))
 
-    ax.bar( np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_, alpha=0.5, align='center', color="#888888", label="Explained variance")
+    ax.bar( np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_, alpha=0.5, align='center', color="#888888")
     ax.set_ylim([0,max(pca.explained_variance_ratio_+0.01)])
     ax.set_xlim([0.5,numFeat+0.5])
     ax.grid()
