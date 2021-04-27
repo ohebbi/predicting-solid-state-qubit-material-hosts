@@ -527,7 +527,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
 
         ax.set_xlim([0.5,numFeat+0.5])
         ax.grid()
-        ax.legend(loc="upper right")
+        #ax.legend(loc="upper right")
         #fig.tight_layout()
         tikzplotlib.save(dir_path / Path(approach + name[:-1] + ".tex"),
                                     axis_height = str(set_size(width, 0.3, isTex=True)[0]) + "in",
@@ -543,8 +543,8 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     ax.set_xlabel("Principal components")
     ax.legend(loc="upper right")
     tikzplotlib.save(dir_path / Path(approach + "PC" + ".tex"),
-                                axis_height = str(set_size(width, 0.3, isTex=True)[0]) + "in",
-                                axis_width  = str(set_size(width, 0.5, isTex=True)[0]) + "in")
+                                axis_height = str(set_size(width, 0.8, isTex=True)[0]) + "in",
+                                axis_width  = str(set_size(width, 0.8, isTex=True)[0]) + "in")
     fig.show()
     #plt.title('Feature Importances')
     #plt.barh(importances, range(len(indices)), color='b', align='center')
