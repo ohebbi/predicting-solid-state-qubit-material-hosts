@@ -504,8 +504,8 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
 
     fig.tight_layout()
     tikzplotlib.save(dir_path / Path(approach + ".tex"),
-                                axis_height = str(set_size(width, 1, isTex=True)[0]) + "in",
-                                axis_width  = str(set_size(width, 1, isTex=True)[0]) + "in")
+                                axis_height = str(set_size(width, 2, isTex=True)[0]) + "in",
+                                axis_width  = str(set_size(width, 2, isTex=True)[0]) + "in")
 
     plt.show()
 
