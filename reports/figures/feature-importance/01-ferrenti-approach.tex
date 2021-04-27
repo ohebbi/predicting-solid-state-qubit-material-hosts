@@ -9,13 +9,11 @@
 \begin{groupplot}[group style={group size=1 by 5}]
 \nextgroupplot[
 height=2.8444876158848764in,
-legend cell align={left},
-legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
 scaled x ticks=manual:{}{\pgfmathparse{#1}},
 tick align=outside,
 tick pos=left,
 title={Ferrenti approach},
-width=1.4222438079424382in,
+width=2.8444876158848764in,
 x grid style={white!69.0196078431373!black},
 xmajorgrids,
 xmin=0.5, xmax=25.5,
@@ -192,7 +190,6 @@ table {%
 24 -0.235550284144142
 25 -0.315874390637381
 };
-\addlegendentry{Logistic regression coef.}
 \addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 -0.0167110182346182
@@ -221,14 +218,13 @@ table {%
 24 0.227333400044145
 25 0.249069862823448
 };
-\addlegendentry{Logistic regression coef.}
 
 \nextgroupplot[
 height=2.8444876158848764in,
 scaled x ticks=manual:{}{\pgfmathparse{#1}},
 tick align=outside,
 tick pos=left,
-width=1.4222438079424382in,
+width=2.8444876158848764in,
 x grid style={white!69.0196078431373!black},
 xmajorgrids,
 xmin=0.5, xmax=25.5,
@@ -434,12 +430,10 @@ table {%
 
 \nextgroupplot[
 height=2.8444876158848764in,
-legend cell align={left},
-legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
 scaled x ticks=manual:{}{\pgfmathparse{#1}},
 tick align=outside,
 tick pos=left,
-width=1.4222438079424382in,
+width=2.8444876158848764in,
 x grid style={white!69.0196078431373!black},
 xmajorgrids,
 xmin=0.5, xmax=25.5,
@@ -615,7 +609,6 @@ table {%
 24 0.00380908046748388
 25 0.00587721747702246
 };
-\addlegendentry{Random forest f.i.}
 \addplot [semithick, color2, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.0688104559198211
@@ -644,16 +637,13 @@ table {%
 24 0.0374182520111692
 25 0.0611430535630202
 };
-\addlegendentry{Random forest f.i.}
 
 \nextgroupplot[
 height=2.8444876158848764in,
-legend cell align={left},
-legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
 scaled x ticks=manual:{}{\pgfmathparse{#1}},
 tick align=outside,
 tick pos=left,
-width=1.4222438079424382in,
+width=2.8444876158848764in,
 x grid style={white!69.0196078431373!black},
 xmajorgrids,
 xmin=0.5, xmax=25.5,
@@ -663,12 +653,15 @@ y grid style={white!69.0196078431373!black},
 ymajorgrids,
 ymin=0, ymax=0.291504672452706,
 ytick style={color=black},
-ytick={0,0.1,0.2,0.3},
+ytick={0,0.05,0.1,0.15,0.2,0.25,0.3},
 yticklabels={
   \(\displaystyle {0.0}\),
   \(\displaystyle {0.1}\),
   \(\displaystyle {0.2}\),
-  \(\displaystyle {0.3}\)
+  \(\displaystyle {0.3}\),
+  ,
+  ,
+  
 }
 ]
 \draw[draw=none,fill=color3] (axis cs:0.6,0) rectangle (axis cs:1.4,0.0939219294354606);
@@ -827,7 +820,6 @@ table {%
 24 -0.0070765748506951
 25 -0.00342720675075281
 };
-\addlegendentry{Gradient boost f.i.}
 \addplot [semithick, color3, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.115019442197641
@@ -856,16 +848,12 @@ table {%
 24 0.0435971848898635
 25 0.0835398580888655
 };
-\addlegendentry{Gradient boost f.i.}
 
 \nextgroupplot[
 height=2.8444876158848764in,
-legend cell align={left},
-legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
 tick align=outside,
 tick pos=left,
-title={Explained variance},
-width=1.4222438079424382in,
+width=2.8444876158848764in,
 x grid style={white!69.0196078431373!black},
 xlabel={Principal components},
 xmajorgrids,
@@ -885,12 +873,15 @@ y grid style={white!69.0196078431373!black},
 ymajorgrids,
 ymin=0, ymax=0.133808014644924,
 ytick style={color=black},
-ytick={0,0.05,0.1,0.15},
+ytick={0,0.025,0.05,0.075,0.1,0.125,0.15},
 yticklabels={
   \(\displaystyle {0.00}\),
   \(\displaystyle {0.05}\),
   \(\displaystyle {0.10}\),
-  \(\displaystyle {0.15}\)
+  \(\displaystyle {0.15}\),
+  ,
+  ,
+  
 }
 ]
 \draw[draw=none,fill=white!53.3333333333333!black,fill opacity=0.5] (axis cs:0.6,0) rectangle (axis cs:1.4,0.123808014644924);
