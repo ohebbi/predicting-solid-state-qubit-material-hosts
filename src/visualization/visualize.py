@@ -408,6 +408,11 @@ def plot_accuracy(models, names, prettyNames, numPC, approach, xlabel = "Cross v
 
     plt.show()
 def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFeat=2):
+    scaledTrainingData = StandardScaler().fit_transform(X) # normalizing the features
+    pca = PCA(0.955).fit(scaledTrainingData)
+    dir_path = Path(__file__).resolve().parents[2] / "reports" / "figures" / "feature-importance"
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
+    """
     fig = make_subplots(rows=models.shape[0], cols=1, shared_xaxes=True)
     fig.update_layout({"plot_bgcolor": "rgba(0, 0, 0, 0)",
                            "paper_bgcolor": "rgba(0, 0, 0, 0)",
@@ -499,7 +504,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     #                            axis_width  = str(set_size(width, 0.5, isTex=True)[0]) + "in")
 
     plt.show()
-
+    """
     colors = ["#88CCEE", "#CC6677", "#DDCC77", "#117733", "#888888"]
 
     map_names={"01-ferrenti-approach": "Ferrenti approach", "02-augmented-ferrenti-approach": "Augmented Ferrenti approach", "03-insightful-approach": "Insightful approach"}
