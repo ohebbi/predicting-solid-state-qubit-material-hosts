@@ -493,13 +493,50 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     ax4.set_title("Explained variance")
 
     fig.tight_layout()
-    tikzplotlib.save(dir_path / Path(approach + ".tex"),
-                                axis_height = str(set_size(width, 1, isTex=True)[0]) + "in",
-                                axis_width  = str(set_size(width, 0.5, isTex=True)[0]) + "in")
+    #tikzplotlib.save(dir_path / Path(approach + ".tex"),
+    #                            axis_height = str(set_size(width, 1, isTex=True)[0]) + "in",
+    #                            axis_width  = str(set_size(width, 0.5, isTex=True)[0]) + "in")
 
     plt.show()
 
+    colors = ["#88CCEE", "#CC6677", "#DDCC77", "#117733", "#888888"]
 
+    map_names={"01-ferrenti-approach": "Ferrenti approach", "02-augmented-ferrenti-approach": "Augmented Ferrenti approach", "03-insightful-approach": "Insightful approach"}
+    map_legends = {"LOG ": "Logistic regression coef.", "DT ": "Decision tree f.i.", "RF ":"Random forest f.i.", "GB ": "Gradient boost f.i."}
+    print(prettyNames)
+    for i, name in enumerate(prettyNames):
+        mean_importance = np.mean(models[name]["relativeImportance"], axis=0)[:numFeat]
+        std_importance = np.std(models[name]["relativeImportance"], axis=0)[:numFeat]
+        fig, ax = plt.subplots(1,1, figsize=(set_size(width, 1)[0], set_size(width, 1.0)[0]))
+        if i == 0:
+            ax.set_title(map_names[approach])
+            ax.set_ylim([min(mean_importance-0.05),max(mean_importance+0.2)])
+        else:
+            ax.set_ylim([0,max(mean_importance+0.05)])
+
+
+        ax.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color=colors[i], label=map_legends[name])
+        ax.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color=colors[i])
+        ax.xaxis.set_major_formatter(plt.NullFormatter())
+
+        ax.set_xlim([0.5,numFeat+0.5])
+        ax.grid()
+        ax.legend(loc="upper right")
+        fig.tight_layout()
+        tikzplotlib.save(dir_path / Path(approach + name[:-1] + ".tex"),
+                                    axis_height = str(set_size(width, 0.3, isTex=True)[0]) + "in",
+                                    axis_width  = str(set_size(width, 0.5, isTex=True)[0]) + "in")
+        fig.show()
+
+    fig, ax = plt.subplots(1,1, figsize=(set_size(width, 1)[0], set_size(width, 1.0)[0]))
+
+    ax.bar( np.arange(1, pca.n_components_ + 1), pca.explained_variance_ratio_, alpha=0.5, align='center', color="#888888", label="Explained variance")
+    ax.set_ylim([0,max(pca.explained_variance_ratio_+0.01)])
+    ax.set_xlim([0.5,numFeat+0.5])
+    ax.grid()
+    ax.set_xlabel("Principal components")
+    ax.legend()
+    fig.show()
     #plt.title('Feature Importances')
     #plt.barh(importances, range(len(indices)), color='b', align='center')
     #plt.yticks(range(len(indices)), [features[i] for i in indices])
