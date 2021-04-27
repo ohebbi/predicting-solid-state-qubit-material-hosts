@@ -407,7 +407,7 @@ def plot_accuracy(models, names, prettyNames, numPC, approach, xlabel = "Cross v
     save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + ".pgf"))
 
     plt.show()
-def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFeat=25):
+def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFeat=2):
     fig = make_subplots(rows=models.shape[0], cols=1, shared_xaxes=True)
     fig.update_layout({"plot_bgcolor": "rgba(0, 0, 0, 0)",
                            "paper_bgcolor": "rgba(0, 0, 0, 0)",
@@ -535,7 +535,10 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     ax.set_xlim([0.5,numFeat+0.5])
     ax.grid()
     ax.set_xlabel("Principal components")
-    ax.legend()
+    ax.legend(loc="upper right")
+    tikzplotlib.save(dir_path / Path(approach + "PC" + ".tex"),
+                                axis_height = str(set_size(width, 0.3, isTex=True)[0]) + "in",
+                                axis_width  = str(set_size(width, 0.5, isTex=True)[0]) + "in")
     fig.show()
     #plt.title('Feature Importances')
     #plt.barh(importances, range(len(indices)), color='b', align='center')
