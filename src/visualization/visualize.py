@@ -514,13 +514,13 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
         std_importance = np.std(models[name]["relativeImportance"], axis=0)[:numFeat]
         fig, ax = plt.subplots(1,1, figsize=(set_size(width, 1)[0], set_size(width, 1.0)[0]))
         if i == 0:
-            ax.set_title(map_names[approach])
+
             ax.set_ylim([min(mean_importance-0.05),max(mean_importance+0.2)])
         else:
             ax.set_ylim([0,max(mean_importance+0.05)])
 
-
-        ax.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color=colors[i], label=map_legends[name])
+        ax.set_title(map_legends[name])
+        ax.bar(np.arange(1,len(mean_importance)+1,1), mean_importance, color=colors[i])#, label=map_legends[name])
         ax.errorbar(x=np.arange(1,len(mean_importance)+1,1), y=mean_importance,yerr=std_importance, fmt='none', capsize=4, color=colors[i])
         #ax.xaxis.set_major_formatter(plt.NullFormatter())
 
@@ -529,8 +529,8 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
         #ax.legend(loc="upper right")
         #fig.tight_layout()
         tikzplotlib.save(dir_path / Path(approach + name[:-1] + ".tex"),
-                                    axis_height = str(set_size(width, 0.8, isTex=True)[0]) + "in",
-                                    axis_width  = str(set_size(width, 0.8, isTex=True)[0]) + "in")
+                                    axis_height = str(set_size(width, 1.0, isTex=True)[0]) + "in",
+                                    axis_width  = str(set_size(width, 1.0, isTex=True)[0]) + "in")
         fig.show()
 
     fig, ax = plt.subplots(1,1, figsize=(set_size(width, 1)[0], set_size(width, 1.0)[0]))
