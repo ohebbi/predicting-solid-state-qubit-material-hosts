@@ -9,7 +9,6 @@
 \begin{groupplot}[group style={group size=1 by 5}]
 \nextgroupplot[
 height=2.8444876158848764in,
-scaled x ticks=manual:{}{\pgfmathparse{#1}},
 tick align=outside,
 tick pos=left,
 title={Ferrenti approach},
@@ -18,7 +17,16 @@ x grid style={white!69.0196078431373!black},
 xmajorgrids,
 xmin=0.5, xmax=25.5,
 xtick style={color=black},
-xticklabels={},
+xtick={0,5,10,15,20,25,30},
+xticklabels={
+  \(\displaystyle {0}\),
+  \(\displaystyle {5}\),
+  \(\displaystyle {10}\),
+  \(\displaystyle {15}\),
+  \(\displaystyle {20}\),
+  \(\displaystyle {25}\),
+  \(\displaystyle {30}\)
+},
 y grid style={white!69.0196078431373!black},
 ymajorgrids,
 ymin=-0.476544751038715, ymax=0.454074936965614,
@@ -221,7 +229,6 @@ table {%
 
 \nextgroupplot[
 height=2.8444876158848764in,
-scaled x ticks=manual:{}{\pgfmathparse{#1}},
 tick align=outside,
 tick pos=left,
 width=2.8444876158848764in,
@@ -229,7 +236,16 @@ x grid style={white!69.0196078431373!black},
 xmajorgrids,
 xmin=0.5, xmax=25.5,
 xtick style={color=black},
-xticklabels={},
+xtick={0,5,10,15,20,25,30},
+xticklabels={
+  \(\displaystyle {0}\),
+  \(\displaystyle {5}\),
+  \(\displaystyle {10}\),
+  \(\displaystyle {15}\),
+  \(\displaystyle {20}\),
+  \(\displaystyle {25}\),
+  \(\displaystyle {30}\)
+},
 y grid style={white!69.0196078431373!black},
 ymajorgrids,
 ymin=0, ymax=0.346093145959793,
@@ -430,7 +446,6 @@ table {%
 
 \nextgroupplot[
 height=2.8444876158848764in,
-scaled x ticks=manual:{}{\pgfmathparse{#1}},
 tick align=outside,
 tick pos=left,
 width=2.8444876158848764in,
@@ -438,7 +453,16 @@ x grid style={white!69.0196078431373!black},
 xmajorgrids,
 xmin=0.5, xmax=25.5,
 xtick style={color=black},
-xticklabels={},
+xtick={0,5,10,15,20,25,30},
+xticklabels={
+  \(\displaystyle {0}\),
+  \(\displaystyle {5}\),
+  \(\displaystyle {10}\),
+  \(\displaystyle {15}\),
+  \(\displaystyle {20}\),
+  \(\displaystyle {25}\),
+  \(\displaystyle {30}\)
+},
 y grid style={white!69.0196078431373!black},
 ymajorgrids,
 ymin=0, ymax=0.213961791193378,
@@ -640,7 +664,6 @@ table {%
 
 \nextgroupplot[
 height=2.8444876158848764in,
-scaled x ticks=manual:{}{\pgfmathparse{#1}},
 tick align=outside,
 tick pos=left,
 width=2.8444876158848764in,
@@ -648,20 +671,26 @@ x grid style={white!69.0196078431373!black},
 xmajorgrids,
 xmin=0.5, xmax=25.5,
 xtick style={color=black},
-xticklabels={},
+xtick={0,5,10,15,20,25,30},
+xticklabels={
+  \(\displaystyle {0}\),
+  \(\displaystyle {5}\),
+  \(\displaystyle {10}\),
+  \(\displaystyle {15}\),
+  \(\displaystyle {20}\),
+  \(\displaystyle {25}\),
+  \(\displaystyle {30}\)
+},
 y grid style={white!69.0196078431373!black},
 ymajorgrids,
 ymin=0, ymax=0.291504672452706,
 ytick style={color=black},
-ytick={0,0.05,0.1,0.15,0.2,0.25,0.3},
+ytick={0,0.1,0.2,0.3},
 yticklabels={
   \(\displaystyle {0.0}\),
   \(\displaystyle {0.1}\),
   \(\displaystyle {0.2}\),
-  \(\displaystyle {0.3}\),
-  ,
-  ,
-  
+  \(\displaystyle {0.3}\)
 }
 ]
 \draw[draw=none,fill=color3] (axis cs:0.6,0) rectangle (axis cs:1.4,0.0939219294354606);
@@ -873,15 +902,12 @@ y grid style={white!69.0196078431373!black},
 ymajorgrids,
 ymin=0, ymax=0.133808014644924,
 ytick style={color=black},
-ytick={0,0.025,0.05,0.075,0.1,0.125,0.15},
+ytick={0,0.05,0.1,0.15},
 yticklabels={
   \(\displaystyle {0.00}\),
   \(\displaystyle {0.05}\),
   \(\displaystyle {0.10}\),
-  \(\displaystyle {0.15}\),
-  ,
-  ,
-  
+  \(\displaystyle {0.15}\)
 }
 ]
 \draw[draw=none,fill=white!53.3333333333333!black,fill opacity=0.5] (axis cs:0.6,0) rectangle (axis cs:1.4,0.123808014644924);

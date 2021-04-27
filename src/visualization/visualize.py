@@ -439,7 +439,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     fig.write_image(str(dir_path / Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pdf")))
     fig.show()
 
-    fig, (ax0,ax1,ax2,ax3, ax4) = plt.subplots(5,1, figsize=(set_size(width, 1)[0], set_size(width, 1.5)[0]), sharex=True)
+    fig, (ax0,ax1,ax2,ax3, ax4) = plt.subplots(5,1, figsize=(set_size(width, 1)[0], set_size(width, 1.5)[0]))
 
     scaledTrainingData = StandardScaler().fit_transform(X) # normalizing the features
     pca = PCA(0.955).fit(scaledTrainingData)
