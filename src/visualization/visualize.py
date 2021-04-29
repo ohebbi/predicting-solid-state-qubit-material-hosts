@@ -520,7 +520,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
         fig, ax = plt.subplots(1,1, figsize=(set_size(width, 1)[0], set_size(width, 1.0)[0]))
         if i == 0:
 
-            ax.set_ylim([min(mean_importance-0.05),max(mean_importance+0.2)])
+            ax.set_ylim([min(mean_importance-0.3),max(mean_importance+0.2)])
         else:
             ax.set_ylim([0,max(mean_importance+0.05)])
 
@@ -1173,7 +1173,15 @@ def principalComponentsVSvariance(X: pd.DataFrame, approach:str):
                         axis_height = str(set_size(width, 0.8, isTex=True)[0]) + "in",
                         axis_width  = str(set_size(width, 0.8, isTex=True)[0]) + "in")
 
-    plt.show()
+    scaledGeneratedData = StandardScaler().fit_transform(X) # normalizing the features
+    scaledGeneratedData = pd.DataFrame(scaledGeneratedData, columns=X.columns)
+    pca = PCA(n_components=chosenNComponents)
+    PCAGeneratedData = pd.DataFrame(pca.fit_transform(scaledGeneratedData))
+    PCAcomponents = pd.DataFrame(pca.components_,columns=scaledGeneratedData.columns,index = [ "PCA-"+str(i) for i in range(0,chosenNComponents)])
+
+    #plot_eigenvectors_principal_components(PCAcomponents, chosenNComponents=10, NFeatures=15)
+    top_eigenvector_vs_features(PCAcomponents, whichComponent = 0, NFeatures=40)
+
 
 def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, prettyNames:str, numPC:int, approach:str):
 
@@ -1374,11 +1382,11 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach, title, apply
     "MP|Polar SG": "Polar SG",
     "IonProperty|max ionic char":"Ionic char",
     #"AverageBondLength|mean Average bond length":"Avg bond length",
-    "ElementProperty|MagpieData range CovalentRadius": "Cov range",
+    "ElementProperty|MagpieData range CovalentRadius": "Cov range [pm]",# [\si{\pm}]",
     #"candidate":"Label",
     #"MP|oxide_type":"Oxid type",
     "MP|nelements": "Num elements",
-    "MP_Eg":"Eg"
+    "MP_Eg":"Eg [eV]"# [\si{\eV}]
     }
     generatedData = generatedData.astype({"MP|Polar SG": int})
     generatedData = generatedData[generatedData["candidate"] != -1]
@@ -1566,3 +1574,105 @@ def visualize_heatmap_of_combinations(Summary):
     # using the upper triangle matrix as mask
     sns.heatmap(df, annot=False)#, mask=matrix)
     plt.show()
+
+def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numberOfPrincipalComponents):
+
+    formulas_in_trainingset = trainingSet["full_formula"]
+    #print(trainingSet[["material_id", "full_formula"]])
+    X = trainingSet.drop(["material_id", "full_formula"], axis=1)
+
+    #scaler = StandardScaler()
+    #X = StandardScaler().fit_transform(X)
+    #X = PCA(0.95).fit_transform(X)
+    #X = X[:, :3]
+    print(formulas_in_trainingset)
+    import joblib
+    classifier = joblib.load(Path(__file__).resolve().parents[2] / "models" / insertApproach / "trained-models" / Path("PCA-" + str(numberOfPrincipalComponents) + "-" + prettyNames[1] + ".pkl"))
+    #y = X.pop("candidate", axis=1)
+    X = classifier["scale"].transform(X.drop("candidate", axis=1))
+    X = classifier["pca"].transform(X)
+
+    testSet = pd.read_pickle(Path(__file__).resolve().parents[2] / "data" /insertApproach / "processed" / "testSet.pkl")
+    testSet = classifier["scale"].transform(testSet.drop(["candidate", "material_id", "full_formula", "pretty_formula"], axis=1))
+    testSet = classifier["pca"].transform(testSet)
+
+    clf = classifier["model"]
+    from dtreeviz.trees import dtreeviz
+    #fig = plt.figure(figsize=(40,40))
+    viz = dtreeviz(clf, X, y,
+                target_name="candidate",
+                feature_names=["PC0", "PCA1", "PC2"])
+
+
+    viz
+    from IPython.display import display
+    display(viz)
+
+    points = 10
+    feature_1 = np.linspace(X[:, 0].min(), X[:, 0].max(), points)
+    feature_2 = np.linspace(X[:, 1].min(), X[:, 1].max(), points)
+    feature_3 = np.linspace(X[:, 2].min(), X[:, 2].max(), points)
+
+    XX1, XX2, XX3 = np.array(np.meshgrid(feature_1, feature_2, feature_3))
+    df = pd.DataFrame(np.array([XX1.ravel(), XX2.ravel(), XX3.ravel()]).T, columns=["PC1", "PC2", "PC3"])
+    #df.columns = ["PC1", "PC2", "PC3"]
+    Z_grid = np.array(clf.predict_proba(df)[:,1]).reshape(points,points,points)
+
+    fig = go.Figure(data=go.Volume(
+        x=XX1.ravel(),
+        y=XX2.ravel(),
+        z=XX3.ravel(),
+        value=Z_grid.flatten(),
+        isomin=0.0,
+        isomax=1.0,
+        opacity=0.3, # needs to be small to see through all surfaces
+        surface_count=20,
+        #colorscale='RdBu'# needs to be a large number for good volume rendering
+        ),
+        layout = Layout(
+        title=go.layout.Title(text="Probability for qubit material host"),
+        showlegend=True,
+        scene=layout.Scene(
+            xaxis=dict(title='PC1'),
+            yaxis=dict(title='PC2'),
+            zaxis=dict(title='PC3')
+        )
+    ))
+
+    interval = [0.4, 1.0]
+    #print(X.shape, Summary.shape, df.shape)
+    fig.add_trace(
+        go.Scatter3d(x= testSet[:,0][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
+                      y=testSet[:,1][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
+                      z=testSet[:,2][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
+                      mode='markers',
+                      marker=dict(
+                        color=Summary["DT "][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],                # set color to an array/list of desired values
+                        colorscale='Viridis',   # choose a colorscale
+                        opacity=0.8
+                      ),
+                      showlegend=False,
+                      hovertext=Summary["full_formula"][Summary["DT Prob"].between(interval[0],interval[1], inclusive=False)]),
+    )
+
+
+    fig.add_trace(
+        go.Scatter3d(x= X[:,0][y==1],
+                      y=X[:,1][y==1],
+                      z=X[:,2][y==1],
+                      mode='markers',
+                      marker=dict(
+                        #color="black",                # set color to an array/list of desired values
+                        colorscale='Viridis',   # choose a colorscale
+                        opacity=0.8
+                      ),
+                      showlegend=False,
+                      hovertext=formulas_in_trainingset,)
+    )
+
+    fig.show()
+
+
+    #viz.save(Path(__file__).resolve().parents[2] / "reports" / "figures" / "decision tree" / "hallo.svg")
+
+    #display(graphviz.Source(export_graphviz(clf)))

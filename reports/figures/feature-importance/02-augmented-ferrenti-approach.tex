@@ -8,19 +8,24 @@
 
 \begin{groupplot}[group style={group size=1 by 5}]
 \nextgroupplot[
-height=2.8444876158848764in,
-legend cell align={left},
-legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
-scaled x ticks=manual:{}{\pgfmathparse{#1}},
+height=5.688975231769753in,
 tick align=outside,
 tick pos=left,
-title={Augmented Ferrenti approach},
-width=1.4222438079424382in,
+width=5.688975231769753in,
 x grid style={white!69.0196078431373!black},
 xmajorgrids,
 xmin=0.5, xmax=25.5,
 xtick style={color=black},
-xticklabels={},
+xtick={0,5,10,15,20,25,30},
+xticklabels={
+  \(\displaystyle {0}\),
+  \(\displaystyle {5}\),
+  \(\displaystyle {10}\),
+  \(\displaystyle {15}\),
+  \(\displaystyle {20}\),
+  \(\displaystyle {25}\),
+  \(\displaystyle {30}\)
+},
 y grid style={white!69.0196078431373!black},
 ymajorgrids,
 ymin=-0.685965882662406, ymax=0.652134464167489,
@@ -35,9 +40,6 @@ yticklabels={
 }
 ]
 \draw[draw=none,fill=color0] (axis cs:0.6,0) rectangle (axis cs:1.4,-0.0727198845049412);
-\addlegendimage{ybar,ybar legend,draw=none,fill=color0};
-\addlegendentry{Logistic regression coef.}
-
 \draw[draw=none,fill=color0] (axis cs:1.6,0) rectangle (axis cs:2.4,0.256050161832667);
 \draw[draw=none,fill=color0] (axis cs:2.6,0) rectangle (axis cs:3.4,0.308784791765185);
 \draw[draw=none,fill=color0] (axis cs:3.6,0) rectangle (axis cs:4.4,-0.0539182771778355);
@@ -190,7 +192,6 @@ table {%
 24 -0.88098278239879
 25 -0.23198426658039
 };
-\addlegendentry{Logistic regression coef.}
 \addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 -0.0315822893201982
@@ -219,19 +220,26 @@ table {%
 24 0.598727349368358
 25 0.620496273902804
 };
-\addlegendentry{Logistic regression coef.}
 
 \nextgroupplot[
-height=2.8444876158848764in,
-scaled x ticks=manual:{}{\pgfmathparse{#1}},
+height=5.688975231769753in,
 tick align=outside,
 tick pos=left,
-width=1.4222438079424382in,
+width=5.688975231769753in,
 x grid style={white!69.0196078431373!black},
 xmajorgrids,
 xmin=0.5, xmax=25.5,
 xtick style={color=black},
-xticklabels={},
+xtick={0,5,10,15,20,25,30},
+xticklabels={
+  \(\displaystyle {0}\),
+  \(\displaystyle {5}\),
+  \(\displaystyle {10}\),
+  \(\displaystyle {15}\),
+  \(\displaystyle {20}\),
+  \(\displaystyle {25}\),
+  \(\displaystyle {30}\)
+},
 y grid style={white!69.0196078431373!black},
 ymajorgrids,
 ymin=0, ymax=0.197632689967363,
@@ -246,9 +254,6 @@ yticklabels={
 }
 ]
 \draw[draw=none,fill=color1] (axis cs:0.6,0) rectangle (axis cs:1.4,0.0384258272609416);
-\addlegendimage{ybar,ybar legend,draw=none,fill=color1};
-\addlegendentry{Decision tree f.i.}
-
 \draw[draw=none,fill=color1] (axis cs:1.6,0) rectangle (axis cs:2.4,0.0320455538226893);
 \draw[draw=none,fill=color1] (axis cs:2.6,0) rectangle (axis cs:3.4,0.0484942359034979);
 \draw[draw=none,fill=color1] (axis cs:3.6,0) rectangle (axis cs:4.4,0.0371409555793151);
@@ -431,18 +436,24 @@ table {%
 };
 
 \nextgroupplot[
-height=2.8444876158848764in,
-legend cell align={left},
-legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
-scaled x ticks=manual:{}{\pgfmathparse{#1}},
+height=5.688975231769753in,
 tick align=outside,
 tick pos=left,
-width=1.4222438079424382in,
+width=5.688975231769753in,
 x grid style={white!69.0196078431373!black},
 xmajorgrids,
 xmin=0.5, xmax=25.5,
 xtick style={color=black},
-xticklabels={},
+xtick={0,5,10,15,20,25,30},
+xticklabels={
+  \(\displaystyle {0}\),
+  \(\displaystyle {5}\),
+  \(\displaystyle {10}\),
+  \(\displaystyle {15}\),
+  \(\displaystyle {20}\),
+  \(\displaystyle {25}\),
+  \(\displaystyle {30}\)
+},
 y grid style={white!69.0196078431373!black},
 ymajorgrids,
 ymin=0, ymax=0.246783516108655,
@@ -458,9 +469,6 @@ yticklabels={
 }
 ]
 \draw[draw=none,fill=color2] (axis cs:0.6,0) rectangle (axis cs:1.4,0.0300723902710681);
-\addlegendimage{ybar,ybar legend,draw=none,fill=color2};
-\addlegendentry{Random forest f.i.}
-
 \draw[draw=none,fill=color2] (axis cs:1.6,0) rectangle (axis cs:2.4,0.032447341690771);
 \draw[draw=none,fill=color2] (axis cs:2.6,0) rectangle (axis cs:3.4,0.0430229511637773);
 \draw[draw=none,fill=color2] (axis cs:3.6,0) rectangle (axis cs:4.4,0.0356599604199791);
@@ -613,7 +621,6 @@ table {%
 24 0.0259345761183239
 25 0.00978136866712248
 };
-\addlegendentry{Random forest f.i.}
 \addplot [semithick, color2, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.0344011821734531
@@ -642,21 +649,26 @@ table {%
 24 0.0933921303041561
 25 0.0379023536220331
 };
-\addlegendentry{Random forest f.i.}
 
 \nextgroupplot[
-height=2.8444876158848764in,
-legend cell align={left},
-legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
-scaled x ticks=manual:{}{\pgfmathparse{#1}},
+height=5.688975231769753in,
 tick align=outside,
 tick pos=left,
-width=1.4222438079424382in,
+width=5.688975231769753in,
 x grid style={white!69.0196078431373!black},
 xmajorgrids,
 xmin=0.5, xmax=25.5,
 xtick style={color=black},
-xticklabels={},
+xtick={0,5,10,15,20,25,30},
+xticklabels={
+  \(\displaystyle {0}\),
+  \(\displaystyle {5}\),
+  \(\displaystyle {10}\),
+  \(\displaystyle {15}\),
+  \(\displaystyle {20}\),
+  \(\displaystyle {25}\),
+  \(\displaystyle {30}\)
+},
 y grid style={white!69.0196078431373!black},
 ymajorgrids,
 ymin=0, ymax=0.261869009597954,
@@ -670,9 +682,6 @@ yticklabels={
 }
 ]
 \draw[draw=none,fill=color3] (axis cs:0.6,0) rectangle (axis cs:1.4,0.00846373494907362);
-\addlegendimage{ybar,ybar legend,draw=none,fill=color3};
-\addlegendentry{Gradient boost f.i.}
-
 \draw[draw=none,fill=color3] (axis cs:1.6,0) rectangle (axis cs:2.4,0.0237313458752375);
 \draw[draw=none,fill=color3] (axis cs:2.6,0) rectangle (axis cs:3.4,0.0349992971715886);
 \draw[draw=none,fill=color3] (axis cs:3.6,0) rectangle (axis cs:4.4,0.011890484192585);
@@ -825,7 +834,6 @@ table {%
 24 0.0115432131350411
 25 -0.00515237778528275
 };
-\addlegendentry{Gradient boost f.i.}
 \addplot [semithick, color3, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.0149861858251485
@@ -854,16 +862,12 @@ table {%
 24 0.0813089696683328
 25 0.0268700916195008
 };
-\addlegendentry{Gradient boost f.i.}
 
 \nextgroupplot[
-height=2.8444876158848764in,
-legend cell align={left},
-legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
+height=5.688975231769753in,
 tick align=outside,
 tick pos=left,
-title={Explained variance},
-width=1.4222438079424382in,
+width=5.688975231769753in,
 x grid style={white!69.0196078431373!black},
 xlabel={Principal components},
 xmajorgrids,
@@ -894,9 +898,6 @@ yticklabels={
 }
 ]
 \draw[draw=none,fill=white!53.3333333333333!black,fill opacity=0.5] (axis cs:0.6,0) rectangle (axis cs:1.4,0.10832771747251);
-\addlegendimage{ybar,ybar legend,draw=none,fill=white!53.3333333333333!black,fill opacity=0.5};
-\addlegendentry{Explained variance}
-
 \draw[draw=none,fill=white!53.3333333333333!black,fill opacity=0.5] (axis cs:1.6,0) rectangle (axis cs:2.4,0.0759165912482743);
 \draw[draw=none,fill=white!53.3333333333333!black,fill opacity=0.5] (axis cs:2.6,0) rectangle (axis cs:3.4,0.071555873106815);
 \draw[draw=none,fill=white!53.3333333333333!black,fill opacity=0.5] (axis cs:3.6,0) rectangle (axis cs:4.4,0.0419830332396628);
