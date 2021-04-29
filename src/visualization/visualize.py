@@ -1546,30 +1546,46 @@ def visualize_heatmap_of_combinations(Summary):
     sns.heatmap(df, annot=True)
     plt.show()
 
-    abbreviations = ["LOG ", "DT ", "RF ", "GB "]
+    permutations = [["LOG ", "LOG ", "LOG ", "LOG "], ["LOG ", "LOG ", "LOG ", "DT "], ["LOG ", "LOG ", "RF ", "DT "], ["LOG ", "RF ", "GB ", "DT "],
+                    ["DT ", "GB ", "DT ", "DT "], ["DT ",  "RF ", "DT ", "DT "], ["RF ", "RF ", "GB ", "GB "],
+                    ["RF ", "RF ", "RF ", "RF "], ["GB ", "GB ", "GB ", "GB "],
+                    ["GB ", "LOG ", "LOG ", "LOG "], ["RF ", "LOG ", "LOG ", "LOG "]]
 
+
+    #permutations = [["LOG ","LOG ","LOG ","LOG "],["LOG ","LOG ","LOG ","DT "],["LOG ","LOG ","LOG ","RF "],["LOG ","LOG ","LOG ","GB "],["LOG ","LOG ","DT ","LOG "],["LOG ","LOG ","DT ","DT "],["LOG ","LOG ","DT ","RF "],["LOG ","LOG ","DT ","GB "],["LOG ","LOG ","RF ","LOG "],["LOG ","LOG ","RF ","DT "],["LOG ","LOG ","RF ","RF "],["LOG ","LOG ","RF ","GB "],["LOG ","LOG ","GB ","LOG "],["LOG ","LOG ","GB ","DT "],["LOG ","LOG ","GB ","RF "],["LOG ","LOG ","GB ","GB "],["LOG ","DT ","LOG ","LOG "],["LOG ","DT ","LOG ","DT "],["LOG ","DT ","LOG ","RF "],["LOG ","DT ","LOG ","GB "],["LOG ","DT ","DT ","LOG "],["LOG ","DT ","DT ","DT "],["LOG ","DT ","DT ","RF "],["LOG ","DT ","DT ","GB "],["LOG ","DT ","RF ","LOG "],["LOG ","DT ","RF ","DT "],["LOG ","DT ","RF ","RF "],["LOG ","DT ","RF ","GB "],["LOG ","DT ","GB ","LOG "],["LOG ","DT ","GB ","DT "],["LOG ","DT ","GB ","RF "],["LOG ","DT ","GB ","GB "],["LOG ","RF ","LOG ","LOG "],["LOG ","RF ","LOG ","DT "],["LOG ","RF ","LOG ","RF "],["LOG ","RF ","LOG ","GB "],["LOG ","RF ","DT ","LOG "],["LOG ","RF ","DT ","DT "],["LOG ","RF ","DT ","RF "],["LOG ","RF ","DT ","GB "],["LOG ","RF ","RF ","LOG "],["LOG ","RF ","RF ","DT "],["LOG ","RF ","RF ","RF "],["LOG ","RF ","RF ","GB "],["LOG ","RF ","GB ","LOG "],["LOG ","RF ","GB ","DT "],["LOG ","RF ","GB ","RF "],["LOG ","RF ","GB ","GB "],["LOG ","GB ","LOG ","LOG "],["LOG ","GB ","LOG ","DT "],["LOG ","GB ","LOG ","RF "],["LOG ","GB ","LOG ","GB "],["LOG ","GB ","DT ","LOG "],["LOG ","GB ","DT ","DT "],["LOG ","GB ","DT ","RF "],["LOG ","GB ","DT ","GB "],["LOG ","GB ","RF ","LOG "],["LOG ","GB ","RF ","DT "],["LOG ","GB ","RF ","RF "],["LOG ","GB ","RF ","GB "],["LOG ","GB ","GB ","LOG "],["LOG ","GB ","GB ","DT "],["LOG ","GB ","GB ","RF "],["LOG ","GB ","GB ","GB "],["DT ","LOG ","LOG ","LOG "],["DT ","LOG ","LOG ","DT "],["DT ","LOG ","LOG ","RF "],["DT ","LOG ","LOG ","GB "],["DT ","LOG ","DT ","LOG "],["DT ","LOG ","DT ","DT "],["DT ","LOG ","DT ","RF "],["DT ","LOG ","DT ","GB "],["DT ","LOG ","RF ","LOG "],["DT ","LOG ","RF ","DT "],["DT ","LOG ","RF ","RF "],["DT ","LOG ","RF ","GB "],["DT ","LOG ","GB ","LOG "],["DT ","LOG ","GB ","DT "],["DT ","LOG ","GB ","RF "],["DT ","LOG ","GB ","GB "],["DT ","DT ","LOG ","LOG "],["DT ","DT ","LOG ","DT "],["DT ","DT ","LOG ","RF "],["DT ","DT ","LOG ","GB "],["DT ","DT ","DT ","LOG "],["DT ","DT ","DT ","DT "],["DT ","DT ","DT ","RF "],["DT ","DT ","DT ","GB "],["DT ","DT ","RF ","LOG "],["DT ","DT ","RF ","DT "],["DT ","DT ","RF ","RF "],["DT ","DT ","RF ","GB "],["DT ","DT ","GB ","LOG "],["DT ","DT ","GB ","DT "],["DT ","DT ","GB ","RF "],["DT ","DT ","GB ","GB "],["DT ","RF ","LOG ","LOG "],["DT ","RF ","LOG ","DT "],["DT ","RF ","LOG ","RF "],["DT ","RF ","LOG ","GB "],["DT ","RF ","DT ","LOG "],["DT ","RF ","DT ","DT "],["DT ","RF ","DT ","RF "],["DT ","RF ","DT ","GB "],["DT ","RF ","RF ","LOG "],["DT ","RF ","RF ","DT "],["DT ","RF ","RF ","RF "],["DT ","RF ","RF ","GB "],["DT ","RF ","GB ","LOG "],["DT ","RF ","GB ","DT "],["DT ","RF ","GB ","RF "],["DT ","RF ","GB ","GB "],["DT ","GB ","LOG ","LOG "],["DT ","GB ","LOG ","DT "],["DT ","GB ","LOG ","RF "],["DT ","GB ","LOG ","GB "],["DT ","GB ","DT ","LOG "],["DT ","GB ","DT ","DT "],["DT ","GB ","DT ","RF "],["DT ","GB ","DT ","GB "],["DT ","GB ","RF ","LOG "],["DT ","GB ","RF ","DT "],["DT ","GB ","RF ","RF "],["DT ","GB ","RF ","GB "],["DT ","GB ","GB ","LOG "],["DT ","GB ","GB ","DT "],["DT ","GB ","GB ","RF "],["DT ","GB ","GB ","GB "],["RF ","LOG ","LOG ","LOG "],["RF ","LOG ","LOG ","DT "],["RF ","LOG ","LOG ","RF "],["RF ","LOG ","LOG ","GB "],["RF ","LOG ","DT ","LOG "],["RF ","LOG ","DT ","DT "],["RF ","LOG ","DT ","RF "],["RF ","LOG ","DT ","GB "],["RF ","LOG ","RF ","LOG "],["RF ","LOG ","RF ","DT "],["RF ","LOG ","RF ","RF "],["RF ","LOG ","RF ","GB "],["RF ","LOG ","GB ","LOG "],["RF ","LOG ","GB ","DT "],["RF ","LOG ","GB ","RF "],["RF ","LOG ","GB ","GB "],["RF ","DT ","LOG ","LOG "],["RF ","DT ","LOG ","DT "],["RF ","DT ","LOG ","RF "],["RF ","DT ","LOG ","GB "],["RF ","DT ","DT ","LOG "],["RF ","DT ","DT ","DT "],["RF ","DT ","DT ","RF "],["RF ","DT ","DT ","GB "],["RF ","DT ","RF ","LOG "],["RF ","DT ","RF ","DT "],["RF ","DT ","RF ","RF "],["RF ","DT ","RF ","GB "],["RF ","DT ","GB ","LOG "],["RF ","DT ","GB ","DT "],["RF ","DT ","GB ","RF "],["RF ","DT ","GB ","GB "],["RF ","RF ","LOG ","LOG "],["RF ","RF ","LOG ","DT "],["RF ","RF ","LOG ","RF "],["RF ","RF ","LOG ","GB "],["RF ","RF ","DT ","LOG "],["RF ","RF ","DT ","DT "],["RF ","RF ","DT ","RF "],["RF ","RF ","DT ","GB "],["RF ","RF ","RF ","LOG "],["RF ","RF ","RF ","DT "],["RF ","RF ","RF ","RF "],["RF ","RF ","RF ","GB "],["RF ","RF ","GB ","LOG "],["RF ","RF ","GB ","DT "],["RF ","RF ","GB ","RF "],["RF ","RF ","GB ","GB "],["RF ","GB ","LOG ","LOG "],["RF ","GB ","LOG ","DT "],["RF ","GB ","LOG ","RF "],["RF ","GB ","LOG ","GB "],["RF ","GB ","DT ","LOG "],["RF ","GB ","DT ","DT "],["RF ","GB ","DT ","RF "],["RF ","GB ","DT ","GB "],["RF ","GB ","RF ","LOG "],["RF ","GB ","RF ","DT "],["RF ","GB ","RF ","RF "],["RF ","GB ","RF ","GB "],["RF ","GB ","GB ","LOG "],["RF ","GB ","GB ","DT "],["RF ","GB ","GB ","RF "],["RF ","GB ","GB ","GB "],["GB ","LOG ","LOG ","LOG "],["GB ","LOG ","LOG ","DT "],["GB ","LOG ","LOG ","RF "],["GB ","LOG ","LOG ","GB "],["GB ","LOG ","DT ","LOG "],["GB ","LOG ","DT ","DT "],["GB ","LOG ","DT ","RF "],["GB ","LOG ","DT ","GB "],["GB ","LOG ","RF ","LOG "],["GB ","LOG ","RF ","DT "],["GB ","LOG ","RF ","RF "],["GB ","LOG ","RF ","GB "],["GB ","LOG ","GB ","LOG "],["GB ","LOG ","GB ","DT "],["GB ","LOG ","GB ","RF "],["GB ","LOG ","GB ","GB "],["GB ","DT ","LOG ","LOG "],["GB ","DT ","LOG ","DT "],["GB ","DT ","LOG ","RF "],["GB ","DT ","LOG ","GB "],["GB ","DT ","DT ","LOG "],["GB ","DT ","DT ","DT "],["GB ","DT ","DT ","RF "],["GB ","DT ","DT ","GB "],["GB ","DT ","RF ","LOG "],["GB ","DT ","RF ","DT "],["GB ","DT ","RF ","RF "],["GB ","DT ","RF ","GB "],["GB ","DT ","GB ","LOG "],["GB ","DT ","GB ","DT "],["GB ","DT ","GB ","RF "],["GB ","DT ","GB ","GB "],["GB ","RF ","LOG ","LOG "],["GB ","RF ","LOG ","DT "],["GB ","RF ","LOG ","RF "],["GB ","RF ","LOG ","GB "],["GB ","RF ","DT ","LOG "],["GB ","RF ","DT ","DT "],["GB ","RF ","DT ","RF "],["GB ","RF ","DT ","GB "],["GB ","RF ","RF ","LOG "],["GB ","RF ","RF ","DT "],["GB ","RF ","RF ","RF "],["GB ","RF ","RF ","GB "],["GB ","RF ","GB ","LOG "],["GB ","RF ","GB ","DT "],["GB ","RF ","GB ","RF "],["GB ","RF ","GB ","GB "],["GB ","GB ","LOG ","LOG "],["GB ","GB ","LOG ","DT "],["GB ","GB ","LOG ","RF "],["GB ","GB ","LOG ","GB "],["GB ","GB ","DT ","LOG "],["GB ","GB ","DT ","DT "],["GB ","GB ","DT ","RF "],["GB ","GB ","DT ","GB "],["GB ","GB ","RF ","LOG "],["GB ","GB ","RF ","DT "],["GB ","GB ","RF ","RF "],["GB ","GB ","RF ","GB "],["GB ","GB ","GB ","LOG "],["GB ","GB ","GB ","DT "],["GB ","GB ","GB ","RF "],["GB ","GB ","GB ","GB "]] #24
+
+    #permutations = [["LOG ","LOG ","LOG ","LOG "],["LOG ","LOG ","LOG ","DT "],["LOG ","LOG ","LOG ","RF "],["LOG ","LOG ","LOG ","GB "],["LOG ","LOG ","DT ","DT "],["LOG ","LOG ","DT ","RF "],["LOG ","LOG ","DT ","GB "],["LOG ","LOG ","RF ","RF "],["LOG ","LOG ","RF ","GB "],["LOG ","LOG ","GB ","GB "],["LOG ","DT ","DT ","DT "],["LOG ","DT ","DT ","RF "],["LOG ","DT ","DT ","GB "],["LOG ","DT ","RF ","RF "],["LOG ","DT ","RF ","GB "],["LOG ","DT ","GB ","GB "],["LOG ","RF ","RF ","RF "],["LOG ","RF ","RF ","GB "],["LOG ","RF ","GB ","GB "],["LOG ","GB ","GB ","GB "],["DT ","DT ","DT ","DT "],["DT ","DT ","DT ","RF "],["DT ","DT ","DT ","GB "],["DT ","DT ","RF ","RF "],["DT ","DT ","RF ","GB "],["DT ","DT ","GB ","GB "],["DT ","RF ","RF ","RF "],["DT ","RF ","RF ","GB "],["DT ","RF ","GB ","GB "],["DT ","GB ","GB ","GB "],["RF ","RF ","RF ","RF "],["RF ","RF ","RF ","GB "],["RF ","RF ","GB ","GB "],["RF ","GB ","GB ","GB "],["GB ","GB ","GB ","GB "]]
     new_abbreviations = []
     dictionary = {}
-    for i in range(len(abbreviations)):
-        for j in range(len(abbreviations)):
-            lists = []
-            for k in range(len(abbreviations)):
-                for l in range(len(abbreviations)):
-                    lists.append( Summary[(Summary[abbreviations[i]] == 1) &
-                                          (Summary[abbreviations[j]] == 1) &
-                                          (Summary[abbreviations[k]] == 1) &
-                                          (Summary[abbreviations[l]] == 1) ].shape[0])
+    lists = []
+    for i in range(len(permutations)):
+        #print(i)
+        #tmp =
+        record=0
+        for j in range(len(permutations[0])):
+            if Summary[Summary[permutations[i][j]] == 1].shape[0] > record:
+                record = Summary[Summary[permutations[i][j]] == 1].shape[0]
 
-            new_abbreviations.append(abbreviations[i]+abbreviations[j]+abbreviations[k]+abbreviations[l])
+        tmp = Summary[(Summary[permutations[i][0]] == 1) &
+                      (Summary[permutations[i][1]] == 1) &
+                      (Summary[permutations[i][2]] == 1) &
+                      (Summary[permutations[i][3]] == 1) ].shape[0] / record
+        #print(tmp)
+        #if tmp in lists:
+        #    continue
+        #else:
+        lists.append(tmp)
 
-            dictionary[abbreviations[i]+abbreviations[j]+abbreviations[k]+abbreviations[l]] = lists
+        new_abbreviations.append(permutations[i][0]+permutations[i][1]+permutations[i][2]+permutations[i][3])
+        dictionary[permutations[i][0]+permutations[i][1]+permutations[i][2]+permutations[i][3]] = tmp
 
+    print(lists)
     df = pd.DataFrame(dictionary, index=new_abbreviations, columns=new_abbreviations)
-
+    display(df)
     import seaborn as sns
 
     # Getting the Upper Triangle of the co-relation matrix
-    #matrix = np.triu(df)
+    matrix = np.triu(df)
 
     # using the upper triangle matrix as mask
     sns.heatmap(df, annot=False)#, mask=matrix)
@@ -1579,13 +1595,16 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
 
     formulas_in_trainingset = trainingSet["full_formula"]
     #print(trainingSet[["material_id", "full_formula"]])
+
+    ZnO_index = trainingSet[trainingSet["full_formula"]=="Zn2O2"].index
+    print(ZnO_index)
     X = trainingSet.drop(["material_id", "full_formula"], axis=1)
 
     #scaler = StandardScaler()
     #X = StandardScaler().fit_transform(X)
     #X = PCA(0.95).fit_transform(X)
     #X = X[:, :3]
-    print(formulas_in_trainingset)
+    #print(formulas_in_trainingset)
     import joblib
     classifier = joblib.load(Path(__file__).resolve().parents[2] / "models" / insertApproach / "trained-models" / Path("PCA-" + str(numberOfPrincipalComponents) + "-" + prettyNames[1] + ".pkl"))
     #y = X.pop("candidate", axis=1)
@@ -1623,7 +1642,7 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
         y=XX2.ravel(),
         z=XX3.ravel(),
         value=Z_grid.flatten(),
-        isomin=0.0,
+        isomin=1.0,
         isomax=1.0,
         opacity=0.3, # needs to be small to see through all surfaces
         surface_count=20,
@@ -1641,6 +1660,7 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
 
     interval = [0.4, 1.0]
     #print(X.shape, Summary.shape, df.shape)
+    """
     fig.add_trace(
         go.Scatter3d(x= testSet[:,0][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
                       y=testSet[:,1][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
@@ -1651,18 +1671,20 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
                         colorscale='Viridis',   # choose a colorscale
                         opacity=0.8
                       ),
-                      showlegend=False,
-                      hovertext=Summary["full_formula"][Summary["DT Prob"].between(interval[0],interval[1], inclusive=False)]),
+                      showlegend=False,)
+                      #hovertext=Summary["full_formula"][Summary["DT Prob"].between(interval[0],interval[1], inclusive=False)]),
     )
+    """
 
+    #fig.show()
 
     fig.add_trace(
-        go.Scatter3d(x= X[:,0][y==1],
-                      y=X[:,1][y==1],
-                      z=X[:,2][y==1],
+        go.Scatter3d(x= X[:,0],#[y==1],
+                      y=X[:,1],#[y==1],
+                      z=X[:,2],#[y==1],
                       mode='markers',
                       marker=dict(
-                        #color="black",                # set color to an array/list of desired values
+                        color=y,                # set color to an array/list of desired values
                         colorscale='Viridis',   # choose a colorscale
                         opacity=0.8
                       ),
@@ -1670,8 +1692,21 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
                       hovertext=formulas_in_trainingset,)
     )
 
-    fig.show()
+    fig.add_trace(
+        go.Scatter3d(x= X[:,0][ZnO_index],#[y==1],
+                      y=X[:,1][ZnO_index],#[y==1],
+                      z=X[:,2][ZnO_index],#[y==1],
+                      mode='markers',
+                      marker=dict(
+                        color="lightgreen",                # set color to an array/list of desired values
+                        colorscale='Viridis',   # choose a colorscale
+                        opacity=0.8
+                      ),
+                      showlegend=False,
+                      hovertext="formulas_in_trainingset",)
+    )
 
+    fig.show()
 
     #viz.save(Path(__file__).resolve().parents[2] / "reports" / "figures" / "decision tree" / "hallo.svg")
 
