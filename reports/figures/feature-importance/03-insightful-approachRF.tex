@@ -10,7 +10,7 @@ tick pos=left,
 width=2.8444876158848764in,
 x grid style={white!69.0196078431373!black},
 xmajorgrids,
-xmin=0.5, xmax=25.5,
+xmin=0.5, xmax=10.5,
 xtick style={color=black},
 y grid style={white!69.0196078431373!black},
 ymajorgrids,
@@ -27,7 +27,6 @@ ytick style={color=black}
 \draw[draw=none,fill=color0] (axis cs:7.6,0) rectangle (axis cs:8.4,0.0487147816427282);
 \draw[draw=none,fill=color0] (axis cs:8.6,0) rectangle (axis cs:9.4,0.0387388797769829);
 \draw[draw=none,fill=color0] (axis cs:9.6,0) rectangle (axis cs:10.4,0.0492752472842733);
-\draw[draw=none,fill=color0] (axis cs:10.6,0) rectangle (axis cs:11.4,0.0269494462261484);
 \path [draw=color0, semithick]
 (axis cs:1,0.423866259541681)
 --(axis cs:1,0.455310212772767);
@@ -68,10 +67,6 @@ ytick style={color=black}
 (axis cs:10,0.0378843492797663)
 --(axis cs:10,0.0606661452887803);
 
-\path [draw=color0, semithick]
-(axis cs:11,0.0185959469150876)
---(axis cs:11,0.0353029455372092);
-
 \addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
 1 0.423866259541681
@@ -84,7 +79,6 @@ table {%
 8 0.0341955378185821
 9 0.0283262284043604
 10 0.0378843492797663
-11 0.0185959469150876
 };
 \addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
@@ -98,7 +92,6 @@ table {%
 8 0.0632340254668742
 9 0.0491515311496053
 10 0.0606661452887803
-11 0.0353029455372092
 };
 \end{axis}
 
