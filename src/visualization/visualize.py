@@ -1507,8 +1507,8 @@ def make_parallel_coordinate_matplot_summary(generatedData, insertApproach, titl
     }
 
     #print(generatedData.shape)
-    generatedData = generatedData[generatedData["MP BG"] < 0.5]
-    df = generatedData.sample(200)
+    generatedData = generatedData[generatedData["MP BG"] < 5]
+    df = generatedData.sample(250)
     #print(df)
 
     ynames = interestingFeatures.values()
@@ -1567,8 +1567,11 @@ def make_parallel_coordinate_matplot_summary(generatedData, insertApproach, titl
                          np.repeat(zs[j, :], 3)[1:-1]))
         codes = [mpl.path.Path.MOVETO] + [mpl.path.Path.CURVE4 for _ in range(len(verts) - 1)]
         path = mpl.path.Path(verts, codes)
+        if df["MP BG"].values[j] < 0.5:
+            patch = patches.PathPatch(path, facecolor='none', lw=0.5, alpha=0.9, edgecolor=colors[int(round_down(normalized_colors[j],0.01)*100)])
+        else:
+            patch = patches.PathPatch(path, facecolor='none', lw=0.5, alpha=0.2, edgecolor=colors[int(round_down(normalized_colors[j],0.01)*100)])
 
-        patch = patches.PathPatch(path, facecolor='none', lw=0.5, alpha=0.5, edgecolor=colors[int(round_down(normalized_colors[j],0.01)*100)])
         #legend_handles[int(df["MP BG"].values[j])] = patch
         host.add_patch(patch)
     import matplotlib.lines as mlines
@@ -1602,8 +1605,8 @@ def histogram_of_proba(Summary, insertApproach):
 
     # Create figure with 'step' type of histogram to improve plot readability
     fig, ax = plt.subplots(figsize=(9,5))
-    ax.hist([Summary["LOG Prob"], Summary["DT Prob"], Summary["RF Prob"], Summary["GB Prob"]], bins=15, histtype='step', linewidth=2,
-            alpha=0.7, label=['Logistic regression','Decision tree', "Random forest", "Gradient boost"], color=colors)
+    ax.hist([Summary["LOG Prob"], Summary["DT Prob"], Summary["RF Prob"], Summary["GB Prob"]], bins=15, histtype='step', linewidth=3,
+            alpha=1.0, label=['Logistic regression','Decision tree', "Random forest", "Gradient boost"], color=colors)
 
     # Edit legend to get lines as legend keys instead of the default polygons
     # and sort the legend entries in alphanumeric order
