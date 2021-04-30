@@ -1623,14 +1623,14 @@ def histogram_of_proba(Summary, insertApproach):
     # Add annotations
     ax.set_ylabel('Count')
     ax.set_xlabel('Probability of prediction')
-
+    ax.set_xlim([0,1.05])
     dir_path = Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "histogram"
 
     Path(dir_path).mkdir(parents=True, exist_ok=True)
 
     tikzplotlib.save(dir_path / Path("summary-"+ insertApproach + ".tex"),
-                                axis_height = str(set_size(width, 0.8, isTex=True)[0]) + "in",
+                                axis_height = str(set_size(width, 0.9, isTex=True)[0]) + "in",
                                 axis_width  = str(set_size(width, 0.9, isTex=False)[0])+ "in")
 
     plt.show()
