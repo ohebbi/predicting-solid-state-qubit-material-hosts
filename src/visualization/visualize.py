@@ -1464,7 +1464,7 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach, title, apply
         codes = [mpl.path.Path.MOVETO] + [mpl.path.Path.CURVE4 for _ in range(len(verts) - 1)]
         path = mpl.path.Path(verts, codes)
         #print(colors[int(generatedData["candidate"].values[j])])
-        patch = patches.PathPatch(path, facecolor='none', lw=0.5, alpha=0.5, edgecolor=colors[int(df["candidate"].values[j])])
+        patch = patches.PathPatch(path, facecolor='none', lw=0.5, alpha=0.2, edgecolor=colors[int(df["candidate"].values[j])])
         legend_handles[int(df["candidate"].values[j])] = patch
         host.add_patch(patch)
     import matplotlib.lines as mlines
@@ -1507,7 +1507,7 @@ def make_parallel_coordinate_matplot_summary(generatedData, insertApproach, titl
     }
 
     #print(generatedData.shape)
-    generatedData = generatedData[generatedData["MP BG"] < 6]
+    generatedData = generatedData[generatedData["MP BG"] < 0.5]
     df = generatedData.sample(200)
     #print(df)
 
