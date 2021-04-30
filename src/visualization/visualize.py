@@ -1588,7 +1588,7 @@ def make_parallel_coordinate_matplot_summary(generatedData, insertApproach, titl
                             "reports" / "figures"  / "parallel_coordinates"
 
     Path(dir_path).mkdir(parents=True, exist_ok=True)
-
+    print(dir_path / Path("summary-" + insertApproach + ".pgf"))
     fig.savefig(dir_path / Path("summary-" + insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
 
 
