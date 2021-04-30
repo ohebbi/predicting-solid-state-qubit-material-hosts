@@ -84,7 +84,7 @@ pgf_with_latex = {                      # setup matplotlib to use latex for outp
     "font.monospace": [],
     "axes.labelsize": 10,               # LaTeX default is 10pt font.
     "font.size": 10,
-    "font.weight": "bold",
+    #"font.weight": "bold",
     "legend.fontsize": 8,               # Make the legend/label fonts
     "xtick.labelsize": 8,               # a little smaller
     "ytick.labelsize": 8,
@@ -1631,7 +1631,7 @@ def histogram_of_proba(Summary, insertApproach):
 
     tikzplotlib.save(dir_path / Path("summary-"+ insertApproach + ".tex"),
                                 axis_height = str(set_size(width, 0.7, isTex=True)[0]) + "in",
-                                axis_width  = str(set_size(width, 0.8, isTex=True)[0]) + "in")
+                                axis_width  = str(set_size(width, 1.0, isTex=False)[0])+ "in")
 
     plt.show()
 
