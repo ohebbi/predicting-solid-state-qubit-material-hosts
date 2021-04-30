@@ -1631,7 +1631,7 @@ def histogram_of_proba(Summary, insertApproach):
 
     tikzplotlib.save(dir_path / Path("summary-"+ insertApproach + ".tex"),
                                 axis_height = str(set_size(width, 0.7, isTex=True)[0]) + "in",
-                                axis_width  = str(set_size(width, 1.0, isTex=False)[0])+ "in")
+                                axis_width  = str(set_size(width, 0.9, isTex=False)[0])+ "in")
 
     plt.show()
 
