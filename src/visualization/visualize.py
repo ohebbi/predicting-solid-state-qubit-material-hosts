@@ -841,6 +841,29 @@ def plot_histogram_bg_nelements(entries):
                                 "reports" / "figures"  / "buildingFeatures"\
                                 / "histogram_bg_nelements.pdf"))
     fig.show()
+def plot_histogram_bg_proba(entries):
+    #_nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quaternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
+    fig = px.histogram(entries[entries["MP BG"]<8], x="MP BG", color="RF ", nbins=20)
+                       #title='Band gaps and material phases in dataset',
+                       #labels={"MP|band_gap": "Materials Project band gap [eV]", 'MP|nelements':'Compound type'},
+                       #category_orders={"MP|nelements": list(_nelements.values())})
+
+    fig.update_layout(
+                    {"plot_bgcolor": "rgba(0, 0, 0, 0)",
+                       "paper_bgcolor": "rgba(0, 0, 0, 0)",
+                      },
+                      font=dict(
+                        family="Palatino",
+                        color="Black",
+                        size=12),
+                      autosize=False,
+                      width=width_plotly,
+                      height=height_plotly*0.8,
+                     )
+    #fig.write_image(str(Path(__file__).resolve().parents[2] / \
+    #                            "reports" / "figures"  / "buildingFeatures"\
+    #                            / "histogram_bg_nelements.pdf"))
+    fig.show()
 
 def plot_histogram_oxid_nelements(entries):
     _oxideType = {"None": 0, "Oxide":1, "Peroxide":2, "Hydroxide":3, "Superoxide":4, "Ozonide":5}
@@ -1467,6 +1490,152 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach, title, apply
 
     plt.show()
 
+def make_parallel_coordinate_matplot_summary(generatedData, insertApproach, title, applyLegend=False):
+    import matplotlib.pyplot as plt
+    import matplotlib.patches as patches
+    import numpy as np
+    from matplotlib.colors import ListedColormap
+    targetNames = ["Bad candidates", "Good candidates", "Unlabelled"]
+    #iris = datasets.load_iris()
+    interestingFeatures = {
+    "LOG Prob":"LOG Prob",
+    "DT Prob":"DT Prob",
+    "RF Prob":"RF Prob",
+    "GB Prob": "GB Prob",
+
+    "MP BG":"Eg [eV]"# [\si{\eV}]
+    }
+
+    #print(generatedData.shape)
+    generatedData = generatedData[generatedData["MP BG"] < 6]
+    df = generatedData.sample(200)
+    #print(df)
+
+    ynames = interestingFeatures.values()
+    ys = df[interestingFeatures.keys()].to_numpy()
+    ymins = ys.min(axis=0)
+    ymaxs = ys.max(axis=0)
+
+    dys = ymaxs - ymins
+    ymins -= dys * 0.05  # add 5% padding below and above
+    ymaxs += dys * 0.05
+
+    dys = ymaxs - ymins
+
+    # transform all data to be compatible with the main axis
+    zs = np.zeros_like(ys)
+    zs[:, 0] = ys[:, 0]
+    zs[:, :] = (ys[:, :] - ymins[:]) / dys[:] * dys[0] + ymins[0]
+
+    if (applyLegend):
+        fig, host = plt.subplots(figsize=(set_size(width, 1)[0],set_size(width, 0.7)[1]))
+    else:
+        fig, host = plt.subplots(figsize=(set_size(width, 1)[0],set_size(width, 0.65)[1]))
+
+    axes = [host] + [host.twinx() for i in range(ys.shape[1] - 1)]
+    for i, ax in enumerate(axes):
+        ax.set_ylim(ymins[i], ymaxs[i])
+        ax.spines['top'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        if ax != host:
+            ax.spines['left'].set_visible(False)
+            ax.yaxis.set_ticks_position('right')
+            ax.spines["right"].set_position(("axes", i / (ys.shape[1] - 1)))
+
+    host.set_xlim(0, ys.shape[1] - 1)
+    host.set_xticks(range(ys.shape[1]))
+    host.set_xticklabels(ynames, fontsize=10)
+    host.tick_params(axis='x', which='major', pad=7)
+    host.spines['right'].set_visible(False)
+    host.xaxis.tick_top()
+    host.set_title(title)
+
+    from matplotlib.pyplot import cm
+    colors=cm.jet(np.linspace(1,0,101))
+    import math
+    def round_down(x, a):
+        return math.floor(x / a) * a
+
+    legend_handles = [None for _ in targetNames]
+    normalized_colors = (df["MP BG"].values-min(df["MP BG"].values))/(max(df["MP BG"].values)-min(df["MP BG"].values))
+
+
+    #normalized_colors = df["MP BG"].values
+    for j in tqdm(range(ys.shape[0])):
+        # create bezier curves
+        verts = list(zip([x for x in np.linspace(0, len(ys) - 1, len(ys) * 3 - 2, endpoint=True)],
+                         np.repeat(zs[j, :], 3)[1:-1]))
+        codes = [mpl.path.Path.MOVETO] + [mpl.path.Path.CURVE4 for _ in range(len(verts) - 1)]
+        path = mpl.path.Path(verts, codes)
+
+        patch = patches.PathPatch(path, facecolor='none', lw=0.5, alpha=0.5, edgecolor=colors[int(round_down(normalized_colors[j],0.01)*100)])
+        #legend_handles[int(df["MP BG"].values[j])] = patch
+        host.add_patch(patch)
+    import matplotlib.lines as mlines
+    if (applyLegend):
+
+        legend_elements = [mlines.Line2D([0], [0], color="limegreen", label="Good candidates"),
+                           mlines.Line2D([0], [0], color="tomato", label="Bad candidates")]
+        host.legend(handles=legend_elements,
+                loc='lower center', bbox_to_anchor=(0.5, -0.18),
+                ncol=len(targetNames), fancybox=False, shadow=False)
+
+    #fig.colorbar(cm.jet, colors)
+    plt.tight_layout()
+
+
+    dir_path = Path(__file__).resolve().parents[2] / \
+                            "reports" / "figures"  / "parallel_coordinates"
+
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
+
+    fig.savefig(dir_path / Path("summary-" + insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
+
+
+    plt.show()
+def histogram_of_proba(Summary, insertApproach):
+    import numpy as np                   # v 1.19.2
+    import matplotlib.pyplot as plt      # v 3.3.2
+    from matplotlib.lines import Line2D
+
+    colors = ["#88CCEE", "#CC6677", "#DDCC77", "#117733"]
+
+    # Create figure with 'step' type of histogram to improve plot readability
+    fig, ax = plt.subplots(figsize=(9,5))
+    ax.hist([Summary["LOG Prob"], Summary["DT Prob"], Summary["RF Prob"], Summary["GB Prob"]], bins=15, histtype='step', linewidth=2,
+            alpha=0.7, label=['Logistic regression','Decision tree', "Random forest", "Gradient boost"], color=colors)
+
+    # Edit legend to get lines as legend keys instead of the default polygons
+    # and sort the legend entries in alphanumeric order
+    handles, labels = ax.get_legend_handles_labels()
+    leg_entries = {}
+    for h, label in zip(handles, labels):
+        leg_entries[label] = Line2D([0], [0], color=h.get_facecolor()[:-1],
+                                    alpha=h.get_alpha(), lw=h.get_linewidth())
+
+    #lines = leg_entries.items()
+    ax.legend(loc="upper center")
+
+    # Remove spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    # Add annotations
+    ax.set_ylabel('Count')
+    ax.set_xlabel('Probability of prediction')
+
+    dir_path = Path(__file__).resolve().parents[2] / \
+                            "reports" / "figures"  / "histogram"
+
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
+
+    tikzplotlib.save(dir_path / Path("summary-"+ insertApproach + ".tex"),
+                                axis_height = str(set_size(width, 0.07, isTex=True)[0]) + "in",
+                                axis_width  = str(set_size(width, 0.8, isTex=True)[0]) + "in")
+
+    plt.show()
+
+
 def plot_2d_pca(trainingSet, trainingTarget, insertApproach, title, legend=False):
 
     X = trainingSet.drop(columns=["material_id", "full_formula"])
@@ -1711,3 +1880,69 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
     #viz.save(Path(__file__).resolve().parents[2] / "reports" / "figures" / "decision tree" / "hallo.svg")
 
     #display(graphviz.Source(export_graphviz(clf)))
+
+""" TODO: Add calibration of classifiers
+# #############################################################################
+# Plot calibration plots
+from sklearn.calibration import CalibratedClassifierCV,calibration_curve
+import matplotlib.pyplot as plt
+plt.figure(figsize=(10, 10))
+ax1 = plt.subplot2grid((3, 1), (0, 0), rowspan=2)
+ax2 = plt.subplot2grid((3, 1), (2, 0))
+
+ax1.plot([0, 1], [0, 1], "k:", label="Perfectly calibrated")
+
+
+
+# Randomly sample 70% of your dataframe
+X_train = trainingData.sample(frac=0.3).drop(["material_id", "full_formula"], axis=1)
+y_train = trainingTarget[X_train.index]
+print(X_train.shape, y_train.shape)
+
+X_test = trainingData.loc[~trainingData.index.isin(X_train.index)].drop(["material_id", "full_formula"], axis=1)
+y_test = trainingTarget[X_test.index]
+
+#print(X_test.shape,y_t)
+#print(Algorithms[0])
+lr = Algorithms[0]
+dt = Algorithms[1]
+rfc = Algorithms[2]
+gb  = Algorithms[3]
+
+rf_isotonic = CalibratedClassifierCV(rfc, cv=rskfold, method='isotonic')
+print(lr)
+for clf, name in [(lr, 'Logistic regression'),
+                  (dt, 'Decision tree'),
+                  (rfc, 'Random forest'),
+                  (rf_isotonic, "Random forest calibrated"),
+                  (gb, 'Gradient boost')]:
+
+    clf.fit(X_train, y_train)
+
+    if hasattr(clf, "predict_proba"):
+        prob_pos = clf.predict_proba(X_test)[:, 1]
+    else:  # use decision function
+        prob_pos = clf.decision_function(X_test)
+        prob_pos = \
+            (prob_pos - prob_pos.min()) / (prob_pos.max() - prob_pos.min())
+    fraction_of_positives, mean_predicted_value = \
+        calibration_curve(y_test, prob_pos, n_bins=10)
+
+    ax1.plot(mean_predicted_value, fraction_of_positives, "s-",
+             label="%s" % (name, ))
+
+    ax2.hist(prob_pos, range=(0, 1), bins=10, label=name,
+             histtype="step", lw=2)
+
+ax1.set_ylabel("Fraction of positives")
+ax1.set_ylim([-0.05, 1.05])
+ax1.legend(loc="lower right")
+ax1.set_title('Calibration plots  (reliability curve)')
+
+ax2.set_xlabel("Mean predicted value")
+ax2.set_ylabel("Count")
+ax2.legend(loc="upper center", ncol=2)
+
+plt.tight_layout()
+plt.show()
+"""
