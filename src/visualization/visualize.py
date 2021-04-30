@@ -841,7 +841,7 @@ def plot_histogram_bg_nelements(entries):
                                 "reports" / "figures"  / "buildingFeatures"\
                                 / "histogram_bg_nelements.pdf"))
     fig.show()
-def plot_histogram_bg_proba(entries):
+def plot_histogram_bg_proba(entries, x = "MP BG", color = "RF "):
     #_nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quaternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
     fig = px.histogram(entries[entries["MP BG"]<8], x="MP BG", color="RF ", nbins=20)
                        #title='Band gaps and material phases in dataset',
@@ -1768,8 +1768,11 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
     formulas_in_trainingset = trainingSet["full_formula"]
     #print(trainingSet[["material_id", "full_formula"]])
 
-    ZnO_index = trainingSet[trainingSet["full_formula"]=="Zn2O2"].index
-    print(ZnO_index)
+    #ZnO_index = trainingSet[trainingSet["full_formula"]=="Zn2O2"].index
+    #ZnO_index = trainingSet[trainingSet["full_formula"]=="Zn2O2"].index
+
+
+    #print(ZnO_index)
     X = trainingSet.drop(["material_id", "full_formula"], axis=1)
 
     #scaler = StandardScaler()
@@ -1814,11 +1817,11 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
         y=XX2.ravel(),
         z=XX3.ravel(),
         value=Z_grid.flatten(),
-        isomin=1.0,
+        isomin=0.02,
         isomax=1.0,
-        opacity=0.3, # needs to be small to see through all surfaces
-        surface_count=20,
-        #colorscale='RdBu'# needs to be a large number for good volume rendering
+        opacity=0.5, # needs to be small to see through all surfaces
+        #surface_count=20,
+        colorscale=[(0,"tomato"), (1,"limegreen")],#
         ),
         layout = Layout(
         title=go.layout.Title(text="Probability for qubit material host"),
@@ -1830,58 +1833,63 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
         )
     ))
 
-    interval = [0.4, 1.0]
-    #print(X.shape, Summary.shape, df.shape)
-    """
+    interval = [0.00, 1.0]
+
+
+    ############## Test set with probability ##############
     fig.add_trace(
         go.Scatter3d(x= testSet[:,0][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
                       y=testSet[:,1][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
                       z=testSet[:,2][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
                       mode='markers',
                       marker=dict(
+                      size=1,
                         color=Summary["DT "][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],                # set color to an array/list of desired values
-                        colorscale='Viridis',   # choose a colorscale
+                        colorscale=[(0,"tomato"), (1,"limegreen")],   # choose a colorscale
                         opacity=0.8
                       ),
-                      showlegend=False,)
-                      #hovertext=Summary["full_formula"][Summary["DT Prob"].between(interval[0],interval[1], inclusive=False)]),
+                      showlegend=False,
+                      hovertext=Summary["full_formula"][Summary["DT Prob"].between(interval[0],interval[1], inclusive=False)]),
     )
+
     """
-
+    mpids =     ["mp-4524", "mp-629458", "mp-1008523", "mp-1009792", "mp-1198022"]
+    for i in range(len(mpids)):
+        fig.add_trace(
+            go.Scatter3d(x= testSet[:,0][Summary["material_id"]==mpids[i]],
+                          y=testSet[:,1][Summary["material_id"]==mpids[i]],
+                          z=testSet[:,2][Summary["material_id"]==mpids[i]],
+                          mode='markers',
+                          marker=dict(
+                          size=4,
+                            color="turquoise",                # set color to an array/list of desired values
+                            colorscale='Plasma',   # choose a colorscale
+                            opacity=0.8
+                          ),
+                          showlegend=False,
+                          hovertext=Summary["full_formula"][Summary["material_id"]==mpids[i]]),
+        )
     #fig.show()
-
+    """
+    """
     fig.add_trace(
         go.Scatter3d(x= X[:,0],#[y==1],
                       y=X[:,1],#[y==1],
                       z=X[:,2],#[y==1],
                       mode='markers',
                       marker=dict(
+                        size=4,
                         color=y,                # set color to an array/list of desired values
-                        colorscale='Viridis',   # choose a colorscale
+                        colorscale=[(0,"tomato"), (1,"limegreen")],   # choose a colorscale
                         opacity=0.8
                       ),
                       showlegend=False,
                       hovertext=formulas_in_trainingset,)
     )
 
-    fig.add_trace(
-        go.Scatter3d(x= X[:,0][ZnO_index],#[y==1],
-                      y=X[:,1][ZnO_index],#[y==1],
-                      z=X[:,2][ZnO_index],#[y==1],
-                      mode='markers',
-                      marker=dict(
-                        color="lightgreen",                # set color to an array/list of desired values
-                        colorscale='Viridis',   # choose a colorscale
-                        opacity=0.8
-                      ),
-                      showlegend=False,
-                      hovertext="formulas_in_trainingset",)
-    )
-
-    fig.show()
-
+    """
     #viz.save(Path(__file__).resolve().parents[2] / "reports" / "figures" / "decision tree" / "hallo.svg")
-
+    fig.show()
     #display(graphviz.Source(export_graphviz(clf)))
 
 """ TODO: Add calibration of classifiers
