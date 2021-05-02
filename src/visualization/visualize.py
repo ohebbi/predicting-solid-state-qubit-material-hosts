@@ -1508,7 +1508,8 @@ def make_parallel_coordinate_matplot_summary(generatedData, insertApproach, titl
 
     #print(generatedData.shape)
     generatedData = generatedData[generatedData["MP BG"] < 5]
-    df = generatedData.sample(250)
+    #df = generatedData.groupby('LOG ').apply(lambda s: s.sample(min(len(s), 500)))
+    df = generatedData.sample(500)
     #print(df)
 
     ynames = interestingFeatures.values()
@@ -1568,7 +1569,7 @@ def make_parallel_coordinate_matplot_summary(generatedData, insertApproach, titl
         codes = [mpl.path.Path.MOVETO] + [mpl.path.Path.CURVE4 for _ in range(len(verts) - 1)]
         path = mpl.path.Path(verts, codes)
         if df["MP BG"].values[j] < 0.5:
-            patch = patches.PathPatch(path, facecolor='none', lw=0.5, alpha=0.9, edgecolor=colors[int(round_down(normalized_colors[j],0.01)*100)])
+            patch = patches.PathPatch(path, facecolor='none', lw=0.5, alpha=0.8, edgecolor=colors[int(round_down(normalized_colors[j],0.01)*100)])
         else:
             patch = patches.PathPatch(path, facecolor='none', lw=0.5, alpha=0.2, edgecolor=colors[int(round_down(normalized_colors[j],0.01)*100)])
 
@@ -1824,7 +1825,7 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
         colorscale=[(0,"tomato"), (1,"limegreen")],#
         ),
         layout = Layout(
-        title=go.layout.Title(text="Probability for qubit material host"),
+        #title=go.layout.Title(text="Probability for qubit material host"),
         showlegend=True,
         scene=layout.Scene(
             xaxis=dict(title='PC1'),
@@ -1832,6 +1833,12 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
             zaxis=dict(title='PC3')
         )
     ))
+    fig.update_layout(
+        font_family="Palatino",
+        font_color="black",
+        font_size=12
+    )
+
 
     interval = [0.00, 1.0]
 
@@ -1888,6 +1895,13 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
     )
 
     """
+    dir_path = Path(__file__).resolve().parents[2] / \
+                            "reports" / "figures"  / "pca-3d-plots"
+
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
+
+    fig.write_image(str(dir_path \
+                                    / "3d-test-iso.pdf"))
     #viz.save(Path(__file__).resolve().parents[2] / "reports" / "figures" / "decision tree" / "hallo.svg")
     fig.show()
     #display(graphviz.Source(export_graphviz(clf)))
