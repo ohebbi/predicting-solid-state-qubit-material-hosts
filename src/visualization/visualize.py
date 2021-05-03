@@ -1817,10 +1817,10 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
         x=XX1.ravel(),
         y=XX2.ravel(),
         z=XX3.ravel(),
-        value=Z_grid.flatten(),
-        isomin=0.02,
-        isomax=1.0,
-        opacity=0.5, # needs to be small to see through all surfaces
+        #value=Z_grid.flatten(),
+        #isomin=0.02,
+        #isomax=1.0,
+        #opacity=0.5, # needs to be small to see through all surfaces
         #surface_count=20,
         colorscale=[(0,"tomato"), (1,"limegreen")],#
         ),
@@ -1842,7 +1842,7 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
 
     interval = [0.00, 1.0]
 
-
+    """
     ############## Test set with probability ##############
     fig.add_trace(
         go.Scatter3d(x= testSet[:,0][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
@@ -1858,7 +1858,7 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
                       showlegend=False,
                       hovertext=Summary["full_formula"][Summary["DT Prob"].between(interval[0],interval[1], inclusive=False)]),
     )
-
+    """
     """
     mpids =     ["mp-4524", "mp-629458", "mp-1008523", "mp-1009792", "mp-1198022"]
     for i in range(len(mpids)):
@@ -1878,7 +1878,7 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
         )
     #fig.show()
     """
-    """
+
     fig.add_trace(
         go.Scatter3d(x= X[:,0],#[y==1],
                       y=X[:,1],#[y==1],
@@ -1894,14 +1894,40 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
                       hovertext=formulas_in_trainingset,)
     )
 
-    """
+    #test
+    Summary = Summary.drop(Summary.loc[Summary['full_formula']=="Ho2V2O8"].index)
+
+    mpids = Summary[(Summary["DT Prob"] > 0.8) &
+                        (Summary["GB Prob"] > 0.8) &
+                        (Summary["LOG Prob"] > 0.8)]["material_id"].to_list()
+
+    #mpids =     ["mp-4524", "mp-629458", "mp-1008523", "mp-1009792", "mp-1198022"]
+    #for i in range(len(mpids)):
+    #    print(mpids[i])
+
+    #print(testSet[:,0][Summary["material_id"].isin(mpids)])
+    fig.add_trace(
+            go.Scatter3d(x= testSet[:,0][Summary[Summary["material_id"].isin(mpids)].index],
+                          y=testSet[:,1][Summary[Summary["material_id"].isin(mpids)].index],
+                          z=testSet[:,2][Summary[Summary["material_id"].isin(mpids)].index],
+                          mode='markers',
+                          marker=dict(
+                          size=4,
+                            color="turquoise",                # set color to an array/list of desired values
+                            colorscale='Plasma',   # choose a colorscale
+                            opacity=0.8
+                          ),
+                          showlegend=False,
+                          hovertext=Summary["full_formula"][Summary[Summary["material_id"].isin(mpids)].index]),
+        )
+    #fig.show()
+
     dir_path = Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "pca-3d-plots"
 
     Path(dir_path).mkdir(parents=True, exist_ok=True)
 
-    fig.write_image(str(dir_path \
-                                    / "3d-test-iso.pdf"))
+    #fig.write_image(str(dir_path / "3d-test-iso.pdf"))
     #viz.save(Path(__file__).resolve().parents[2] / "reports" / "figures" / "decision tree" / "hallo.svg")
     fig.show()
     #display(graphviz.Source(export_graphviz(clf)))
