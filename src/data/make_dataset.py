@@ -28,27 +28,27 @@ def get_all_data(data_dir):#MAPI_KEY:str, CAPI_KEY:str):
     # CI
     citrine = get_data_Citrine.data_Citrine(CAPI_KEY)
     experimental_entries = citrine.get_dataframe()
-    sorted_citrine = citrine.sort_with_MP(entries)
+    sorted_citrine = citrine.sort_with_MP(experimental_entries, entries)
 
     # OQMD
     OQMD = get_data_OQMD.data_OQMD()
     OQMDentries = OQMD.get_dataframe()
-    sorted_oqmd = OQMD.sort_with_MP(entries)
+    sorted_oqmd = OQMD.sort_with_MP(OQMDentries, entries)
 
     # AFLOW
     AFLOW = get_data_AFLOW.data_AFLOW()
     AFLOWentries = AFLOW.get_dataframe()
-    sorted_aflow = AFLOW.sort_with_MP(entries)
+    sorted_aflow = AFLOW.sort_with_MP(AFLOWentries, entries)
 
     #AFLOW-ML
     AFLOWML = get_data_AFLOWML.data_AFLOWML()
     AFLOWML_entries = AFLOWML.get_dataframe()
-    sorted_aflowml = AFLOWML.sort_with_MP(entries)
+    sorted_aflowml = AFLOWML.sort_with_MP(AFLOWML_entries, entries)
 
     #JARVIS
     JARVIS = get_data_JARVIS.data_JARVIS()
     JARVIS_entries = JARVIS.get_dataframe()
-    sorted_jarvis = JARVIS.sort_with_MP(entries)
+    sorted_jarvis = JARVIS.sort_with_MP(JARVIS_entries, entries)
 
 
     bandGaps = pd.DataFrame({
@@ -112,7 +112,6 @@ if __name__ == '__main__':
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     logging.basicConfig(level=logging.INFO, format=log_fmt)
 
-    # not used in this stub but often useful for finding various files
     project_dir = Path(__file__).resolve().parents[2]
     data_dir = project_dir / "data"
 
