@@ -137,3 +137,64 @@ def fitAlgorithm(classifier, trainingData, trainingTarget):
     """
     #train the model
     return classifier.fit(trainingData, trainingTarget)
+
+import click
+
+@click.command()
+@click.option('--numberOfPrincipalComponents', prompt="aiwethg", default=1, help='Number of principal components.')
+@click.option('--InsertApproach', prompt='Your name',
+              help='The person to greet. 01-naive-approach')
+def optimalize_algorithms(InsertApproach,numberOfPrincipalComponents):
+
+
+    data   = pd.read_pickle(data_dir / "processed" / "processedData.pkl")
+    trainingData   = pd.read_pickle(data_dir / InsertApproach / "processed" / "trainingData.pkl")
+    trainingTarget= pd.read_pickle(data_dir / InsertApproach / "processed" / "trainingTarget.pkl")
+    testSet       = pd.read_pickle(data_dir / InsertApproach / "processed" / "testSet.pkl")
+
+    trainingData
+
+    InsertAlgorithms = [LogisticRegression        (random_state = random_state, max_iter=200),
+                        DecisionTreeClassifier    (random_state = random_state, max_features = "auto"),
+                        RandomForestClassifier    (random_state = random_state, max_features = "auto", max_depth=6),\
+                        GradientBoostingClassifier(random_state = random_state, max_features = "auto")]
+    InsertAbbreviations = ["LOG", "DT", "RF", "GB"]
+    InsertprettyNames   = ["Logistic regression", "Decision Tree", "Random Forest", "Gradient Boost"]
+
+    includeSampleMethods = [""]#, "under", "over", "both"]
+
+    numberRuns   = 5
+    numberSplits = 5
+
+    rskfold = RepeatedStratifiedKFold(n_splits=numberSplits, n_repeats=numberRuns, random_state=random_state)
+
+    ModelsBestParams = pd.Series({}, dtype="string")
+
+    Abbreviations = []
+    prettyNames   = []
+    Algorithms = []
+
+    for i, algorithm in tqdm(enumerate(InsertAlgorithms)):
+        for method in includeSampleMethods:
+            print("Finding best params for: {}".format(InsertAbbreviations[i] + " " + method))
+            bestEstimator, ModelsBestParams[InsertAbbreviations[i] + " " + method] = applyGridSearch(
+                                                                                 X = trainingData.drop(["material_id", "full_formula"], axis=1),
+                                                                                 y = trainingTarget.values.reshape(-1,),
+                                                                            model = algorithm,
+                                                                               cv = rskfold,
+                                                                            numPC = numberOfPrincipalComponents,
+                                                                     sampleMethod = method,
+                                                                         searchPC = False )
+            Abbreviations.append(InsertAbbreviations[i] + " " + method)
+            prettyNames.append(InsertAbbreviations[i] + " " + method)
+            Algorithms.append(bestEstimator)
+
+
+    for abbreviation in Abbreviations:
+        Summary[abbreviation]            = PredictedCandidates[abbreviation]
+        Summary[abbreviation + "Prob"]   = PredictedCandidates[abbreviation + "Prob"]
+        print("{} predict the number of candidates as: {}".format(abbreviation, int(np.sum(PredictedCandidates[abbreviation]))))
+
+if __name__ == '__main__':
+
+    optimalize_algorithms()

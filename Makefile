@@ -32,8 +32,8 @@ data: requirements
 features: requirements
 	$(PYTHON_INTERPRETER) src/features/build_features.py
 
-features: requirements
-	$(PYTHON_INTERPRETER) src/features/build_features.py
+train:
+		$(PYTHON_INTERPRETER) src/models/train_model.py
 
 ## Delete all compiled Python files
 clean:

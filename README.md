@@ -1,7 +1,7 @@
 # Predicting solid state qubit candidates [![DOI](https://zenodo.org/badge/335907184.svg)](https://zenodo.org/badge/latestdoi/335907184)
-==============================
 
-This is the main repository behind predicting solid state qubit candidates, and is the main work behind the master thesis in [this repository](https://github.com/ohebbi/master-thesis). It is though of an exploratory analysis and has been built such that easy modifications in the jupyter notebooks are possible, e.g. add new classifiers. 
+
+This is the main repository behind predicting solid state qubit candidates, and is the main work behind the master thesis in [this repository](https://github.com/ohebbi/master-thesis). It is though of an exploratory analysis and has been built such that easy modifications in the jupyter notebooks are possible, e.g. add new classifiers.
 
 ## Install
 
@@ -21,7 +21,7 @@ We have made the development of tools and code available by make.
 "make data" is an easier method to apply for all data in this project, thus an easier method to run 01-generateDataset-notebook.ipynb.
 
 ## Is this repo up to date?
-New data is added for Materials Project randomly and will make a new featurization process needed for every update. This is currenly a long and tedious process (for preset.py implemented). Data featurized for this repo only include December 2021 version of data from MP.
+New data is added for Materials Project randomly and will make a new featurization process needed for every update. This is currenly a long and tedious process (for preset.py implemented). Therefore, data featurized for this repo only include December 2021 version of data from MP. 
 
 
 ## Project Organization
