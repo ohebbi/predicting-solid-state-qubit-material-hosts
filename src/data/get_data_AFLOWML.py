@@ -30,7 +30,7 @@ class data_AFLOWML(get_data_base.data_base):
         self.interim_data_path = self.data_dir / "interim" / "AFLOWML" / "AFLOWML.pkl"
         super().__init__()
 
-    def get_data_AFLOWML(self, entries: pd.DataFrame)-> Dict:
+    def calculate_data(self, entries: pd.DataFrame)-> Dict:
         """
         A function used to initialise AFLOW-ML with appropiate inputs.
         ...
@@ -81,7 +81,7 @@ class data_AFLOWML(get_data_base.data_base):
 
         return aflowml_dict
 
-    def get_dataframe_AFLOWML(self, entries: pd.DataFrame)-> pd.DataFrame:
+    def calculate_dataframe(self, entries: pd.DataFrame)-> pd.DataFrame:
         """
         A function used to initialise AFLOW-ML with appropiate inputs.
         ...
@@ -96,7 +96,7 @@ class data_AFLOWML(get_data_base.data_base):
             as well as the keys in the AFLOW-ML algorithm Property
             Labeled Material Fragments.
         """
-        return pd.DataFrame.from_dict(self.get_data_AFLOWML(entries))
+        return pd.DataFrame.from_dict(self.calculate_data(entries=entries))
     def _apply_query(self, sorted: Optional[bool])-> pd.DataFrame:
 
         # Add unique url id for figshare endpoint
@@ -123,7 +123,7 @@ class data_AFLOWML(get_data_base.data_base):
         if newEntries.shape[0]>0:
             LOG.info("{} new entries identified. Generating features for AFLOW-ML...".format(newEntries.shape[0]))
 
-            AFLOWML_portion = self.get_dataframe_AFLOWML(entries=newEntries)
+            AFLOWML_portion = self.calculate_dataframe(entries=newEntries)
 
             df = pd.concat([df, AFLOWML_portion])
             df = sortByMPID(df)
