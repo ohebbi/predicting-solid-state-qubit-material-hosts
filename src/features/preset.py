@@ -62,13 +62,9 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
     )
     from matminer.featurizers.dos import (
         DOSFeaturizer,
-        SiteDOS,
-        Hybridization,
-        DosAsymmetry,
     )
     from matminer.featurizers.bandstructure import (
         BandFeaturizer,
-        BranchPointEnergy
     )
 
     composition_featurizers = (
