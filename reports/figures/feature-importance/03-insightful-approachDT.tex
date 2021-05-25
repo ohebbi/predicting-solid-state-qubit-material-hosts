@@ -10,39 +10,81 @@ tick pos=left,
 width=2.8444876158848764in,
 x grid style={white!69.0196078431373!black},
 xmajorgrids,
-xmin=0.5, xmax=10.5,
+xmin=0.5, xmax=15.5,
 xtick style={color=black},
 y grid style={white!69.0196078431373!black},
 ymajorgrids,
-ymin=0, ymax=0.959055403292525,
+ymin=0, ymax=0.781619547527771,
 ytick style={color=black}
 ]
-\draw[draw=none,fill=color0] (axis cs:0.6,0) rectangle (axis cs:1.4,0.909055403292525);
-\draw[draw=none,fill=color0] (axis cs:1.6,0) rectangle (axis cs:2.4,0.0686575299630904);
-\draw[draw=none,fill=color0] (axis cs:2.6,0) rectangle (axis cs:3.4,0.0222870667443848);
+\draw[draw=none,fill=color0] (axis cs:0.6,0) rectangle (axis cs:1.4,0.731619547527771);
+\draw[draw=none,fill=color0] (axis cs:1.6,0) rectangle (axis cs:2.4,0.18113983898672);
+\draw[draw=none,fill=color0] (axis cs:2.6,0) rectangle (axis cs:3.4,0.00345402728374034);
+\draw[draw=none,fill=color0] (axis cs:3.6,0) rectangle (axis cs:4.4,0.0208705310819208);
+\draw[draw=none,fill=color0] (axis cs:4.6,0) rectangle (axis cs:5.4,0.0155739365467582);
+\draw[draw=none,fill=color0] (axis cs:5.6,0) rectangle (axis cs:6.4,0.0237724911651494);
+\draw[draw=none,fill=color0] (axis cs:6.6,0) rectangle (axis cs:7.4,0.003003922613769);
+\draw[draw=none,fill=color0] (axis cs:7.6,0) rectangle (axis cs:8.4,0.00923425403456265);
+\draw[draw=none,fill=color0] (axis cs:8.6,0) rectangle (axis cs:9.4,0.0113314507596083);
 \path [draw=color0, semithick]
-(axis cs:1,0.891958406999785)
---(axis cs:1,0.926152399585264);
+(axis cs:1,0.709690218797472)
+--(axis cs:1,0.753548876258071);
 
 \path [draw=color0, semithick]
-(axis cs:2,0.0535242927463225)
---(axis cs:2,0.0837907671798582);
+(axis cs:2,0.159795728748012)
+--(axis cs:2,0.202483949225428);
 
 \path [draw=color0, semithick]
-(axis cs:3,0.0135716996075366)
---(axis cs:3,0.031002433881233);
+(axis cs:3,-0.00265218119467417)
+--(axis cs:3,0.00956023576215485);
+
+\path [draw=color0, semithick]
+(axis cs:4,0.00724021662950192)
+--(axis cs:4,0.0345008455343396);
+
+\path [draw=color0, semithick]
+(axis cs:5,-0.00216067805943182)
+--(axis cs:5,0.0333085511529482);
+
+\path [draw=color0, semithick]
+(axis cs:6,0.00816087621620421)
+--(axis cs:6,0.0393841061140945);
+
+\path [draw=color0, semithick]
+(axis cs:7,-0.00231674240297224)
+--(axis cs:7,0.00832458763051024);
+
+\path [draw=color0, semithick]
+(axis cs:8,-0.002629967814537)
+--(axis cs:8,0.0210984758836623);
+
+\path [draw=color0, semithick]
+(axis cs:9,-0.00405574281778054)
+--(axis cs:9,0.0267186443369972);
 
 \addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
-1 0.891958406999785
-2 0.0535242927463225
-3 0.0135716996075366
+1 0.709690218797472
+2 0.159795728748012
+3 -0.00265218119467417
+4 0.00724021662950192
+5 -0.00216067805943182
+6 0.00816087621620421
+7 -0.00231674240297224
+8 -0.002629967814537
+9 -0.00405574281778054
 };
 \addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
-1 0.926152399585264
-2 0.0837907671798582
-3 0.031002433881233
+1 0.753548876258071
+2 0.202483949225428
+3 0.00956023576215485
+4 0.0345008455343396
+5 0.0333085511529482
+6 0.0393841061140945
+7 0.00832458763051024
+8 0.0210984758836623
+9 0.0267186443369972
 };
 \end{axis}
 

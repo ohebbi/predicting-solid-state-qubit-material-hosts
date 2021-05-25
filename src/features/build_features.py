@@ -153,7 +153,7 @@ def updateNumberFeaturizedEntries(entries:pd.DataFrame,
         # Find new entries
         newEntries = entries.material_id[~entries.material_id.isin(featurizedEntries.material_id.values)]
         # Define featurizer preset
-        featurizerObject = PRESET_HEBNES_2021()
+        featurizerObject = preset.PRESET_HEBNES_2021()
         # Update with new entries
         newEntries = featurize_by_material_id(newEntries, featurizerObject, MAPI_KEY, writeToFile=False)
         # Add new entries

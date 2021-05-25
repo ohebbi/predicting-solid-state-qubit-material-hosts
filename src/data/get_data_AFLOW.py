@@ -123,7 +123,7 @@ class data_AFLOW(get_data_base.data_base):
         ...
         Args
         ----------
-        See get_Data_AFLOW()
+        See get_data_AFLOW()
 
         Returns
         -------

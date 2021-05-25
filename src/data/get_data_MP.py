@@ -17,11 +17,16 @@ class data_MP(get_data_base.data_base):
         super().__init__()
 
     def _apply_query(self, sorted: Optional[bool] = True)-> pd.DataFrame:
+
+        # TODO: Remove when all
+        #if (isCurrentlyFeaturizing == False):
+
         with MPRester(self.API_KEY) as mpr:
 
             # Initial criteria
             criteria = {"icsd_ids": {"$gt": 0}, #All compounds deemed similar to a structure in ICSD
-                            "band_gap": {"$gt": 0.1}
+                        "band_gap": {"$gt": 0.1},
+                        #"material_id":{"$in": featurizedData["material_id"].to_list()}
                         }
 
             # Features

@@ -14,7 +14,9 @@ def sortByMPID(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def filterIDs(df: pd.DataFrame) -> pd.DataFrame:
-    unsupportedMPIDs = ["mp-28709",  #C120S32
+    unsupportedMPIDs = ["mp-555563", "mp-583476", "mp-600205", "mp-600217", "mp-1195290", "mp-1196358", "mp-1196439", "mp-1198652", "mp-1198926", "mp-1199490", "mp-1199686", "mp-1203403", "mp-1204279", "mp-1204629"]
+    # In progress.
+    unsupportedMPIDs_V2 = ["mp-28709",  #C120S32
                         "mp-28905",  #Sr6C120
                         "mp-28979",  #Ba6C120
                         "mp-29281",  #Th24P132

@@ -520,7 +520,7 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
         fig, ax = plt.subplots(1,1, figsize=(set_size(width, 1)[0], set_size(width, 1.0)[0]))
         if i == 0:
 
-            ax.set_ylim([min(mean_importance-0.3),max(mean_importance+0.2)])
+            ax.set_ylim([min(mean_importance-0.4),max(mean_importance+0.2)])
         else:
             ax.set_ylim([0,max(mean_importance+0.05)])
 
@@ -544,8 +544,8 @@ def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFe
     ax.set_ylim([0,max(pca.explained_variance_ratio_+0.01)])
     ax.set_xlim([0.5,numFeat+0.5])
     ax.grid()
-    ax.set_xlabel("Principal components")
-    ax.legend(loc="upper right")
+    #ax.set_xlabel("Principal components")
+    #ax.legend(loc="upper right")
     tikzplotlib.save(dir_path / Path(approach + "PC" + ".tex"),
                                 axis_height = str(set_size(width, 0.5, isTex=True)[0]) + "in",
                                 axis_width  = str(set_size(width, 1.0, isTex=True)[0]) + "in")
@@ -819,7 +819,7 @@ def plot_parallel_coordinates(data, dimensions, color):
     fig.show()
 
 def plot_histogram_bg_nelements(entries):
-    _nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quaternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
+    _nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quarternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
     fig = px.histogram(entries[entries["MP|band_gap"]<8], x="MP|band_gap", color="MP|nelements", nbins=20,
                        #title='Band gaps and material phases in dataset',
                        labels={"MP|band_gap": "Materials Project band gap [eV]", 'MP|nelements':'Compound type'},
@@ -842,7 +842,7 @@ def plot_histogram_bg_nelements(entries):
                                 / "histogram_bg_nelements.pdf"))
     fig.show()
 def plot_histogram_bg_proba(entries, x = "MP BG", color = "RF "):
-    #_nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quaternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
+    #_nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quarternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
     fig = px.histogram(entries[entries["MP BG"]<8], x="MP BG", color="RF ", nbins=20)
                        #title='Band gaps and material phases in dataset',
                        #labels={"MP|band_gap": "Materials Project band gap [eV]", 'MP|nelements':'Compound type'},
@@ -867,11 +867,11 @@ def plot_histogram_bg_proba(entries, x = "MP BG", color = "RF "):
 
 def plot_histogram_oxid_nelements(entries):
     _oxideType = {"None": 0, "Oxide":1, "Peroxide":2, "Hydroxide":3, "Superoxide":4, "Ozonide":5}
-    _nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quaternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
+    _nelements = {1: "Unary", 2: "Binary", 3: "Ternary", 4: "Quarternary", 5: "Quinary", 6: "Senary", 7: "Septenary", 8: "Octary"}
 
     fig = px.histogram(entries, x="MP|nelements", color="MP|oxide_type", nbins=7,
                    #title='Oxid types and material phases in dataset',
-                   labels={'MP|nelements':'Compound type', "MP|oxide_type": "Oxid type"},
+                   labels={'MP|nelements':'Compound type', "MP|oxide_type": "Oxide type"},
                    category_orders={"MP|nelements": list(_nelements.values()),
                                     "MP|oxide_type":list(_oxideType.keys())})
     fig.update_layout(
@@ -1213,7 +1213,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
     #print(pca.explained_variance_ratio_)
     for i, algorithm in enumerate(ModelsBestParams):
 
-        fig, ax0 = plt.subplots(nrows=1, figsize=(set_size(width, 0.4)[0],set_size(width, 0.4)[0]))
+        fig, ax0 = plt.subplots(nrows=1, figsize=(set_size(width, 1)[0],set_size(width, 1)[0]))
         """
         gs = gridspec.GridSpec(2, 1, height_ratios=[3, 1])
         ax0 = plt.subplot(gs[0])
@@ -1277,8 +1277,8 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
                         linestyle='dashdot', label='Optimal')
         #display(pd.DataFrame(best_clfs[["mean_test_accuracy", "std_test_accuracy", "mean_test_f1", "std_test_f1"]]))
         #jepp = 93
-        #display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==jepp])[["mean_test_accuracy", "mean_test_precision", "mean_test_recall", "mean_test_f1"]])
-        #display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==jepp])[["std_test_accuracy", "std_test_precision", "std_test_recall", "std_test_f1"]])
+        display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==algorithm.best_estimator_.named_steps['pca'].n_components])[["mean_test_accuracy", "mean_test_precision", "mean_test_recall", "mean_test_f1"]])
+        display(pd.DataFrame(best_clfs[best_clfs["param_pca__n_components"]==algorithm.best_estimator_.named_steps['pca'].n_components])[["std_test_accuracy", "std_test_precision", "std_test_recall", "std_test_f1"]])
 
         nameMapping = {"LOG ": "Logistic regression", "DT ": "Decision tree", "RF ": "Random forest", "GB ": "Gradient boost"}
         ax0.set_ylabel('Score')
@@ -1470,8 +1470,8 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach, title, apply
     import matplotlib.lines as mlines
     if (applyLegend):
 
-        legend_elements = [mlines.Line2D([0], [0], color="limegreen", label="Good candidates"),
-                           mlines.Line2D([0], [0], color="tomato", label="Bad candidates")]
+        legend_elements = [mlines.Line2D([0], [0], color="limegreen", label="Suitable candidates"),
+                           mlines.Line2D([0], [0], color="tomato", label="Unsuitable candidates")]
         host.legend(handles=legend_elements,
                 loc='lower center', bbox_to_anchor=(0.5, -0.18),
                 ncol=len(targetNames), fancybox=False, shadow=False)
@@ -1485,7 +1485,7 @@ def make_parallel_coordinate_matplot(generatedData, insertApproach, title, apply
 
     Path(dir_path).mkdir(parents=True, exist_ok=True)
 
-    fig.savefig(dir_path / Path(insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
+    #fig.savefig(dir_path / Path(insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
 
 
     plt.show()
@@ -1664,8 +1664,8 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach, title, legend=False
         scalex = 1.0/(xs.max() - xs.min())
         scaley = 1.0/(ys.max() - ys.min())
 
-        ax.scatter(xs[y==1] * scalex,ys[y==1] * scaley, s=7, c = "limegreen", marker='s', label="Good candidates")
-        ax.scatter(xs[y==0] * scalex,ys[y==0] * scaley, s=7, c = "tomato", marker="^", label = "Bad candidates")
+        ax.scatter(xs[y==1] * scalex,ys[y==1] * scaley, s=7, c = "limegreen", marker='s', label="Suitable")
+        ax.scatter(xs[y==0] * scalex,ys[y==0] * scaley, s=7, c = "tomato", marker="^", label = "Unsuitable")
         if legend:
             ax.legend()
         if showVec:
@@ -1777,7 +1777,11 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
     #X = X[:, :3]
     #print(formulas_in_trainingset)
     import joblib
+
     classifier = joblib.load(Path(__file__).resolve().parents[2] / "models" / insertApproach / "trained-models" / Path("PCA-" + str(numberOfPrincipalComponents) + "-" + prettyNames[1] + ".pkl"))
+
+
+
     #y = X.pop("candidate", axis=1)
     X = classifier["scale"].transform(X.drop("candidate", axis=1))
     X = classifier["pca"].transform(X)
@@ -1797,134 +1801,142 @@ def plot_2D3Dcontours(trainingSet, y, Summary, prettyNames, insertApproach,numbe
     viz
     from IPython.display import display
     display(viz)
+    for i in range(len(prettyNames)):
+        classifier = joblib.load(Path(__file__).resolve().parents[2] / "models" / insertApproach / "trained-models" / Path("PCA-" + str(numberOfPrincipalComponents) + "-" + prettyNames[i] + ".pkl"))
+        clf = classifier["model"]
+        print(clf)
+        points = 10
+        feature_1 = np.linspace(X[:, 0].min(), X[:, 0].max(), points)
+        feature_2 = np.linspace(X[:, 1].min(), X[:, 1].max(), points)
+        feature_3 = np.linspace(X[:, 2].min(), X[:, 2].max(), points)
 
-    points = 10
-    feature_1 = np.linspace(X[:, 0].min(), X[:, 0].max(), points)
-    feature_2 = np.linspace(X[:, 1].min(), X[:, 1].max(), points)
-    feature_3 = np.linspace(X[:, 2].min(), X[:, 2].max(), points)
+        XX1, XX2, XX3 = np.array(np.meshgrid(feature_1, feature_2, feature_3))
+        df = pd.DataFrame(np.array([XX1.ravel(), XX2.ravel(), XX3.ravel()]).T, columns=["PC1", "PC2", "PC3"])
+        #df.columns = ["PC1", "PC2", "PC3"]
 
-    XX1, XX2, XX3 = np.array(np.meshgrid(feature_1, feature_2, feature_3))
-    df = pd.DataFrame(np.array([XX1.ravel(), XX2.ravel(), XX3.ravel()]).T, columns=["PC1", "PC2", "PC3"])
-    #df.columns = ["PC1", "PC2", "PC3"]
-    Z_grid = np.array(clf.predict_proba(df)[:,1]).reshape(points,points,points)
+        Z_grid = np.array(clf.predict_proba(df)[:,1]).reshape(points,points,points)
 
-    fig = go.Figure(data=go.Volume(
-        x=XX1.ravel(),
-        y=XX2.ravel(),
-        z=XX3.ravel(),
-        #value=Z_grid.flatten(),
-        #isomin=0.02,
-        #isomax=1.0,
-        #opacity=0.5, # needs to be small to see through all surfaces
-        #surface_count=20,
-        colorscale=[(0,"tomato"), (1,"limegreen")],#
-        ),
-        layout = Layout(
-        #title=go.layout.Title(text="Probability for qubit material host"),
-        showlegend=True,
-        scene=layout.Scene(
-            xaxis=dict(title='PC1'),
-            yaxis=dict(title='PC2'),
-            zaxis=dict(title='PC3')
+        fig = go.Figure(data=go.Volume(
+            x=XX1.ravel(),
+            y=XX2.ravel(),
+            z=XX3.ravel(),
+            value=Z_grid.flatten(),
+            isomin=0.05,
+            isomax=1.0,
+            opacity=0.5, # needs to be small to see through all surfaces
+            surface_count=20,
+            colorscale=[(0,"tomato"), (1,"limegreen")],#
+            ),
+            layout = Layout(
+            #title=go.layout.Title(text="Probability for qubit material host"),
+            showlegend=True,
+            scene=layout.Scene(
+                xaxis=dict(title='PC1'),
+                yaxis=dict(title='PC2'),
+                zaxis=dict(title='PC3')
+            )
+        ))
+        fig.update_layout(
+            font_family="Palatino",
+            font_color="black",
+            font_size=12
         )
-    ))
-    fig.update_layout(
-        font_family="Palatino",
-        font_color="black",
-        font_size=12
-    )
 
 
-    interval = [0.00, 1.0]
+        interval = [0.00, 1.0]
 
-    """
-    ############## Test set with probability ##############
-    fig.add_trace(
-        go.Scatter3d(x= testSet[:,0][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
-                      y=testSet[:,1][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
-                      z=testSet[:,2][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
-                      mode='markers',
-                      marker=dict(
-                      size=1,
-                        color=Summary["DT "][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],                # set color to an array/list of desired values
-                        colorscale=[(0,"tomato"), (1,"limegreen")],   # choose a colorscale
-                        opacity=0.8
-                      ),
-                      showlegend=False,
-                      hovertext=Summary["full_formula"][Summary["DT Prob"].between(interval[0],interval[1], inclusive=False)]),
-    )
-    """
-    """
-    mpids =     ["mp-4524", "mp-629458", "mp-1008523", "mp-1009792", "mp-1198022"]
-    for i in range(len(mpids)):
+
+        ############## Test set with probability ##############
         fig.add_trace(
-            go.Scatter3d(x= testSet[:,0][Summary["material_id"]==mpids[i]],
-                          y=testSet[:,1][Summary["material_id"]==mpids[i]],
-                          z=testSet[:,2][Summary["material_id"]==mpids[i]],
+            go.Scatter3d(x= testSet[:,0][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
+                          y=testSet[:,1][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
+                          z=testSet[:,2][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],
                           mode='markers',
                           marker=dict(
                           size=4,
-                            color="turquoise",                # set color to an array/list of desired values
-                            colorscale='Plasma',   # choose a colorscale
+                            color=Summary["DT "][Summary["DT Prob"].between(interval[0], interval[1], inclusive=False)],                # set color to an array/list of desired values
+                            colorscale=[(0,"tomato"), (1,"limegreen")],   # choose a colorscale
                             opacity=0.8
                           ),
                           showlegend=False,
-                          hovertext=Summary["full_formula"][Summary["material_id"]==mpids[i]]),
+                          hovertext=Summary["full_formula"][Summary["DT Prob"].between(interval[0],interval[1], inclusive=False)]),
         )
-    #fig.show()
-    """
 
-    fig.add_trace(
-        go.Scatter3d(x= X[:,0],#[y==1],
-                      y=X[:,1],#[y==1],
-                      z=X[:,2],#[y==1],
-                      mode='markers',
-                      marker=dict(
-                        size=4,
-                        color=y,                # set color to an array/list of desired values
-                        colorscale=[(0,"tomato"), (1,"limegreen")],   # choose a colorscale
-                        opacity=0.8
-                      ),
-                      showlegend=False,
-                      hovertext=formulas_in_trainingset,)
-    )
-
-    #test
-    Summary = Summary.drop(Summary.loc[Summary['full_formula']=="Ho2V2O8"].index)
-
-    mpids = Summary[(Summary["DT Prob"] > 0.8) &
-                        (Summary["GB Prob"] > 0.8) &
-                        (Summary["LOG Prob"] > 0.8)]["material_id"].to_list()
-
-    #mpids =     ["mp-4524", "mp-629458", "mp-1008523", "mp-1009792", "mp-1198022"]
-    #for i in range(len(mpids)):
-    #    print(mpids[i])
-
-    #print(testSet[:,0][Summary["material_id"].isin(mpids)])
-    fig.add_trace(
-            go.Scatter3d(x= testSet[:,0][Summary[Summary["material_id"].isin(mpids)].index],
-                          y=testSet[:,1][Summary[Summary["material_id"].isin(mpids)].index],
-                          z=testSet[:,2][Summary[Summary["material_id"].isin(mpids)].index],
+        """
+        #mpids =     ["mp-1070", "mp-1639", "mp-2691", "mp-20305", "mp-22895", "mp-569346", "mp-629458", "mp-1008523", "mp-1078597"]
+        mpids = ["mp-3829", "mp-3839", "mp-4008", "mp-4524", "mp-4899", "mp-5213", "mp-5238", "mp-20554"]
+        for i in range(len(mpids)):
+            fig.add_trace(
+                go.Scatter3d(x= testSet[:,0][Summary["material_id"]==mpids[i]],
+                              y=testSet[:,1][Summary["material_id"]==mpids[i]],
+                              z=testSet[:,2][Summary["material_id"]==mpids[i]],
+                              mode='markers',
+                              marker=dict(
+                              size=4,
+                                color="turquoise",                # set color to an array/list of desired values
+                                colorscale='Plasma',   # choose a colorscale
+                                opacity=0.8
+                              ),
+                              showlegend=False,
+                              hovertext=Summary["full_formula"][Summary["material_id"]==mpids[i]]),
+            )
+        #fig.show()
+        """
+        """
+        fig.add_trace(
+            go.Scatter3d(x= X[:,0],#[y==1],
+                          y=X[:,1],#[y==1],
+                          z=X[:,2],#[y==1],
                           mode='markers',
                           marker=dict(
-                          size=4,
-                            color="turquoise",                # set color to an array/list of desired values
-                            colorscale='Plasma',   # choose a colorscale
+                            size=4,
+                            color=y,                # set color to an array/list of desired values
+                            colorscale=[(0,"tomato"), (1,"limegreen")],   # choose a colorscale
                             opacity=0.8
                           ),
                           showlegend=False,
-                          hovertext=Summary["full_formula"][Summary[Summary["material_id"].isin(mpids)].index]),
+                          hovertext=formulas_in_trainingset,)
         )
-    #fig.show()
 
-    dir_path = Path(__file__).resolve().parents[2] / \
-                            "reports" / "figures"  / "pca-3d-plots"
 
-    Path(dir_path).mkdir(parents=True, exist_ok=True)
+        #test
+        Summary = Summary.drop(Summary.loc[Summary['full_formula']=="Ho2V2O8"].index)
 
-    #fig.write_image(str(dir_path / "3d-test-iso.pdf"))
-    #viz.save(Path(__file__).resolve().parents[2] / "reports" / "figures" / "decision tree" / "hallo.svg")
-    fig.show()
+        mpids = Summary[(Summary["DT Prob"] > 0.75) &
+                            (Summary["GB Prob"] > 0.75) &
+                            (Summary["LOG Prob"] > 0.75) &
+                            (Summary["RF Prob"] > 0.75)]["material_id"].to_list()
+
+        #mpids =     ["mp-4524", "mp-629458", "mp-1008523", "mp-1009792", "mp-1198022"]
+        #for i in range(len(mpids)):
+        #    print(mpids[i])
+
+        #print(testSet[:,0][Summary["material_id"].isin(mpids)])
+        fig.add_trace(
+                go.Scatter3d(x= testSet[:,0][Summary[Summary["material_id"].isin(mpids)].index],
+                              y=testSet[:,1][Summary[Summary["material_id"].isin(mpids)].index],
+                              z=testSet[:,2][Summary[Summary["material_id"].isin(mpids)].index],
+                              mode='markers',
+                              marker=dict(
+                              size=4,
+                                color="turquoise",                # set color to an array/list of desired values
+                                colorscale='Plasma',   # choose a colorscale
+                                opacity=0.8
+                              ),
+                              showlegend=False,
+                              hovertext=Summary["full_formula"][Summary[Summary["material_id"].isin(mpids)].index]),
+            )
+
+        #fig.show()
+        """
+        dir_path = Path(__file__).resolve().parents[2] / \
+                                "reports" / "figures"  / "pca-3d-plots"
+
+        Path(dir_path).mkdir(parents=True, exist_ok=True)
+
+        #fig.write_image(str(dir_path / str(prettyNames[i][:-1] + "-3d-iso-train.pdf")))
+        #viz.save(Path(__file__).resolve().parents[2] / "reports" / "figures" / "decision tree" / "hallo.svg")
+        fig.show()
     #display(graphviz.Source(export_graphviz(clf)))
 
 """ TODO: Add calibration of classifiers

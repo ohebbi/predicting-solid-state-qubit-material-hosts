@@ -120,7 +120,8 @@ class data_AFLOWML(get_data_base.data_base):
         newEntries = entries[~entries["material_id"].isin(df["material_id"])]
 
         # Update if there are new entries
-        if newEntries.shape[0]>0:
+        
+        if (newEntries.shape[0]>0):
             LOG.info("{} new entries identified. Generating features for AFLOW-ML...".format(newEntries.shape[0]))
 
             AFLOWML_portion = self.get_dataframe_AFLOWML(entries=newEntries)
