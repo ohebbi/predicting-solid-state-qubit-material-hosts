@@ -11,7 +11,7 @@ from src.features.utils.utils import clean_df
 from datetime import datetime
 from tqdm import tqdm
 
-class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
+class FUTURE_PROSPECTS_2021(featurizer.extendedMODFeaturizer):
 
     from matminer.featurizers.composition import (
         AtomicOrbitals,
@@ -121,10 +121,13 @@ class PRESET_HEBNES_2021(featurizer.extendedMODFeaturizer):
 
     dos_featurizers = (
         DOSFeaturizer(),
+        SiteDOS(),
+        Hybridization()
     )
 
     band_featurizers = (
         BandFeaturizer(),
+        BranchPointEnergy()
     )
     def __init__(self, n_jobs=None):
             self._n_jobs = n_jobs
