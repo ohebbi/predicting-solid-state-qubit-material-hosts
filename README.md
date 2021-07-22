@@ -7,16 +7,15 @@ This is the main repository behind predicting solid state qubit candidates, and 
 
 Clone the project, and run "pip install -e ." and you are ready for development.  
 
-## Run project
-
-The application of this project is centered around Jupyter notebooks. It is not neccessary to run anything to see result, only consult the notebooks either here on Github or [Jupyers` nbviewer project](https://nbviewer.jupyter.org/).
-
-## Development
 We have made the development of tools and code available by make.
 
 "make features" will extract MP data based on 0.1eV and ICSD-entry, and start the featurization process based on the preset.py.
 
 "make data" is an easier method to apply for all data in this project, thus an easier method to run 01-generateDataset-notebook.ipynb.
+
+## Run project / Reproduction
+
+The application of this project is centered around Jupyter notebooks. It is not neccessary to run anything to see result, only consult the notebooks either here on Github or [Jupyers` nbviewer project](https://nbviewer.jupyter.org/).
 
 ## Is this repo up to date?
 New data is added for Materials Project randomly and will make a new featurization process needed for every update. This is currenly a long and tedious process (for preset.py implemented). Therefore, data featurized for this repo only include December 2021 version of data from MP.
