@@ -18,7 +18,7 @@ We have made the development of tools and code available by make.
 The application of this project is centered around Jupyter notebooks. It is not neccessary to run anything to see result, only consult the notebooks either here on Github or [Jupyers` nbviewer project](https://nbviewer.jupyter.org/).
 
 ## Is this repo up to date?
-New data is added for Materials Project randomly and will make a new featurization process needed for every update. This is currenly a long and tedious process (for preset.py implemented). Therefore, data featurized for this repo only include December 2021 version of data from MP.
+New data is added for Materials Project randomly and will make a new featurization process needed for every update. This is currenly a long and tedious process (for preset.py implemented). Therefore, data featurized for this repo only include December 2020 version of data from MP.
 
 
 ## Project Organization
