@@ -188,23 +188,6 @@ smaller impact on compound-formation energies than do the different approaches t
   eprintclass = {cond-mat.mtrl-sci},
   eprinttype  = {arXiv},
   abstract    = {The Joint Automated Repository for Various Integrated Simulations (JARVIS) is an integrated infrastructure to accelerate materials discovery and design using density functional theory (DFT), classical force-fields (FF), and machine learning (ML) techniques. JARVIS is motivated by the Materials Genome Initiative (MGI) principles of developing open-access databases and tools to reduce the cost and development time of materials discovery, optimization, and deployment. The major features of JARVIS are: JARVIS-DFT, JARVIS-FF, JARVIS-ML, and JARVIS-Tools. To date, JARVIS consists of ~ 40,000 materials and ~ 1 million calculated properties in JARVIS-DFT, ~ 1,500 materials and ~ 110 force-fields in JARVIS-FF, and ~ 25 ML models for material-property predictions in JARVIS-ML, all of which are continuously expanding. JARVIS-Tools provides scripts and workflows for running and analyzing various simulations. We compare our computational data to experiments or high-fidelity computational methods wherever applicable to evaluate error/uncertainty in predictions. In addition to the existing workflows, the infrastructure can support a wide variety of other technologically important applications as part of the data-driven materials design paradigm. The databases and tools are publicly distributed through the following major websites http://jarvis.nist.gov/ and https://github.com/usnistgov/jarvis .},
-  comment     = {Drawbacks of the existing DFT databases include non-inclusion of van der Waals (vdW)
-8 25 7 interactions , bandgap underestimations , non-inclusion of spin-orbit coupling , overly
-26 27
-simplifying magnetic ordering , neglecting defects (point, line, surface and volume),
-28 29 unconverged computational parameters such as k-points , ignoring temperature effects
-(generally DFT calculations are performed at 0 K), lack of layer/thickness-dependent properties
-of low dimensional materials
-30
-
-
-"
-As an example, we consider the goal of finding materials to maximize solar-cell efficiency, where the appropriate computational tool is DFT.
-"
-, and lacking interfaces/heterostructures of materials
-31
-, all of which
-can be critical for realistic material-applications.},
   file        = {:http\://arxiv.org/pdf/2007.01831v1:PDF},
   keywords    = {cond-mat.mtrl-sci, physics.comp-ph},
 }
@@ -800,8 +783,6 @@ can be critical for realistic material-applications.},
   publisher = {American Association for the Advancement of Science ({AAAS})},
   year      = {1994},
 }
-bplist00�_WebMainResource�
-_WebResourceData_WebResourceMIMEType_WebResourceTextEncodingName^WebResourceURL_WebResourceFrameNameO�<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">
 
 @Article{Turing1937,
   author    = {Turing, Alan Mathison},
