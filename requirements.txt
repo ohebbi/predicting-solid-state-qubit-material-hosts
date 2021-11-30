@@ -2,9 +2,9 @@ typing
 pandas
 python-dotenv
 click
-logging
-pymatgen
-matminer
+# logging
+pymatgen<=2021.3.3
+matminer<0.7
 pathlib
 tqdm
 numpy
@@ -22,3 +22,6 @@ virtualenv
 wget
 python-dotenv
 kaleido
+citrination-client
+shap
+tikzplotlib
