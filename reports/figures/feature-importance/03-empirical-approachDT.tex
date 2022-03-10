@@ -1,0 +1,64 @@
+% This file was created with tikzplotlib v0.10.1.
+\begin{tikzpicture}
+
+\definecolor{darkgray176}{RGB}{176,176,176}
+\definecolor{indianred204102119}{RGB}{204,102,119}
+
+\begin{axis}[
+height=1.4222438079424382in,
+tick align=outside,
+tick pos=left,
+width=2.8444876158848764in,
+x grid style={darkgray176},
+xmajorgrids,
+xmin=0.5, xmax=25.5,
+xtick style={color=black},
+y grid style={darkgray176},
+ymajorgrids,
+ymin=0, ymax=0.455721555022469,
+ytick style={color=black}
+]
+\draw[draw=none,fill=indianred204102119] (axis cs:0.6,0) rectangle (axis cs:1.4,0.405721555022469);
+\draw[draw=none,fill=indianred204102119] (axis cs:1.6,0) rectangle (axis cs:2.4,0.32416368284078);
+\draw[draw=none,fill=indianred204102119] (axis cs:2.6,0) rectangle (axis cs:3.4,0.165356269443878);
+\draw[draw=none,fill=indianred204102119] (axis cs:3.6,0) rectangle (axis cs:4.4,0.0732968924949822);
+\draw[draw=none,fill=indianred204102119] (axis cs:4.6,0) rectangle (axis cs:5.4,0.0314616001978907);
+\path [draw=indianred204102119, semithick]
+(axis cs:1,0.27654633621982)
+--(axis cs:1,0.534896773825119);
+
+\path [draw=indianred204102119, semithick]
+(axis cs:2,0.189978296099197)
+--(axis cs:2,0.458349069582363);
+
+\path [draw=indianred204102119, semithick]
+(axis cs:3,0.110814141957201)
+--(axis cs:3,0.219898396930554);
+
+\path [draw=indianred204102119, semithick]
+(axis cs:4,0.0283136584122695)
+--(axis cs:4,0.118280126577695);
+
+\path [draw=indianred204102119, semithick]
+(axis cs:5,-0.0235588711849918)
+--(axis cs:5,0.0864820715807731);
+
+\addplot [semithick, indianred204102119, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+1 0.27654633621982
+2 0.189978296099197
+3 0.110814141957201
+4 0.0283136584122695
+5 -0.0235588711849918
+};
+\addplot [semithick, indianred204102119, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+1 0.534896773825119
+2 0.458349069582363
+3 0.219898396930554
+4 0.118280126577695
+5 0.0864820715807731
+};
+\end{axis}
+
+\end{tikzpicture}

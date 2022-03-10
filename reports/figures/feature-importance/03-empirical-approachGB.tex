@@ -1,0 +1,64 @@
+% This file was created with tikzplotlib v0.10.1.
+\begin{tikzpicture}
+
+\definecolor{darkgray176}{RGB}{176,176,176}
+\definecolor{forestgreen1711951}{RGB}{17,119,51}
+
+\begin{axis}[
+height=1.4222438079424382in,
+tick align=outside,
+tick pos=left,
+width=2.8444876158848764in,
+x grid style={darkgray176},
+xmajorgrids,
+xmin=0.5, xmax=25.5,
+xtick style={color=black},
+y grid style={darkgray176},
+ymajorgrids,
+ymin=0, ymax=0.938826803303021,
+ytick style={color=black}
+]
+\draw[draw=none,fill=forestgreen1711951] (axis cs:0.6,0) rectangle (axis cs:1.4,0.888826803303021);
+\draw[draw=none,fill=forestgreen1711951] (axis cs:1.6,0) rectangle (axis cs:2.4,0.0387866623590211);
+\draw[draw=none,fill=forestgreen1711951] (axis cs:2.6,0) rectangle (axis cs:3.4,0.0221256806672765);
+\draw[draw=none,fill=forestgreen1711951] (axis cs:3.6,0) rectangle (axis cs:4.4,0.0311463536521347);
+\draw[draw=none,fill=forestgreen1711951] (axis cs:4.6,0) rectangle (axis cs:5.4,0.0191145000185462);
+\path [draw=forestgreen1711951, semithick]
+(axis cs:1,0.872229445752266)
+--(axis cs:1,0.905424160853776);
+
+\path [draw=forestgreen1711951, semithick]
+(axis cs:2,0.0290092660721304)
+--(axis cs:2,0.0485640586459119);
+
+\path [draw=forestgreen1711951, semithick]
+(axis cs:3,0.00736140885976109)
+--(axis cs:3,0.0368899524747919);
+
+\path [draw=forestgreen1711951, semithick]
+(axis cs:4,0.0168037441277928)
+--(axis cs:4,0.0454889631764766);
+
+\path [draw=forestgreen1711951, semithick]
+(axis cs:5,-0.00144055777973232)
+--(axis cs:5,0.0396695578168248);
+
+\addplot [semithick, forestgreen1711951, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+1 0.872229445752266
+2 0.0290092660721304
+3 0.00736140885976109
+4 0.0168037441277928
+5 -0.00144055777973232
+};
+\addplot [semithick, forestgreen1711951, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+1 0.905424160853776
+2 0.0485640586459119
+3 0.0368899524747919
+4 0.0454889631764766
+5 0.0396695578168248
+};
+\end{axis}
+
+\end{tikzpicture}
