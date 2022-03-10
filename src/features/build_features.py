@@ -237,7 +237,7 @@ def get_featurized_data() -> pd.DataFrame:
     """
     
     featurized_data_path = Path(__file__).resolve().parents[2] / \
-        "data" / "interim" / "featurized" 
+        "data" / "raw" / "featurized" 
 
     featurized_file_path = featurized_data_path / "featurized-11-04-2021.pkl"
     if not does_file_exist(featurized_file_path):

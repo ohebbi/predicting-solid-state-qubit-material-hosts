@@ -1,0 +1,113 @@
+% This file was created with tikzplotlib v0.10.1.
+\begin{tikzpicture}
+
+\definecolor{crimson2143940}{RGB}{214,39,40}
+\definecolor{darkgray176}{RGB}{176,176,176}
+\definecolor{darkorange25512714}{RGB}{255,127,14}
+\definecolor{forestgreen4416044}{RGB}{44,160,44}
+\definecolor{mediumpurple148103189}{RGB}{148,103,189}
+\definecolor{steelblue31119180}{RGB}{31,119,180}
+
+\begin{axis}[
+height=2.275590092707901in,
+tick align=outside,
+tick pos=left,
+title={Random forest},
+width=2.275590092707901in,
+x grid style={darkgray176},
+xlabel={Principal components},
+xmin=0.5, xmax=2.5,
+xtick style={color=black},
+y grid style={darkgray176},
+ylabel={Score},
+ymin=0.527795170600712, ymax=1.01675834783937,
+ytick style={color=black}
+]
+\path [draw=steelblue31119180, semithick]
+(axis cs:2,0.57806125219175)
+--(axis cs:2,0.592155127946213);
+
+\addplot [semithick, steelblue31119180, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.57806125219175
+};
+\addplot [semithick, steelblue31119180, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.592155127946213
+};
+\path [draw=darkorange25512714, semithick]
+(axis cs:2,0.550020769566105)
+--(axis cs:2,0.579545638788901);
+
+\addplot [semithick, darkorange25512714, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.550020769566105
+};
+\addplot [semithick, darkorange25512714, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.579545638788901
+};
+\path [draw=forestgreen4416044, semithick]
+(axis cs:2,0.824236417833509)
+--(axis cs:2,0.833445067377759);
+
+\addplot [semithick, forestgreen4416044, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.824236417833509
+};
+\addplot [semithick, forestgreen4416044, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.833445067377759
+};
+\path [draw=crimson2143940, semithick]
+(axis cs:2,0.9824060084301)
+--(axis cs:2,0.994532748873972);
+
+\addplot [semithick, crimson2143940, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.9824060084301
+};
+\addplot [semithick, crimson2143940, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.994532748873972
+};
+\path [draw=mediumpurple148103189, semithick]
+(axis cs:2,0.897785982161631)
+--(axis cs:2,0.905474267538157);
+
+\addplot [semithick, mediumpurple148103189, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.897785982161631
+};
+\addplot [semithick, mediumpurple148103189, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.905474267538157
+};
+\addplot [semithick, mediumpurple148103189, dash pattern=on 1pt off 3pt on 3pt off 3pt]
+table {%
+2 0.527795170600712
+2 1.01675834783937
+};
+\addplot [semithick, steelblue31119180]
+table {%
+2 0.585108190068981
+};
+\addplot [semithick, darkorange25512714]
+table {%
+2 0.564783204177503
+};
+\addplot [semithick, forestgreen4416044]
+table {%
+2 0.828840742605634
+};
+\addplot [semithick, crimson2143940]
+table {%
+2 0.988469378652036
+};
+\addplot [semithick, mediumpurple148103189]
+table {%
+2 0.901630124849894
+};
+\end{axis}
+
+\end{tikzpicture}
