@@ -39,7 +39,7 @@ The following command will extract MP data based on 0.1eV and ICSD-entry, and st
 
 The following command is an easier method to apply for all data in this project, thus an easier method to run 01-generateDataset-notebook.ipynb.
 
-        make features
+        make data
 
 
 ## Is this repo up to date?
