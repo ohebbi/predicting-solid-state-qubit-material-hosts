@@ -11,7 +11,23 @@ The application of this project is centered around an exploratory analysis using
 
 #### Jupyter notebooks
 
-Clone the project, and run "python3 -m pip install -r ." and you are ready for development. Remember to get add your API-keys from Materials Project and Citrination to your environmental variables (e.g. use an '.env'-file). Run all notebooks chronologically.
+1. Clone the project
+2. Make a virtual environment, 
+   Windows:
+    
+    python -m venv .venv
+    .venv\scripts\activate
+    
+   Mac:
+    
+    python3 -m venv .venv
+    source .venv/bin/activate
+
+3. Run the following script to install all packages defined in setup:
+    
+    python(3) -m pip install -e .
+
+4. Add your API-keys from Materials Project and Citrination to your environmental variables (e.g. use an '.env'-file). Run all notebooks chronologically.
 
 Instead of running the notebooks to generate data, we've also made the development of tools and code available with make.
 
