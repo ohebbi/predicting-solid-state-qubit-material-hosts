@@ -75,21 +75,22 @@ import matplotlib.font_manager as font_manager
 #font_list = font_manager.FontManager.addfont(font_files)
 #font_manager.fontManager.ttflist.extend(font_list)
 
+# uncomment the following lines to use with latex. Else, leave as is. 
 pgf_with_latex = {                      # setup matplotlib to use latex for output
-    "pgf.texsystem": "pdflatex",        # change this if using xetex or lautex
-    "text.usetex": True,                # use LaTeX to write all text
+    #"pgf.texsystem": "pdflatex",        # change this if using xetex or lautex
+    #"text.usetex": True,                # use LaTeX to write all text
     "font.family": "Palatino Linotype",
     "font.serif": [],                   # blank entries should cause plots
     "font.sans-serif": [],              # to inherit fonts from the document
     "font.monospace": [],
-    "axes.labelsize": 10,               # LaTeX default is 10pt font.
+    #"axes.labelsize": 10,               # LaTeX default is 10pt font.
     "font.size": 10,
     #"font.weight": "bold",
     "legend.fontsize": 8,               # Make the legend/label fonts
     "xtick.labelsize": 8,               # a little smaller
     "ytick.labelsize": 8,
     "figure.figsize": set_size(width, 0.9),     # default fig size of 0.9 textwidth
-    "pgf.preamble": r"\usepackage[detect-all,locale=DE]{siunitx} \usepackage[T1]{fontenc} \usepackage[utf8x]{inputenc}"
+    #"pgf.preamble": r"\usepackage[detect-all,locale=DE]{siunitx} \usepackage[T1]{fontenc} \usepackage[utf8x]{inputenc}"
     }
 
 mpl.rcParams.update(pgf_with_latex)
@@ -223,7 +224,7 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
 
         print("label to the left: {}. line = {:0.2f}x+{:0.2f}".format(ylabel,reg.coef_[0], reg.intercept_))
         print("CI: {:0.2f}".format(ci))
-
+    
     ax2.legend(loc="upper left")
     dir_path = Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "bandgaps"
@@ -231,7 +232,7 @@ def matplotBandGaps(x1, y1, x2, y2, xlabel, ylabel, filename, title=None, addOLS
     fig.savefig(dir_path / filename, format="pdf", bbox_inches="tight")
 
     fig.tight_layout()
-    #print(set_size(width, 1, subplots=(1,2), isTex=True)[0])
+    print(set_size(width, 1, subplots=(1,2), isTex=True)[0])
 
     tikzplotlib.save(dir_path / str(filename[:-4] + ".tex"),
                             axis_width = str(set_size(width, 0.9, subplots=(1,2), isTex=True)[0]) + "in",
@@ -404,7 +405,7 @@ def plot_accuracy(models, names, prettyNames, numPC, approach, xlabel = "Cross v
     dir_path = Path(__file__).resolve().parents[2] / \
                                     "reports" / "figures"  / "cv-accuracy"
 
-    save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + ".pgf"))
+    #save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + ".pgf"))
 
     plt.show()
 def plot_important_features(models, X, k, n, prettyNames, numPC, approach, numFeat=25):
@@ -670,7 +671,7 @@ def confusion_matrixQT(models, y, prettyNames:str, numPC:int, approach:str):
         dir_path = Path(__file__).resolve().parents[2] / \
                                     "reports" / "figures"  / "confusion-matrix"
 
-        save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pgf"))
+        #save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i] +".pgf"))
 
         plt.show()
 
@@ -1094,12 +1095,12 @@ def evaluatePrecisionRecallMetrics(classifier,
 
     dir_path = Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "roc-auc"
-    save_matplot_fig(fig1, dir_path=dir_path, filename = Path(approach + "-" + str(numPC) + "-" + title +".pgf"))
+    #save_matplot_fig(fig1, dir_path=dir_path, filename = Path(approach + "-" + str(numPC) + "-" + title +".pgf"))
 
     dir_path = Path(__file__).resolve().parents[2] / \
                                 "reports" / "figures"  / "recall-metrics"
 
-    save_matplot_fig(fig2, dir_path=dir_path, filename = Path(approach + "-" + str(numPC) + "-" + title +".pgf"))
+    #save_matplot_fig(fig2, dir_path=dir_path, filename = Path(approach + "-" + str(numPC) + "-" + title +".pgf"))
 
 
     plt.show()
@@ -1159,7 +1160,7 @@ def principalComponentsVSvariance(X: pd.DataFrame, approach:str):
 
     dir_path = Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "pca"
-    save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach +".pgf"))
+    #save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach +".pgf"))
 
     plt.show()
     ########################
@@ -1235,7 +1236,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         components_col = 'param_pca__n_components'
         best_clfs = results.groupby(components_col).apply(
             lambda g: g.nlargest(1, 'mean_test_f1'))
-
+        print(best_clfs)
         if (numPC > 100):
 
             best_clfs.plot(x=components_col, y='mean_train_accuracy',
@@ -1306,7 +1307,7 @@ def principalComponentsVSscores(X: pd.DataFrame, ModelsBestParams: pd.Series, pr
         ax0.get_legend().remove()
         dir_path = Path(__file__).resolve().parents[2] / \
                             "reports" / "figures"  / "pca-scores"
-        save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".pgf"))
+        #save_matplot_fig(fig, dir_path=dir_path, filename=Path(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".pgf"))
         #tikzplotlib.clean_figure()
         tikzplotlib.save(dir_path / str(approach + "-" + str(numPC) + "-" + prettyNames[i][:-1] +".tex"),
                         axis_height = str(set_size(width, 0.8, isTex=True)[0]) + "in",
@@ -1593,7 +1594,7 @@ def make_parallel_coordinate_matplot_summary(generatedData, insertApproach, titl
 
     Path(dir_path).mkdir(parents=True, exist_ok=True)
     print(dir_path / Path("summary-" + insertApproach + ".pgf"))
-    fig.savefig(dir_path / Path("summary-" + insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
+    #fig.savefig(dir_path / Path("summary-" + insertApproach + ".pgf") , format="pgf", bbox_inches="tight")
 
 
     plt.show()
@@ -1663,9 +1664,13 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach, title, legend=False
 
         scalex = 1.0/(xs.max() - xs.min())
         scaley = 1.0/(ys.max() - ys.min())
+        
+        ax.scatter(xs[y==4] * scalex,ys[y==4] * scaley, s=20, c = "orange", marker='x', label="Si")
+        ax.scatter(xs[y==3] * scalex,ys[y==3] * scaley, s=20, c = "black", marker='+', label="SiC")
+        ax.scatter(xs[y==2] * scalex,ys[y==2] * scaley, s=20, c = "blue", marker='*', label="Diamond")
+        ax.scatter(xs[y==1] * scalex,ys[y==1] * scaley, s=20, c = "limegreen", marker='s', label="Other suitables")
+        ax.scatter(xs[y==0] * scalex,ys[y==0] * scaley, s=20, c = "tomato", marker="^", label = "Unsuitable")
 
-        ax.scatter(xs[y==1] * scalex,ys[y==1] * scaley, s=7, c = "limegreen", marker='s', label="Suitable")
-        ax.scatter(xs[y==0] * scalex,ys[y==0] * scaley, s=7, c = "tomato", marker="^", label = "Unsuitable")
         if legend:
             ax.legend()
         if showVec:
@@ -1676,13 +1681,15 @@ def plot_2d_pca(trainingSet, trainingTarget, insertApproach, title, legend=False
                 else:
                     ax.text(coeff[i,0]* 1.15, coeff[i,1] * 1.15, labels[i], color = 'g', ha = 'center', va = 'center')
 
-    fig, ax = plt.subplots(nrows=1, sharex=True, figsize=(set_size(width, 0.5)[0],set_size(width, 0.5)[0]))
+    fig, ax = plt.subplots(nrows=1, sharex=True, figsize=(set_size(width, 0.7)[0],set_size(width, 0.7)[0]))
     plt.grid()
 
-    ax.set_xlabel("PC{}".format(1))
-    ax.set_ylabel("PC{}".format(2))
-    ax.set_title(title)
 
+    ax.set_xlabel("The first principal component")
+    ax.set_ylabel("The second principal component")
+    ax.set_title(title)
+    ax.set_xlim(-0.6, 0.6)
+    ax.set_ylim(-0.55, 0.7)
     #Call the function. Use only the 2 PCs.
     myplot(x_new[:,0:2],np.transpose(pca.components_[0:2, :]), y=trainingTarget.to_numpy())
 

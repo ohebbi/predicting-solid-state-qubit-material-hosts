@@ -16,10 +16,11 @@ from pathlib import Path
 from src.data.get_data_MP import data_MP
 import dotenv
 
+
 def featurize_by_material_id(material_ids: np.array,
-                            featurizerObject: featurizer.extendedMODFeaturizer,
-                            MAPI_KEY: str,
-                            writeToFile: bool = True) -> pd.DataFrame:
+                             featurizerObject: featurizer.extendedMODFeaturizer,
+                             MAPI_KEY: str,
+                             writeToFile: bool = True) -> pd.DataFrame:
     """ Run all of the preset featurizers on the input dataframe.
     Arguments:
         df: the input dataframe with a `"structure"` column
@@ -31,7 +32,8 @@ def featurize_by_material_id(material_ids: np.array,
         LOG.info("Downloading dos and bandstructure objects..")
 
         timeDownloadStart = time.time()
-        df_portion = mpdr.get_dataframe(criteria=criterion, properties=properties)
+        df_portion = mpdr.get_dataframe(
+            criteria=criterion, properties=properties)
         timeDownloadEnd = time.time()
 
         LOG.info(df_portion)
@@ -40,26 +42,28 @@ def featurize_by_material_id(material_ids: np.array,
 
         return df_time, df_portion
 
-    properties = ["material_id","full_formula", "bandstructure", "dos", "structure"]
+    properties = ["material_id", "full_formula",
+                  "bandstructure", "dos", "structure"]
 
     mpdr = MPDataRetrieval(MAPI_KEY)
 
     steps = 1
-    leftover = len(material_ids)%steps
+    leftover = len(material_ids) % steps
 
-    df        = pd.DataFrame({})
+    df = pd.DataFrame({})
     df_timers = pd.DataFrame({})
 
-    for i in tqdm(range(0,len(material_ids),steps)):
+    for i in tqdm(range(0, len(material_ids), steps)):
         portionReturned = True
         if not (i+steps > len(material_ids)):
 
             LOG.info(list(material_ids[i:i+steps]))
-            criteria = {"task_id":{"$in":list(material_ids[i:i+steps])}}
+            criteria = {"task_id": {"$in": list(material_ids[i:i+steps])}}
 
             while (portionReturned):
                 try:
-                    df_time, df_portion = apply_featurizers(criteria, properties, mpdr, featurizerObject)
+                    df_time, df_portion = apply_featurizers(
+                        criteria, properties, mpdr, featurizerObject)
                     portionReturned = False
                 except:
                     LOG.info("Except - try again.")
@@ -67,29 +71,35 @@ def featurize_by_material_id(material_ids: np.array,
             # Add ID to recognize afterwards
             df_portion["material_id"] = material_ids[i:i+steps]
 
-            df        = pd.concat([df,df_portion])
-            df_timers = pd.concat([df_timers,df_time])
+            df = pd.concat([df, df_portion])
+            df_timers = pd.concat([df_timers, df_time])
 
             LOG.info("CURRENT SHAPE:{}".format(df.shape))
             if writeToFile:
-                df.to_pickle(Path(__file__).resolve().parents[2] / "data" / "raw" / "featurizer" / "featurized.pkl")
-                df_timers.to_csv(Path(__file__).resolve().parents[2] / "data" / "raw" / "featurizer" / "timing.csv")
+                df.to_pickle(Path(__file__).resolve(
+                ).parents[2] / "data" / "raw" / "featurizer" / "featurized.pkl")
+                df_timers.to_csv(Path(__file__).resolve(
+                ).parents[2] / "data" / "raw" / "featurizer" / "timing.csv")
 
     if (leftover):
         LOG.info(list(material_ids[i:i+leftover]))
-        criteria = {"task_id":{"$in":list(material_ids[i:i+leftover])}}
-        df_time, df_portion = apply_featurizers(criteria, properties, mpdr, featurizerObject)
+        criteria = {"task_id": {"$in": list(material_ids[i:i+leftover])}}
+        df_time, df_portion = apply_featurizers(
+            criteria, properties, mpdr, featurizerObject)
         df_portion["material_id"] = material_ids[i:i+leftover]
 
-        df        = pd.concat([df,df_portion])
-        df_timers = pd.concat([df_timers,df_time])
+        df = pd.concat([df, df_portion])
+        df_timers = pd.concat([df_timers, df_time])
         if writeToFile:
-            df.to_pickle(Path(__file__).resolve().parents[2] / "data" / "raw" / "featurizer" / "featurized.pkl")
-            df_timers.to_csv(Path(__file__).resolve().parents[2] / "data" / "raw" / "featurizer" / "timing.csv")
+            df.to_pickle(Path(__file__).resolve(
+            ).parents[2] / "data" / "raw" / "featurizer" / "featurized.pkl")
+            df_timers.to_csv(Path(__file__).resolve(
+            ).parents[2] / "data" / "raw" / "featurizer" / "timing.csv")
 
     return df
 
-def run_featurizer():
+
+def run_featurizer() -> None:
     """ Function used to run, and rerun a featurization process of a large amount of entries.
         As default, we use the initial query from Materials Project. Initialised by
         "make features"
@@ -118,56 +128,71 @@ def run_featurizer():
         # If errors met, just rerun and this if-test will run.
         LOG.info("In-progress featurized data identified. Reading now...")
 
-        entries_featurized = pd.read_pickle(data_dir / "raw" / "featurizer" / "featurized.pkl")
-        time_featurized    = pd.read_csv(data_dir / "raw" / "featurizer" / "timing.csv")
+        entries_featurized = pd.read_pickle(
+            data_dir / "raw" / "featurizer" / "featurized.pkl")
+        time_featurized = pd.read_csv(
+            data_dir / "raw" / "featurizer" / "timing.csv")
 
-        LOG.info("Last featurized MPID: {}".format(entries_featurized.index[-1]))
+        LOG.info("Last featurized MPID: {}".format(
+            entries_featurized.index[-1]))
 
-        howFar = material_ids[material_ids == entries_featurized.index[-1]].index.values
+        howFar = material_ids[material_ids ==
+                              entries_featurized.index[-1]].index.values
 
         # Test if mpid index is the same, true if using the same dataset
-        assert material_ids[howFar[0]] == entries_featurized.index[-1], "Are you sure this is the same dataset as earlier?"
+        assert material_ids[howFar[0]
+                            ] == entries_featurized.index[-1], "Are you sure this is the same dataset as earlier?"
 
         LOG.info("Index: {}".format(howFar))
-        LOG.info("Preparing for new featurized data starting with MPID: {}".format(material_ids[howFar[0]]))
+        LOG.info("Preparing for new featurized data starting with MPID: {}".format(
+            material_ids[howFar[0]]))
 
-        entries_featurized.to_pickle(data_dir / "raw" / "featurizer" / Path("featurized-upto-" + str(howFar[0]) + ".pkl"))
-        time_featurized.to_csv(data_dir / "raw" / "featurizer" / Path("timing-upto-" + str(howFar[0]) + ".csv"))
+        entries_featurized.to_pickle(
+            data_dir / "raw" / "featurizer" / Path("featurized-upto-" + str(howFar[0]) + ".pkl"))
+        time_featurized.to_csv(
+            data_dir / "raw" / "featurizer" / Path("timing-upto-" + str(howFar[0]) + ".csv"))
 
         del entries_featurized, time_featurized
 
-        df = featurize_by_material_id(material_ids[howFar[0]+1:], featurizerObject, MAPI_KEY)
+        df = featurize_by_material_id(
+            material_ids[howFar[0]+1:], featurizerObject, MAPI_KEY)
 
     else:
         # First time running featurizers.
-        df = featurize_by_material_id(entries["material_id"], featurizerObject, MAPI_KEY)
+        df = featurize_by_material_id(
+            entries["material_id"], featurizerObject, MAPI_KEY)
 
 
-def updateNumberFeaturizedEntries(entries:pd.DataFrame,
-                                  featurizedEntries:pd.DataFrame,
+def updateNumberFeaturizedEntries(entries: pd.DataFrame,
+                                  featurizedEntries: pd.DataFrame,
                                   MAPI_KEY: str) -> pd.DataFrame:
     """ Function that checks if new entries that have not been featurized,
         and if true will featurize.
     """
     if entries.shape[0] > featurizedEntries.shape[0]:
         # Find new entries
-        newEntries = entries.material_id[~entries.material_id.isin(featurizedEntries.material_id.values)]
+        newEntries = entries.material_id[~entries.material_id.isin(
+            featurizedEntries.material_id.values)]
         # Define featurizer preset
         featurizerObject = preset.PRESET_HEBNES_2021()
         # Update with new entries
-        newEntries = featurize_by_material_id(newEntries, featurizerObject, MAPI_KEY, writeToFile=False)
+        newEntries = featurize_by_material_id(
+            newEntries, featurizerObject, MAPI_KEY, writeToFile=False)
         # Add new entries
         featurizedEntries = pd.concat([featurizedEntries, newEntries])
     elif entries.shape[0] < featurizedEntries.shape[0]:
-        featurizedEntries = featurizedEntries[featurizedEntries.material_id.isin(entries.material_id.values)]
+        featurizedEntries = featurizedEntries[featurizedEntries.material_id.isin(
+            entries.material_id.values)]
         featurizedEntries = featurizedEntries.reset_index(drop=True)
 
     if entries.shape[0] == featurizedEntries.shape[0]:
-        print("Updated featurized entries, shape: {}".format(featurizedEntries.shape))
+        print("Updated featurized entries, shape: {}".format(
+            featurizedEntries.shape))
     assert (entries.shape[0] == featurizedEntries.shape[0]), "Not equal length, {}!={}"\
-                                  .format(entries.shape[0], featurizedEntries.shape[0])
+        .format(entries.shape[0], featurizedEntries.shape[0])
 
     return featurizedEntries
+
 
 def testUpdateFeaturisedEntries(entries: pd.DataFrame,
                                 featurizedEntries: pd.DataFrame,
@@ -178,17 +203,19 @@ def testUpdateFeaturisedEntries(entries: pd.DataFrame,
         removed one.
     """
     # Choosing an arbitrary featurizedEntry
-    suddenlyLostEntry      = featurizedEntries.iloc[0]
+    suddenlyLostEntry = featurizedEntries.iloc[0]
     # Woops! Where did it go?
-    featurizedEntries      = featurizedEntries[1:]
+    featurizedEntries = featurizedEntries[1:]
     # Puh, we can get it back!
-    featurizedEntries      = updateNumberFeaturizedEntries(entries, featurizedEntries, MAPI_KEY)
+    featurizedEntries = updateNumberFeaturizedEntries(
+        entries, featurizedEntries, MAPI_KEY)
     # But is it back, though?
     assert featurizedEntries.iloc[0].equals(suddenlyLostEntry)
     # Yey, it's back!
     print("Test passed.")
 
-def does_file_exist(filepath:Path)-> bool:
+
+def does_file_exist(filepath: Path) -> bool:
     """
     Checks if file path exists.
 
@@ -201,17 +228,19 @@ def does_file_exist(filepath:Path)-> bool:
         LOG.info("Data path\n{}\nnot detected. Downloading now...".format(filepath))
         return False
 
-def get_featurized_data()-> pd.DataFrame:
+
+def get_featurized_data() -> pd.DataFrame:
     """ A function that checks if featurized data is present in folder, if not,
         will download and store the data.
 
         Returns a dataframe
     """
+    
     featurized_data_path = Path(__file__).resolve().parents[2] / \
-                            "data" / "interim"  / "featurized" \
-                            / "featurized-11-04-2021.pkl"
+        "data" / "raw" / "featurized" 
 
-    if not does_file_exist(featurized_data_path):
+    featurized_file_path = featurized_data_path / "featurized-11-04-2021.pkl"
+    if not does_file_exist(featurized_file_path):
         # Add unique url id for figshare endpoint
         url = "https://ndownloader.figshare.com/files/26777699"
         file = wget.download(url)
@@ -220,18 +249,21 @@ def get_featurized_data()-> pd.DataFrame:
         with open(file, 'rb') as f:
             df = pickle.load(f)
             # Make directory if not present
-            Path(featurized_data_path).mkdir(parents=True,exist_ok=True)
-            df.to_pickle(featurized_data_path)
+            Path(featurized_data_path).mkdir(parents=True, exist_ok=True)
+            df.to_pickle(featurized_file_path)
             os.remove(file)
     else:
         LOG.info("Reading data..")
-        df = pd.read_pickle(featurized_data_path)
+        df = pd.read_pickle(featurized_file_path)
     return df
+
 
 def main():
     get_featurized_data()
 
     LOG.info("Done")
+
+
 if __name__ == '__main__':
-    #main()
+    # main()
     run_featurizer()

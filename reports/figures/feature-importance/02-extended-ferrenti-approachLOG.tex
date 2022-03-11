@@ -1,0 +1,36 @@
+% This file was created with tikzplotlib v0.10.1.
+\begin{tikzpicture}
+
+\definecolor{darkgray176}{RGB}{176,176,176}
+\definecolor{skyblue136204238}{RGB}{136,204,238}
+
+\begin{axis}[
+height=1.4222438079424382in,
+tick align=outside,
+tick pos=left,
+width=2.8444876158848764in,
+x grid style={darkgray176},
+xmajorgrids,
+xmin=0.5, xmax=25.5,
+xtick style={color=black},
+y grid style={darkgray176},
+ymajorgrids,
+ymin=-0.420628517678963, ymax=0.179371482321037,
+ytick style={color=black}
+]
+\draw[draw=none,fill=skyblue136204238] (axis cs:0.6,0) rectangle (axis cs:1.4,-0.0206285176789625);
+\path [draw=skyblue136204238, semithick]
+(axis cs:1,-0.0304052927357856)
+--(axis cs:1,-0.0108517426221395);
+
+\addplot [semithick, skyblue136204238, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+1 -0.0304052927357856
+};
+\addplot [semithick, skyblue136204238, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+1 -0.0108517426221395
+};
+\end{axis}
+
+\end{tikzpicture}

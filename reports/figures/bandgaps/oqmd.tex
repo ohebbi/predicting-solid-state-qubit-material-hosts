@@ -1,7 +1,9 @@
-% This file was created by tikzplotlib v0.9.8.
+% This file was created with tikzplotlib v0.10.1.
 \begin{tikzpicture}
 
-\definecolor{color0}{rgb}{0.12156862745098,0.466666666666667,0.705882352941177}
+\definecolor{darkgray176}{RGB}{176,176,176}
+\definecolor{lightgray204}{RGB}{204,204,204}
+\definecolor{steelblue31119180}{RGB}{31,119,180}
 
 \begin{groupplot}[group style={group size=2 by 1}]
 \nextgroupplot[
@@ -13,50 +15,30 @@ legend style={
   text opacity=1,
   at={(0.03,0.97)},
   anchor=north west,
-  draw=white!80!black
+  draw=lightgray204
 },
 tick align=outside,
 tick pos=left,
 width=2.5600388542963888in,
-x grid style={white!69.0196078431373!black},
+x grid style={darkgray176},
 xlabel={Experimental BG [ev]},
 xmin=0, xmax=10.5,
 xtick style={color=black},
-xtick={0,2,4,6,8,10,12},
-xticklabels={
-  \(\displaystyle {0}\),
-  \(\displaystyle {2}\),
-  \(\displaystyle {4}\),
-  \(\displaystyle {6}\),
-  \(\displaystyle {8}\),
-  \(\displaystyle {10}\),
-  \(\displaystyle {12}\)
-},
-y grid style={white!69.0196078431373!black},
+y grid style={darkgray176},
 ylabel={OQMD BG[ev]},
 ymin=0, ymax=10.5,
-ytick style={color=black},
-ytick={0,2,4,6,8,10,12},
-yticklabels={
-  \(\displaystyle {0}\),
-  \(\displaystyle {2}\),
-  \(\displaystyle {4}\),
-  \(\displaystyle {6}\),
-  \(\displaystyle {8}\),
-  \(\displaystyle {10}\),
-  \(\displaystyle {12}\)
-}
+ytick style={color=black}
 ]
 \path [draw=black, fill=black, opacity=0.1]
-(axis cs:0,2.18309006612866)
---(axis cs:0,-1.3887590714384)
---(axis cs:13.6,6.76066919221772)
---(axis cs:13.6,10.3325183297848)
---(axis cs:13.6,10.3325183297848)
---(axis cs:0,2.18309006612866)
+(axis cs:0,2.3179911443208)
+--(axis cs:0,-0.999577552242987)
+--(axis cs:13.6,6.26088125401945)
+--(axis cs:13.6,9.57844995058324)
+--(axis cs:13.6,9.57844995058324)
+--(axis cs:0,2.3179911443208)
 --cycle;
 \addlegendimage{area legend, draw=black, fill=black, opacity=0.1}
-\addlegendentry{$\pm 1.79$}
+\addlegendentry{$\pm 1.66$}
 
 \addplot [semithick, black, mark=*, mark size=1.5, mark options={solid}, only marks, forget plot]
 table {%
@@ -87,43 +69,61 @@ table {%
 3.4 0.894
 7 3.687
 1.62 1.3
-10 7.8
+0.97 4.023
 0.97 1.69
 2.2 1.586
-10 6.315
-8 2.134
+1.8 2.303
+0.45 1.445
+1.46 1.416
+4.76 1.873
 3.87 3.282
 4.7 2.462
+6 3.62
+1.46 4.375
+0.95 4.338
 1.39 4.443
 2.84 4.457
 3.26 4.529
-1.36 4.256
+2.8 0.784
+8.5 4.61
+2.37 0.856
 8.5 5.482
+7.25 4.438
+5.7 3.499
 2.41 2.297
 2.41 2.283
 2.84 2.446
 6.17 3.974
 6 4.73
+6.17 3.367
 6.05 3.87
-9.33 6.781
 2.987 0.617
+3.306 0.641
+7.5 4.533
 3.22 1.129
+3.468 2.323
 2.6 1.38
 8.5 5.354
 7.76 4.583
-7.5 5.432
 6.75 3.764
+8.5 5.123
 8.29 5.121
+8.29 5.265
 6.05 3.454
 7.25 4.153
-4.6 0.519
+2.26 1.133
+3.266 2.438
+1.5 1.911
 3.468 2.444
 2.987 0.215000000000001
+7.76 4.088
 2.88 1.815
+3.306 0.548999999999999
 2.38 1.506
+4.6 1.799
+4.87 3.359
+4.7 0.596
 5.77 2.776
-2.85 0.222
-1.2 0.166
 };
 \addplot [semithick, black, dashed, forget plot]
 table {%
@@ -132,10 +132,10 @@ table {%
 };
 \addplot [semithick, red]
 table {%
-0 0.39716549734513
-13.6 8.54659376100125
+0 0.659206796038908
+13.6 7.91966560230134
 };
-\addlegendentry{$0.60x+0.40$}
+\addlegendentry{$0.53x+0.66$}
 
 \nextgroupplot[
 height=2.5600388542963888in,
@@ -146,42 +146,22 @@ legend style={
   text opacity=1,
   at={(0.03,0.97)},
   anchor=north west,
-  draw=white!80!black
+  draw=lightgray204
 },
 tick align=outside,
 tick pos=left,
 width=2.5600388542963888in,
-x grid style={white!69.0196078431373!black},
+x grid style={darkgray176},
 xlabel={Experimental BG [ev]},
 xmin=0, xmax=10.5,
 xtick style={color=black},
-xtick={0,2,4,6,8,10,12},
-xticklabels={
-  \(\displaystyle {0}\),
-  \(\displaystyle {2}\),
-  \(\displaystyle {4}\),
-  \(\displaystyle {6}\),
-  \(\displaystyle {8}\),
-  \(\displaystyle {10}\),
-  \(\displaystyle {12}\)
-},
-y grid style={white!69.0196078431373!black},
+y grid style={darkgray176},
 ymin=0, ymax=10.5,
-ytick style={color=black},
-ytick={0,2,4,6,8,10,12},
-yticklabels={
-  \(\displaystyle {0}\),
-  \(\displaystyle {2}\),
-  \(\displaystyle {4}\),
-  \(\displaystyle {6}\),
-  \(\displaystyle {8}\),
-  \(\displaystyle {10}\),
-  \(\displaystyle {12}\)
-}
+ytick style={color=black}
 ]
 \path [draw=blue, fill=blue, opacity=0.1]
 (axis cs:0,2.13429720949146)
---(axis cs:0,-1.48107067295951)
+--(axis cs:0,-1.48107067295952)
 --(axis cs:13.6,6.27140880669423)
 --(axis cs:13.6,9.88677668914521)
 --(axis cs:13.6,9.88677668914521)
@@ -190,7 +170,7 @@ yticklabels={
 \addlegendimage{area legend, draw=blue, fill=blue, opacity=0.1}
 \addlegendentry{$\pm 1.81$}
 
-\addplot [semithick, color0, mark=*, mark size=1.5, mark options={solid}, only marks, forget plot]
+\addplot [semithick, steelblue31119180, mark=*, mark size=1.5, mark options={solid}, only marks, forget plot]
 table {%
 6 3.306
 6.6 5.793
@@ -347,7 +327,7 @@ table {%
 };
 \addplot [semithick, red]
 table {%
-0 0.326613268265973
+0 0.326613268265972
 13.6 8.07909274791972
 };
 \addlegendentry{$0.57x+0.33$}

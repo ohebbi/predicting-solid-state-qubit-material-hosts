@@ -1,147 +1,113 @@
-% This file was created by tikzplotlib v0.9.8.
+% This file was created with tikzplotlib v0.10.1.
 \begin{tikzpicture}
 
-\definecolor{color0}{rgb}{0.12156862745098,0.466666666666667,0.705882352941177}
-\definecolor{color1}{rgb}{1,0.498039215686275,0.0549019607843137}
-\definecolor{color2}{rgb}{0.172549019607843,0.627450980392157,0.172549019607843}
-\definecolor{color3}{rgb}{0.83921568627451,0.152941176470588,0.156862745098039}
-\definecolor{color4}{rgb}{0.580392156862745,0.403921568627451,0.741176470588235}
+\definecolor{crimson2143940}{RGB}{214,39,40}
+\definecolor{darkgray176}{RGB}{176,176,176}
+\definecolor{darkorange25512714}{RGB}{255,127,14}
+\definecolor{forestgreen4416044}{RGB}{44,160,44}
+\definecolor{mediumpurple148103189}{RGB}{148,103,189}
+\definecolor{steelblue31119180}{RGB}{31,119,180}
 
 \begin{axis}[
-height=1.2800194271481944in,
-legend cell align={left},
-legend style={
-  fill opacity=0.8,
-  draw opacity=1,
-  text opacity=1,
-  at={(0.03,0.97)},
-  anchor=north west,
-  draw=white!80!black
-},
+height=2.275590092707901in,
 tick align=outside,
 tick pos=left,
-title={Param grid search RF },
-width=1.2800194271481944in,
-x grid style={white!69.0196078431373!black},
+title={Random forest},
+width=2.275590092707901in,
+x grid style={darkgray176},
 xlabel={Principal components},
 xmin=0.5, xmax=2.5,
 xtick style={color=black},
-y grid style={white!69.0196078431373!black},
-ylabel={Accuracy},
-ymin=0.707234779428411, ymax=0.97946298835217,
-ytick style={color=black},
-ytick={0.7,0.75,0.8,0.85,0.9,0.95,1},
-yticklabels={
-  \(\displaystyle {0.70}\),
-  \(\displaystyle {0.75}\),
-  \(\displaystyle {0.80}\),
-  \(\displaystyle {0.85}\),
-  \(\displaystyle {0.90}\),
-  \(\displaystyle {0.95}\),
-  \(\displaystyle {1.00}\)
-}
+y grid style={darkgray176},
+ylabel={Score},
+ymin=0.615455390250238, ymax=0.979427625658307,
+ytick style={color=black}
 ]
-\path [draw=color0, semithick]
-(axis cs:2,0.746690830438513)
---(axis cs:2,0.756724339421897);
+\path [draw=steelblue31119180, semithick]
+(axis cs:2,0.656996687969529)
+--(axis cs:2,0.685198487724046);
 
-\path [draw=color1, semithick]
-(axis cs:2,0.727505915914489)
---(axis cs:2,0.765977292966236);
+\addplot [semithick, steelblue31119180, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.656996687969529
+};
+\addplot [semithick, steelblue31119180, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.685198487724046
+};
+\path [draw=darkorange25512714, semithick]
+(axis cs:2,0.631999582768786)
+--(axis cs:2,0.668850235642036);
 
-\path [draw=color2, semithick]
-(axis cs:2,0.719608788924946)
---(axis cs:2,0.751081143141059);
+\addplot [semithick, darkorange25512714, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.631999582768786
+};
+\addplot [semithick, darkorange25512714, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.668850235642036
+};
+\path [draw=forestgreen4416044, semithick]
+(axis cs:2,0.737736404292146)
+--(axis cs:2,0.759759553240865);
 
-\path [draw=color3, semithick]
-(axis cs:2,0.937628381259142)
---(axis cs:2,0.967088978855635);
+\addplot [semithick, forestgreen4416044, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.737736404292146
+};
+\addplot [semithick, forestgreen4416044, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.759759553240865
+};
+\path [draw=crimson2143940, semithick]
+(axis cs:2,0.931014223483867)
+--(axis cs:2,0.962883433139758);
 
-\path [draw=color4, semithick]
-(axis cs:2,0.818289678074614)
---(axis cs:2,0.841221596854744);
+\addplot [semithick, crimson2143940, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.931014223483867
+};
+\addplot [semithick, crimson2143940, mark=-, mark size=4, mark options={solid}, only marks]
+table {%
+2 0.962883433139758
+};
+\path [draw=mediumpurple148103189, semithick]
+(axis cs:2,0.826594454821774)
+--(axis cs:2,0.845743268192523);
 
-\addplot [semithick, color0, dotted]
+\addplot [semithick, mediumpurple148103189, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
-2 0.707234779428411
-2 0.97946298835217
+2 0.826594454821774
 };
-\addlegendentry{Train}
-\addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
+\addplot [semithick, mediumpurple148103189, mark=-, mark size=4, mark options={solid}, only marks]
 table {%
-2 0.746690830438513
+2 0.845743268192523
 };
-\addlegendentry{f1}
-\addplot [semithick, color0, mark=-, mark size=4, mark options={solid}, only marks]
+\addplot [semithick, mediumpurple148103189, dash pattern=on 1pt off 3pt on 3pt off 3pt]
 table {%
-2 0.756724339421897
+2 0.615455390250238
+2 0.979427625658307
 };
-\addlegendentry{f1}
-\addplot [semithick, color1, mark=-, mark size=4, mark options={solid}, only marks]
+\addplot [semithick, steelblue31119180]
 table {%
-2 0.727505915914489
+2 0.671097587846788
 };
-\addlegendentry{f1}
-\addplot [semithick, color1, mark=-, mark size=4, mark options={solid}, only marks]
+\addplot [semithick, darkorange25512714]
 table {%
-2 0.765977292966236
+2 0.650424909205411
 };
-\addlegendentry{f1}
-\addplot [semithick, color2, mark=-, mark size=4, mark options={solid}, only marks]
+\addplot [semithick, forestgreen4416044]
 table {%
-2 0.719608788924946
+2 0.748747978766505
 };
-\addlegendentry{f1}
-\addplot [semithick, color2, mark=-, mark size=4, mark options={solid}, only marks]
+\addplot [semithick, crimson2143940]
 table {%
-2 0.751081143141059
+2 0.946948828311812
 };
-\addlegendentry{f1}
-\addplot [semithick, color3, mark=-, mark size=4, mark options={solid}, only marks]
+\addplot [semithick, mediumpurple148103189]
 table {%
-2 0.937628381259142
+2 0.836168861507148
 };
-\addlegendentry{f1}
-\addplot [semithick, color3, mark=-, mark size=4, mark options={solid}, only marks]
-table {%
-2 0.967088978855635
-};
-\addlegendentry{f1}
-\addplot [semithick, color4, mark=-, mark size=4, mark options={solid}, only marks]
-table {%
-2 0.818289678074614
-};
-\addlegendentry{f1}
-\addplot [semithick, color4, mark=-, mark size=4, mark options={solid}, only marks]
-table {%
-2 0.841221596854744
-};
-\addlegendentry{f1}
-\addplot [semithick, color0]
-table {%
-2 0.751707584930205
-};
-\addlegendentry{f1}
-\addplot [semithick, color1]
-table {%
-2 0.746741604440362
-};
-\addlegendentry{f1}
-\addplot [semithick, color2]
-table {%
-2 0.735344966033002
-};
-\addlegendentry{f1}
-\addplot [semithick, color3]
-table {%
-2 0.952358680057389
-};
-\addlegendentry{f1}
-\addplot [semithick, color4]
-table {%
-2 0.829755637464679
-};
-\addlegendentry{f1}
 \end{axis}
 
 \end{tikzpicture}
