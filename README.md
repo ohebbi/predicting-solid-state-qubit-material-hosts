@@ -28,9 +28,8 @@ The application of this project is centered around an exploratory analysis using
     
         python3 -m pip install -e .
 
-4. Add your API-keys from Materials Project and Citrination to your environmental variables (e.g. use an '.env'-file). Navigate down to the nodebook-directory and run the following script
+4. Add your API-keys from Materials Project and Citrination to your environmental variables (e.g. use an '.env'-file). Then run the following script to open with jupyter notebook: 
         
-        cd notebooks
         jupyter notebook
 
 5. Run all notebooks chronologically.
